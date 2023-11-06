@@ -1,4 +1,4 @@
-<GAPAPA> - APAPEDIA
+Kelompok 37 - APAPEDIA
 
 # Tugas Akhir
 ## Authors
