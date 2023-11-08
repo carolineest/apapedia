@@ -19,7 +19,9 @@ import java.util.UUID;
 public class Order_Item {
     @Id
     private UUID id = UUID.randomUUID();
-    //private Catalogue productId;
+    @NotNull
+    @Column(name = "productId", nullable = false)
+    private UUID productId;
     @NotNull
     @Column(name = "quantity", nullable = false)
     private Integer quantity;

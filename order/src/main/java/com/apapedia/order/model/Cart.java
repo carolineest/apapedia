@@ -20,7 +20,9 @@ import java.util.UUID;
 public class Cart {
     @Id
     private UUID id = UUID.randomUUID();
-    //private User userId;
+    @NotNull
+    @Column(name = "userId", nullable = false)
+    private UUID userId;
     @NotNull
     @Column(name = "totalPrice", nullable = false)
     private Integer totalPrice;

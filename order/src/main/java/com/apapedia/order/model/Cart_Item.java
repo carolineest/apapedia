@@ -19,7 +19,9 @@ import java.util.UUID;
 public class Cart_Item {
     @Id
     private UUID id = UUID.randomUUID();
-    //private Catalogue productId;
+    @NotNull
+    @Column(name = "productId", nullable = false)
+    private UUID productId;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cartId", referencedColumnName = "id")
     private Cart cartId;

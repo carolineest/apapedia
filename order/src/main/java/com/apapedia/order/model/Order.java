@@ -33,8 +33,12 @@ public class Order {
     @NotNull
     @Column(name = "totalPrice", nullable = false)
     private Integer totalPrice;
-    //private Customer customer;
-    //private Seller seller;
+    @NotNull
+    @Column(name = "customer", nullable = false)
+    private UUID customer;
+    @NotNull
+    @Column(name = "seller", nullable = false)
+    private UUID seller;
     @OneToMany(mappedBy = "orderId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Order_Item> order_itemList;
 }

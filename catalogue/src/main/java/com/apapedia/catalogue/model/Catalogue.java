@@ -20,7 +20,9 @@ import lombok.Setter;
 public class Catalogue {
     @Id
     private UUID id = UUID.randomUUID();
-    private Seller seller;
+    @NotNull
+    @Column(name = "seller", nullable = false)
+    private UUID seller;
     @NotNull
     @Column(name = "price", nullable = false)
     private Integer price;
@@ -36,7 +38,7 @@ public class Catalogue {
     @NotNull
     @Column(name = "stock", nullable = false)
     private Integer stock;
-//    @NotNull
-//    @Column(name = "image", nullable = false)
-//    private Image image;
+    @NotNull
+    @Column(name = "imageUrl", nullable = false)
+    private String image;
 }
