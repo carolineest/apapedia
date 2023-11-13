@@ -24,28 +24,39 @@ import lombok.Setter;
 public class User {
     @Id
     private UUID id = UUID.randomUUID();
+
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
+
     @NotNull
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
+
     @NotNull
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, unique = true)
     private String password;
+
     @NotNull
-    @Column(name = " email", nullable = false)
+    @Column(name = " email", nullable = false, unique = true)
     private String email;
-    @NotNull
-    @Column(name = "balance", nullable = false)
+
+    @Column(name = "balance")
     private Long balance;
-    @NotNull
-    @Column(name = "address", nullable = false)
+
+    @Column(name = "address")
     private String address;
+
     @NotNull
     @Column(name = "createdAt", nullable = false)
     private Date createdAt;
-    @NotNull
-    @Column(name = "updatedAt", nullable = false)
+
+    @Column(name = "updatedAt")
     private Date updatedAt;
+
+    @Column(name = "sellerFlag")
+    private Boolean seller;
+
+    @Column(name = "customerFlag")
+    private Boolean customer;
 }
