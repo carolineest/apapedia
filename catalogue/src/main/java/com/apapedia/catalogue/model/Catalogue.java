@@ -1,11 +1,9 @@
 package com.apapedia.catalogue.model;
 
-import java.awt.*;
 import java.util.UUID;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
