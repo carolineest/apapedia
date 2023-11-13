@@ -10,12 +10,12 @@ Kelompok 37 - APAPEDIA
 ---
 **Kontrak Tahap 1 Tugas Akhir**
 
-| NPM | Nama Lengkap | Fitur yang akan diselesaikan                    |
-| ----------| --- |-------------------------------------------------| 
-| 2106751272 | Syarifah Nur Amalia | Catalog Service #2, #4, #7, #8, #9, #10 ; FE #2 |
-| 2006530526 | Said Abdurrahman | User Service #1, #6 ; FE #7, #8                 |
-| 2106751915 | Caroline Esther | Catalog Service #3 ; Order Service #2, #6       |
-| 2106651925 | Sayyid Hafidzurrahman Atstsaqofi | Catalog Service #1 ; FE #5                      |
+| NPM | Nama Lengkap | Fitur yang akan diselesaikan              |
+| ----------| --- |-------------------------------------------| 
+| 2106751272 | Syarifah Nur Amalia | User Service #2, #3 ; FE #1               |
+| 2006530526 | Said Abdurrahman | User Service #1, #6 ; FE #7, #8           |
+| 2106751915 | Caroline Esther | Catalog Service #2, #3, #4, #7, #8, #9, #10 |
+| 2106651925 | Sayyid Hafidzurrahman Atstsaqofi | Catalog Service #1 ; FE #5                |
 ---
 **Kontrak Tahap 2 Tugas Akhir**
 
@@ -23,7 +23,7 @@ Kelompok 37 - APAPEDIA
 | ----------| --- |--------------------------------------------------------| 
 | 2106751272 | Syarifah Nur Amalia | Order Service #11 ; Catalog Service #5, #6 ; FE #3, #4 |
 | 2006530526 | Said Abdurrahman | FE #9, #15 ; User Service #4, #5                       |
-| 2106751915 | Caroline Esther | Catalog Service #4 ; User Service #2, #3 ; FE #1       |
+| 2106751915 | Caroline Esther | FE #2 ; Order Service #2, #6                           |
 | 2106651925 | Sayyid Hafidzurrahman Atstsaqofi | Order Service #8, #9 ; FE #6                           |
 ---
 **Kontrak Tahap 3 Tugas Akhir**

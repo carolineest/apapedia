@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.apapedia.user.model.*;
 
 @Getter
 @Setter
@@ -19,6 +20,6 @@ import lombok.Setter;
 @Table(name = "seller")
 public class Seller extends User{
     @NotNull
-    @Column(name = "category", nullable = false)
+    @Column(name = "category")
     private String category;
 }

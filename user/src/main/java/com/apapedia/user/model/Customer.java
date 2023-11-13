@@ -20,5 +20,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "customer")
 public class Customer extends User{
+    @NotNull
+    @Column(name = "cart_id")
     private UUID cart_id;
 }
