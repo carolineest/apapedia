@@ -27,4 +27,18 @@ public class UserServiceImpl implements UserService{
 //        User user = repository.findByUserName(username);
 //        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), new ArrayList<>());
 //    }
+    public User updateUser(User userFromDTO){
+        User user = getUserByName(userFromDTO.getName());
+        if (user != null) {
+            user.setName(userFromDTO.getName());
+            user.setPassword(userFromDTO.getPassword());
+            user.setEmail(userFromDTO.getEmail());
+            user.setUsername(userFromDTO.getUsername());
+            user.setAddress(userFromDTO.getAddress());
+            userDB.save(user);
+        }
+        System.out.println("ini service");
+        System.out.println(user.getEmail());
+        return user;
+    }
 }

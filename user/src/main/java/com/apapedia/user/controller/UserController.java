@@ -32,7 +32,7 @@ public class UserController {
     @Autowired
     AuthService authService;
 
-    //tinggal handle kalau misalkan usernamenya already exist
+    // tinggal handle kalau misalkan usernamenya already exist
     @PostMapping("/register")
     public User register(@Valid @RequestBody CreateUserDTO userDTO, BindingResult bindingResult) {
         System.out.println("masuk POST REGISTER");
@@ -44,11 +44,10 @@ public class UserController {
             var user = userMapper.userDTOToUser(userDTO);
             user.setBalance(balance);
             user.setCreatedAt(Timestamp.valueOf(waktuSkrg));
-            if(userDTO.getRole().equals("seller")){
+            if (userDTO.getRole().equals("seller")) {
                 user.setSeller(true);
                 user.setCustomer(false);
-            }
-            else{
+            } else {
                 user.setCustomer(true);
                 user.setSeller(false);
             }
@@ -58,24 +57,24 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid @RequestBody LoginRequestDTO loginRequestDTO, BindingResult bindingResult){
+    public String login(@Valid @RequestBody LoginRequestDTO loginRequestDTO, BindingResult bindingResult) {
         System.out.println("masuk POST LOGIN");
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         } else {
-            //cek username exist or not
+            // cek username exist or not
             User user = userService.getUserByName(loginRequestDTO.getUsername());
-            if(user==null){
+            if (user == null) {
                 return null;
             }
-            //cek password
-            if(!user.getPassword().equals(loginRequestDTO.getPassword())){
+            // cek password
+            if (!user.getPassword().equals(loginRequestDTO.getPassword())) {
                 return null;
             }
-            if(user.getCustomer()){
+            if (user.getCustomer()) {
                 return authService.generateToken(user.getUsername(), "customer");
             }
-            if(user.getSeller()){
+            if (user.getSeller()) {
                 return authService.generateToken(user.getUsername(), "seller");
             }
             return null;
@@ -96,15 +95,52 @@ public class UserController {
             return null;
         }
     }
-//    @PostMapping("/authenticate")
-//    public String generateToken(@RequestBody AuthRequest authRequest) throws Exception {
-//        try {
-//            authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword())
-//            );
-//        } catch (Exception ex) {
-//            throw new Exception("inavalid username/password");
-//        }
-//        return jwtUtil.generateToken(authRequest.getUserName());
-//    }
+
+    @GetMapping("/profile")
+    public User getProfile(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.substring(7);
+
+        var validToken = authService.validateToken(token);
+        var user = userService.getUserByName(validToken.getUsername());
+        return user;
+    }
+    // @PostMapping("/authenticate")
+    // public String generateToken(@RequestBody AuthRequest authRequest) throws
+    // Exception {
+    // try {
+    // authenticationManager.authenticate(
+    // new UsernamePasswordAuthenticationToken(authRequest.getUserName(),
+    // authRequest.getPassword())
+    // );
+    // } catch (Exception ex) {
+    // throw new Exception("inavalid username/password");
+    // }
+    // return jwtUtil.generateToken(authRequest.getUserName());
+    // }
+    @PostMapping("/edit-profile")
+    public User editProfile(@Valid @RequestBody CreateUserDTO userDTO, BindingResult bindingResult) {
+        System.out.println("masuk POST editProfile");
+        LocalDateTime waktuSkrg = LocalDateTime.now();
+        Long balance = 0L;
+        if (bindingResult.hasFieldErrors()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
+        } else {
+            var user = userMapper.userDTOToUser(userDTO);
+            user.setBalance(balance);
+            user.setUpdatedAt(Timestamp.valueOf(waktuSkrg));
+            if (userDTO.getRole().equals("seller")) {
+                user.setSeller(true);
+                user.setCustomer(false);
+            } else {
+                user.setCustomer(true);
+                user.setSeller(false);
+            }
+            User updatedUser =  userService.updateUser(user);
+            System.out.println("ini controller");
+            System.out.println(updatedUser.getEmail());
+
+            return updatedUser;
+        }
+    }
+
 }

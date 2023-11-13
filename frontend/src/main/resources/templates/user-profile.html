@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>User Profile</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="username">Name</label>
+                            <input type="text" id="username" class="form-control" th:value="${user.name}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control" th:value="${user.email}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" class="form-control" th:value="${user.address}" readonly>
+                        </div>
+                        <a type="button" class="btn btn-md btn-warning"
+                            th:href="@{/user/edit-profile}">Edit Profile</a>
+                        <hr>
+                        <div class="form-group">
+                            <label for="balance">Balance</label>
+                            <input type="text" id="balance" class="form-control" th:value="${user.balance}" readonly>
+                        </div>
+                        <a href="withdraw.html" class="btn btn-warning">Withdraw</a>
+                    </div>
+                    <div class="card-footer">
+                        <a href="sign-out.html" class="btn btn-danger">Sign Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bootstrap JS and jQuery script links -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
