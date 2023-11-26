@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdraw Page</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container mt-5">
+    <h2>Withdraw Page</h2>
+    <hr>
+
+    <!-- Current Balance -->
+    <div class="mb-3">
+        <label for="currentBalance">Current Balance:</label>
+        <p id="currentBalance">$1000.00</p>
+    </div>
+
+    <!-- Withdraw Input -->
+    <div class="form-group">
+        <label for="withdrawAmount">Withdraw Amount:</label>
+        <input type="number" class="form-control" id="withdrawAmount" placeholder="Enter amount" max="1000">
+    </div>
+
+    <!-- Withdraw Button -->
+    <button type="button" class="btn btn-primary" onclick="withdraw()">Withdraw</button>
+
+</div>
+
+<!-- Bootstrap JS and Popper.js (for Bootstrap functionality) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+</body>
+
+</html>

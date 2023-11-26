@@ -226,4 +226,11 @@ public class UserController {
         }
         return "redirect:/user/profile";
     }
+
+    @GetMapping("/withdraw")
+    public String withdrawPage(Model model) {
+        RegisterReqDTO registerDTO = new RegisterReqDTO();
+        model.addAttribute("registerDTO", registerDTO);
+        return "user-withdraw";
+    }
 }

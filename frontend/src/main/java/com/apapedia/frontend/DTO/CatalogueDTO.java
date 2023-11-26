@@ -17,10 +17,3 @@ public class CatalogueDTO {
     private Integer stock;
     private String image;
 }
-
-@Getter
-@Setter
-class CategoryDTO {
-    private UUID id;
-    private String name;
-}
