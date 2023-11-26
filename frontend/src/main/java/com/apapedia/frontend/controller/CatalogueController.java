@@ -28,34 +28,34 @@ public class CatalogueController {
                                   HttpServletRequest httpServletRequest,
                                   Model model) throws IOException, InterruptedException{
 //        // Retrieve cookies from the request
-//        Cookie[] cookies = httpServletRequest.getCookies();
-//
-//        System.out.println(cookies);
-//        // Search for the "jwtToken" cookie
-//        String jwtToken = null;
-//        if (cookies == null) {
-//            return "Login";
-//        }
-//        for (Cookie cookie : cookies) {
-//            System.out.println(cookie.getName());
-//            if ("jwtToken".equals(cookie.getName())) {
-//                jwtToken = cookie.getValue();
-//                HttpRequest request = HttpRequest.newBuilder()
-//                        .uri(URI.create("http://localhost:8082/user/validate"))
-//                        .header("Authorization", "Bearer "+jwtToken)
-//                        .GET()
-//                        .build();
-//                HttpResponse<String> output = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-//                System.out.println(output);
-//                System.out.println(output.body());
-//                if(output.body() == null) {
-//                    return "Login";
-//                }
-//                else{
-//                    break;
-//                }
-//            }
-//        }
+        Cookie[] cookies = httpServletRequest.getCookies();
+
+        System.out.println(cookies);
+        // Search for the "jwtToken" cookie
+        String jwtToken = null;
+        if (cookies == null) {
+            return "Login";
+        }
+        for (Cookie cookie : cookies) {
+            System.out.println(cookie.getName());
+            if ("jwtToken".equals(cookie.getName())) {
+                jwtToken = cookie.getValue();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create("http://localhost:8082/user/validate"))
+                        .header("Authorization", "Bearer "+jwtToken)
+                        .GET()
+                        .build();
+                HttpResponse<String> output = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+                System.out.println(output);
+                System.out.println(output.body());
+                if(output.body() == null) {
+                    return "Login";
+                }
+                else{
+                    break;
+                }
+            }
+        }
         //Untuk get catalogue for update
         // Encode the id
         String encodedId = URLEncoder.encode(String.valueOf(id), "UTF-8");
@@ -95,42 +95,35 @@ public class CatalogueController {
                                   HttpServletRequest httpServletRequest,
                                   Model model) throws IOException, InterruptedException{
         System.out.println(catalogueDTO.getCategoryId());
-//        // Retrieve cookies from the request
-//        Cookie[] cookies = httpServletRequest.getCookies();
-//
-//        System.out.println(cookies);
-//        // Search for the "jwtToken" cookie
-//        String jwtToken = null;
-//        if (cookies == null) {
-//            return "Login";
-//        }
-//        for (Cookie cookie : cookies) {
-//            System.out.println(cookie.getName());
-//            if ("jwtToken".equals(cookie.getName())) {
-//                jwtToken = cookie.getValue();
-//                HttpRequest request = HttpRequest.newBuilder()
-//                        .uri(URI.create("http://localhost:8082/user/validate"))
-//                        .header("Authorization", "Bearer "+jwtToken)
-//                        .GET()
-//                        .build();
-//                HttpResponse<String> output = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-//                System.out.println(output);
-//                System.out.println(output.body());
-//                if(output.body() == null) {
-//                    return "Login";
-//                }
-//                else{
-//                    break;
-//                }
-//            }
-//        }
-        // Buat objek JSON
-//        JsonObject jsonBody = new JsonObject();
-//        jsonBody.addProperty("productName", productName);
-//        jsonBody.addProperty("productDescription", productDescription);
-//        jsonBody.addProperty("price", productPrice);
-//        jsonBody.addProperty("stock", productStock);
-//        jsonBody.addProperty("categoryId", String.valueOf(categoryId));
+        // Retrieve cookies from the request
+        Cookie[] cookies = httpServletRequest.getCookies();
+
+        System.out.println(cookies);
+        // Search for the "jwtToken" cookie
+        String jwtToken = null;
+        if (cookies == null) {
+            return "Login";
+        }
+        for (Cookie cookie : cookies) {
+            System.out.println(cookie.getName());
+            if ("jwtToken".equals(cookie.getName())) {
+                jwtToken = cookie.getValue();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create("http://localhost:8082/user/validate"))
+                        .header("Authorization", "Bearer "+jwtToken)
+                        .GET()
+                        .build();
+                HttpResponse<String> output = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+                System.out.println(output);
+                System.out.println(output.body());
+                if(output.body() == null) {
+                    return "Login";
+                }
+                else{
+                    break;
+                }
+            }
+        }
         JsonObject jsonBody = new JsonObject();
         jsonBody.addProperty("productName", catalogueDTO.getProductName());
         jsonBody.addProperty("productDescription", catalogueDTO.getProductDescription());
