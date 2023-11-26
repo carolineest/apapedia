@@ -1,6 +1,7 @@
 package com.apapedia.frontend.controller;
 
 import com.apapedia.frontend.DTO.LoginReqDTO;
+import com.apapedia.frontend.DTO.RegisterReqDTO;
 import com.apapedia.frontend.DTO.ProfileResDTO;
 import com.apapedia.frontend.DTO.RegisterReqDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -74,7 +75,7 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String loginPage(Model model) {
+    public String loginPage(Model model){
         var loginDTO = new LoginReqDTO();
         model.addAttribute("loginDTO", loginDTO);
         System.out.println("masuk GET LOGIN");
@@ -225,9 +226,4 @@ public class UserController {
         }
         return "redirect:/user/profile";
     }
-
-
-
-
-
 }

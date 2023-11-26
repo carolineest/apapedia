@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"-->
+  <!--        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">-->
+  <title>Form Update Catalogue</title>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card m-4 p-4">
+    <div class="card-body">
+      <div class="justify-content-center">
+        <h2>Update Catalogue </h2>
+        <br>
+<!--        <form th:action="@{/catalogue/update/{id}(id=${catalogueDTO.id})}" th:object="${catalogueDTO}" method="POST">-->
+        <form th:action="@{/catalogue/update}" th:object="${catalogueDTO}" method="POST">
+
+          <input class="form-control" name="productId" type="hidden" th:field="*{id}" />
+
+          Nama Produk: <br>
+          <input class="form-control" name="productName" type="text" th:field="*{productName}" /><br>
+
+          Harga Produk: <br>
+          <input class="form-control" name="productPrice" type="number" th:field="*{price}" />
+          <br><br>
+
+          Deskripsi Produk: <br>
+          <input class="form-control" name="productDescription" type="text" th:field="*{productDescription}" />
+          <br><br>
+
+          Stok: <br>
+          <input class="form-control" name="productStock" type="number" th:field="*{stock}" />
+          <br><br>
+
+<!--          Gambar/Foto Produk: <br>-->
+<!--          <table class="table">-->
+<!--            <tbody>-->
+<!--            <tr>-->
+<!--              <select class="form-control" name="idPenerbit" th:field="*{penerbit}">-->
+<!--                <option th:each="penerbit: ${listPenerbit}" th:value="${penerbit.idPenerbit}" th:text="${penerbit.namaPenerbit}"></option>-->
+<!--              </select>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--          </table>-->
+
+<!--          <input class="form-control" type="hidden" th:field="*{categoryId}" />-->
+
+         Kategori: <br>
+          <table class="table">
+            <tbody>
+            <tr>
+              <select class="form-control" name="categoryId" th:field="*{categoryId}">
+                <option th:each="category: ${categoryList.categoryList}" th:value="${category.id}" th:text="${category.name}"></option>
+              </select>
+            </tr>
+            </tbody>
+          </table>
+
+          <button class="btn btn-primary" type="submit">Submit</button>
+<!--          <a class="btn btn-primary" href="/">Home</a>-->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+
+</html>

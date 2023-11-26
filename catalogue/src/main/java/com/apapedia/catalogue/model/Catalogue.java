@@ -2,6 +2,7 @@ package com.apapedia.catalogue.model;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "catalogue")
+@JsonIgnoreProperties(value={"categoryId"}, allowSetters = true)
 public class Catalogue {
     @Id
     private UUID id = UUID.randomUUID();
@@ -36,7 +38,8 @@ public class Catalogue {
     @NotNull
     @Column(name = "stock", nullable = false)
     private Integer stock;
-    @NotNull
     @Column(name = "imageUrl", nullable = false)
     private String image;
+    @Column(name = "is_deleted", columnDefinition = "boolean default false", nullable = false)
+    private boolean isDeleted;
 }

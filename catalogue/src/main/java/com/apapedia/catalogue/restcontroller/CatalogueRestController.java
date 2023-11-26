@@ -1,5 +1,12 @@
 package com.apapedia.catalogue.restcontroller;
 
+import com.apapedia.catalogue.DTO.CatalogueMapper;
+import com.apapedia.catalogue.DTO.request.CatalogueUpdateReq;
+import com.apapedia.catalogue.DTO.response.CatalogueUpdateRes;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +26,8 @@ import java.util.List;
 public class CatalogueRestController {
     @Autowired
     private CatalogueRestService catalogueRestService;
+    @Autowired
+    private CatalogueMapper catalogueMapper;
 
     // C3
     @GetMapping("/view-all")
@@ -83,5 +92,24 @@ public class CatalogueRestController {
             return catalogueRestService.getSortedCatalogueList(attribute, direction);
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid URL");
+    }
+
+    @GetMapping("/update/{id}")
+    public CatalogueUpdateReq updateCatalogue(@PathVariable("id") UUID id){
+        Catalogue catalogue = catalogueRestService.getCatalogueById(id);
+        return catalogueMapper.updateCatalogueToCatalogueUpdateReq(catalogue);
+    }
+
+    @PutMapping("/update/{id}")
+    public Catalogue updateCatalogue(@PathVariable("id") UUID id,
+                                      @Valid @RequestBody CatalogueUpdateRes catalogueUpdateRes) {
+        Catalogue catalogue = catalogueRestService.updateCatalogue(catalogueUpdateRes, id);
+        return catalogue;
+    }
+
+    @GetMapping("/softdelete/{id}")
+    public Catalogue softDeleteCatalogue(@PathVariable("id") UUID id){
+        Catalogue catalogue = catalogueRestService.getCatalogueById(id);
+        return catalogueRestService.softDelete(catalogue);
     }
 }

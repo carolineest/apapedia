@@ -62,19 +62,19 @@ public class UserController {
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         } else {
-            // cek username exist or not
+            //cek username exist or not
             User user = userService.getUserByName(loginRequestDTO.getUsername());
-            if (user == null) {
+            if(user==null){
                 return null;
             }
-            // cek password
-            if (!user.getPassword().equals(loginRequestDTO.getPassword())) {
+            //cek password
+            if(!user.getPassword().equals(loginRequestDTO.getPassword())){
                 return null;
             }
-            if (user.getCustomer()) {
+            if(user.getCustomer()){
                 return authService.generateToken(user.getUsername(), "customer");
             }
-            if (user.getSeller()) {
+            if(user.getSeller()){
                 return authService.generateToken(user.getUsername(), "seller");
             }
             return null;
@@ -95,7 +95,6 @@ public class UserController {
             return null;
         }
     }
-
     @GetMapping("/profile")
     public User getProfile(@RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.substring(7);
@@ -142,5 +141,4 @@ public class UserController {
             return updatedUser;
         }
     }
-
 }
