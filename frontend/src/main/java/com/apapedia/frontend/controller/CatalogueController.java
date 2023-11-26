@@ -1,5 +1,16 @@
 package com.apapedia.frontend.controller;
 
+import org.springframework.http.HttpMethod;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.RestTemplate;
+import com.apapedia.frontend.DTO.CatalogueDTO;
+
+import java.util.List;
 import com.apapedia.frontend.DTO.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
@@ -23,6 +34,30 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/catalogue")
 public class CatalogueController {
+    @GetMapping("")
+    public String cataloguePage(Model model) { //request param buat id seller?
+        RestTemplate restTemplate = new RestTemplate();
+
+        String apiUrl = "http://localhost:8083/api/catalogue/view-all";
+
+        // Menggunakan ParameterizedTypeReference untuk mendapatkan List<CatalogueDTO>
+        ResponseEntity<List<CatalogueDTO>> responseEntity = restTemplate.exchange(
+                apiUrl,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<CatalogueDTO>>() {}
+        );
+
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            List<CatalogueDTO> listProduct = responseEntity.getBody();
+            model.addAttribute("listProduct", listProduct);
+            System.out.println("*****************" + listProduct);
+            return "view-catalogue";
+        } else {
+            return "error-page";
+        }
+    }
+
     @GetMapping("/update/{id}")
     public String updateCatalogue(@PathVariable("id") UUID id,
                                   HttpServletRequest httpServletRequest,

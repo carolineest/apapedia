@@ -1,9 +1,7 @@
 package com.apapedia.catalogue.restservice;
 
-import java.util.UUID;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.apapedia.catalogue.repository.CatalogueDb;
+import com.apapedia.catalogue.model.Catalogue;
 import com.apapedia.catalogue.DTO.request.CatalogueUpdateReq;
 import com.apapedia.catalogue.DTO.response.CatalogueUpdateRes;
 import com.apapedia.catalogue.model.Category;
@@ -11,14 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 
-import com.apapedia.catalogue.model.Catalogue;
-import com.apapedia.catalogue.repository.CatalogueDb;
+import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
 public class CatalogueRestServiceImpl implements CatalogueRestService {
     @Autowired
     private CatalogueDb catalogueDb;
+
     @Autowired
     private CategoryRestService categoryService;
     
