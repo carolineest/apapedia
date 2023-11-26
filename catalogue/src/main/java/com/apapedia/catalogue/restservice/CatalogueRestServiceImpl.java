@@ -4,6 +4,9 @@ import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.apapedia.catalogue.DTO.request.CatalogueUpdateReq;
+import com.apapedia.catalogue.DTO.response.CatalogueUpdateRes;
+import com.apapedia.catalogue.model.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
@@ -16,6 +19,8 @@ import com.apapedia.catalogue.repository.CatalogueDb;
 public class CatalogueRestServiceImpl implements CatalogueRestService {
     @Autowired
     private CatalogueDb catalogueDb;
+    @Autowired
+    private CategoryRestService categoryService;
     
     @Override
     public List<Catalogue> getAllCatalogue() { return catalogueDb.findAllByOrderByProductNameAsc(); }
@@ -80,5 +85,49 @@ public class CatalogueRestServiceImpl implements CatalogueRestService {
             }
         }
         return catalogueList;
+    }
+
+    @Override
+    public List<Catalogue> getAllCatalogues(){
+        return catalogueDb.findAll();
+    }
+    @Override
+    public Catalogue getCatalogueById(UUID id){
+        for (Catalogue catalogue : getAllCatalogues()){
+            if (catalogue.getId().equals(id)){
+                return catalogue;
+            }
+        }
+        return null;
+    }
+
+    @Override //handle image dan category!!
+    public Catalogue updateCatalogue(CatalogueUpdateRes catalogueUpdateRes, UUID id){
+        Catalogue catalogue = getCatalogueById(id);
+        Category category = categoryService.getCategoryById(catalogueUpdateRes.getCategoryId());
+        if(catalogue != null){
+            if(catalogueUpdateRes.getProductName()!=null){
+                catalogue.setProductName(catalogueUpdateRes.getProductName());
+            }
+            if(catalogueUpdateRes.getPrice()!=null){
+                catalogue.setPrice(catalogueUpdateRes.getPrice());
+            }
+            if(catalogueUpdateRes.getProductDescription()!=null){
+                catalogue.setProductDescription(catalogueUpdateRes.getProductDescription());
+            }
+            if(catalogueUpdateRes.getStock()!=null){
+                catalogue.setStock(catalogueUpdateRes.getStock());
+            }
+//            catalogue.setImage(catalogueUpdateReq.getImage());
+            catalogue.setCategoryId(category);
+            catalogueDb.save(catalogue);
+        }
+        return catalogue;
+    }
+
+    @Override
+    public Catalogue softDelete(Catalogue catalogue) {
+        catalogue.setDeleted(true);
+        return catalogueDb.save(catalogue);
     }
 }

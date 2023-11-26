@@ -24,7 +24,6 @@ public class Order {
     @NotNull
     @Column(name = "createdAt", nullable = false)
     private Date createdAt;
-    @NotNull
     @Column(name = "updatedAt", nullable = false)
     private Date updatedAt;
     @NotNull

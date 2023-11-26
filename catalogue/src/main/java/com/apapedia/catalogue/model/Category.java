@@ -1,5 +1,6 @@
 package com.apapedia.catalogue.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @AllArgsConstructor
 @Entity
 @Table(name="category")
+@JsonIgnoreProperties(value={"catalogueList"}, allowSetters = true)
 public class Category {
     @Id
     private UUID id = UUID.randomUUID();

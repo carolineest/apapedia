@@ -1,5 +1,6 @@
 package com.apapedia.catalogue.restcontroller;
 
+import com.apapedia.catalogue.DTO.response.CategoryAllRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,8 @@ public class CategoryRestController {
 
     // C10
     @GetMapping("/view-all")
-    public List<Category> retrieveAllCategory(){
-        return categoryRestService.getAllCategory();
+    public CategoryAllRes retrieveAllCategory(){
+        CategoryAllRes categoryList = new CategoryAllRes(categoryRestService.getAllCategory());
+        return categoryList;
     }
 }
