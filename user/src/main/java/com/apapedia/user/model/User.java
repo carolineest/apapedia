@@ -14,6 +14,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Getter
 @Setter
@@ -21,6 +23,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
+@Where(clause = "is_deleted=false")
 public class User {
     @Id
     private UUID id = UUID.randomUUID();
@@ -38,7 +42,7 @@ public class User {
     private String password;
 
     @NotNull
-    @Column(name = " email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "balance")
@@ -59,4 +63,7 @@ public class User {
 
     @Column(name = "customerFlag")
     private Boolean customer;
+
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean deleted = Boolean.FALSE;
 }

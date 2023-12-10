@@ -11,24 +11,28 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     @Autowired
     UserDB userDB;
 
-    public void createUser(User user){
+    public void createUser(User user) {
         userDB.save(user);
     }
-    public User getUserByName(String name){
+
+    public User getUserByName(String name) {
         return userDB.findByUsername(name);
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        User user = repository.findByUserName(username);
-//        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), new ArrayList<>());
-//    }
-    public User updateUser(User userFromDTO){
-        User user = getUserByName(userFromDTO.getName());
+    // @Override
+    // public UserDetails loadUserByUsername(String username) throws
+    // UsernameNotFoundException {
+    // User user = repository.findByUserName(username);
+    // return new
+    // org.springframework.security.core.userdetails.User(user.getUserName(),
+    // user.getPassword(), new ArrayList<>());
+    // }
+    public User updateUser(User userFromDTO) {
+        User user = getUserByName(userFromDTO.getUsername());
         if (user != null) {
             user.setName(userFromDTO.getName());
             user.setPassword(userFromDTO.getPassword());
@@ -41,4 +45,38 @@ public class UserServiceImpl implements UserService{
         System.out.println(user.getEmail());
         return user;
     }
+
+    public User updateWithdrawUser(Long amount, String name) {
+        User user = getUserByName(name);
+
+        if (user != null) {
+            Long sisaAmount = user.getBalance() - amount;
+            user.setBalance(sisaAmount);
+            userDB.save(user);
+        }
+        return user;
+    }
+
+    @Override
+    public User updateTopUpUser(Long amount, String name) {
+        User user = getUserByName(name);
+
+        if (user != null) {
+            Long sisaAmount = user.getBalance() + amount;
+            user.setBalance(sisaAmount);
+            userDB.save(user);
+        }
+        return user;
+    }
+
+    @Override
+    public User deleteUser(String name) {
+        User user = getUserByName(name);
+        if (user != null) {
+            user.setDeleted(true);
+            userDB.save(user);
+        }
+        return user;
+    }
+
 }

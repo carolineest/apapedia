@@ -9,34 +9,54 @@
 </head>
 
 <body>
+    <div class="container mt-5">
+        <form th:action="@{/user/withdraw}" id="withdrawForm" method="post" onsubmit="return validateWithdraw()">
+            <h2>Withdraw Page</h2>
+            <hr>
+            <!-- Current Balance -->
+            <input class="form-control" name="username" type="hidden" th:field="*{user.username}" />
+            <div class="form-group">
+                <label for="username">Current Balance:</label>
+                <input type="text" id="username" class="form-control" th:value="${user.balance}" readonly>
+            </div>
 
-<div class="container mt-5">
-    <h2>Withdraw Page</h2>
-    <hr>
+            <!-- Withdraw Input -->
+            <div class="form-group">
+                <label for="withdrawAmount">Withdraw Amount:</label>
+                <input type="number" class="form-control" name="withdrawAmount" id="withdrawAmount"
+                    placeholder="Enter amount" max="${user.balance}" th:field="*{user.balance}" />
+                <small class="text-danger" id="withdrawAmountError"></small>
+            </div>
 
-    <!-- Current Balance -->
-    <div class="mb-3">
-        <label for="currentBalance">Current Balance:</label>
-        <p id="currentBalance">$1000.00</p>
+            <!-- Withdraw Button -->
+            <button type="submit" class="btn btn-primary btn-block" onclick="return validateWithdraw()">Submit</button>
+        </form>
     </div>
 
-    <!-- Withdraw Input -->
-    <div class="form-group">
-        <label for="withdrawAmount">Withdraw Amount:</label>
-        <input type="number" class="form-control" id="withdrawAmount" placeholder="Enter amount" max="1000">
-    </div>
+    <!-- Bootstrap JS and Popper.js (for Bootstrap functionality) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Withdraw Button -->
-    <button type="button" class="btn btn-primary" onclick="withdraw()">Withdraw</button>
+    <!-- Custom JavaScript -->
+    <script>
+        function validateWithdraw() {
+            // Get the input value
+            var withdrawAmount = parseFloat(document.getElementById("withdrawAmount").value);
 
-</div>
+            // Get the current balance
+            var currentBalance = parseFloat(document.getElementById("username").value);
 
-<!-- Bootstrap JS and Popper.js (for Bootstrap functionality) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
+            // Check if the input value exceeds the current balance
+            if (withdrawAmount > currentBalance) {
+                document.getElementById("withdrawAmountError").innerText = "Withdraw amount exceeds the current balance.";
+                return false; // Prevent form submission
+            } else {
+                document.getElementById("withdrawAmountError").innerText = ""; // Clear the error message
+                return true; // Allow form submission
+            }
+        }
+    </script>
 </body>
 
 </html>

@@ -34,4 +34,6 @@ public class ProfileResDTO {
 
     private Boolean customer;
 
+    private Boolean deleted;
+
 }
