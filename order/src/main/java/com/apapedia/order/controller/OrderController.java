@@ -1,16 +1,17 @@
 package com.apapedia.order.controller;
 
+import com.apapedia.order.dto.response.ListOrderResDTO;
 import com.apapedia.order.model.Order;
 import com.apapedia.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/order")
@@ -36,5 +37,19 @@ public class OrderController {
         System.out.println(orderList);
 
         return orderList;
+    }
+
+
+    @GetMapping("/view-all/{custid}")
+    public ResponseEntity<?> getOrderByCustId(@PathVariable("custid") UUID custid){
+        try{
+            List<Order> orderList= orderService.getOrderByCustId(custid);
+            if(orderList == null){
+                return null;
+            }
+            return new ResponseEntity<>(new ListOrderResDTO(orderList), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }
