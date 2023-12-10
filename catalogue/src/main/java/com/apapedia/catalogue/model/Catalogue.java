@@ -16,7 +16,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "catalogue")
-@JsonIgnoreProperties(value={"categoryId"}, allowSetters = true)
 public class Catalogue {
     @Id
     private UUID id = UUID.randomUUID();

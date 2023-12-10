@@ -13,7 +13,14 @@ public class CatalogueDTO {
     private Integer price;
     private String productName;
     private String productDescription;
-    private CategoryDTO categoryId;
+    private CategoryCatalogueDTO categoryId;
     private Integer stock;
     private String image;
+}
+
+@Getter
+@Setter
+class CategoryCatalogueDTO {
+    private UUID id;
+    private String name;
 }
