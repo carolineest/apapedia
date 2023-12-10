@@ -1,5 +1,7 @@
 package com.apapedia.order.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,6 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "orders")
+@JsonIgnoreProperties(value={"order_itemList"}, allowSetters = true)
 public class Order {
     @Id
     private UUID id = UUID.randomUUID();
@@ -39,5 +42,6 @@ public class Order {
     @Column(name = "seller", nullable = false)
     private UUID seller;
     @OneToMany(mappedBy = "orderId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Order_Item> order_itemList;
 }

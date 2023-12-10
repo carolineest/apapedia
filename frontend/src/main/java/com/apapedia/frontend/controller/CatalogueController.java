@@ -62,7 +62,7 @@ public class CatalogueController {
     public String updateCatalogue(@PathVariable("id") UUID id,
                                   HttpServletRequest httpServletRequest,
                                   Model model) throws IOException, InterruptedException{
-//        // Retrieve cookies from the request
+        // Retrieve cookies from the request
         Cookie[] cookies = httpServletRequest.getCookies();
 
         System.out.println(cookies);
