@@ -1,17 +1,17 @@
 package com.apapedia.user.service;
 
-import com.apapedia.user.model.User;
+import com.apapedia.user.DTO.request.LoginSsoReqDTO;
+import com.apapedia.user.model.Users;
 
 public interface UserService {
-    void createUser(User user);
 
-    User getUserByName(String name);
+    Users updateWithdrawUser(Long amount, String name);
 
-    User updateUser(User user);
+    Users updateTopUpUser(Long amount, String name);
 
-    User updateWithdrawUser(Long amount, String name);
-
-    User updateTopUpUser(Long amount, String name);
-
-    User deleteUser(String name);
+    Users deleteUser(String name);
+    void createUser(Users users);
+    Users getUserByName(String name);
+    Users updateUser(Users users);
+    String loginSsoSeller(LoginSsoReqDTO loginRequestDTO);
 }
