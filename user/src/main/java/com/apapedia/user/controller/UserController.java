@@ -4,24 +4,28 @@ import com.apapedia.user.DTO.UserMapper;
 import com.apapedia.user.DTO.request.CreateUserDTO;
 import com.apapedia.user.DTO.request.LoginRequestDTO;
 import com.apapedia.user.DTO.request.WithdrawUserDTO;
+import com.apapedia.user.DTO.request.LoginSsoReqDTO;
 import com.apapedia.user.DTO.response.LoginResDTO;
 import com.apapedia.user.DTO.response.ValidToken;
-import com.apapedia.user.model.User;
+import com.apapedia.user.jwt.JwtUtils;
+import com.apapedia.user.model.Users;
 //import com.apapedia.user.service.AuthService;
 import com.apapedia.user.service.AuthService;
 import com.apapedia.user.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
     @Autowired
     UserMapper userMapper;
@@ -29,6 +33,9 @@ public class UserController {
     UserService userService;
     @Autowired
     AuthService authService;
+
+    @Autowired
+    JwtUtils jwtUtils;
 
     // tinggal handle kalau misalkan usernamenya already exist
     @PostMapping("/register")
@@ -95,9 +102,13 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public User getProfile(@RequestHeader("Authorization") String authorizationHeader) {
+    public Users getProfile(@RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.substring(7);
 
+        //yg bener
+        UUID userid = jwtUtils.getUserIdFromToken(token);
+
+        //yg salah
         var validToken = authService.validateToken(token);
         var user = userService.getUserByName(validToken.getUsername());
         return user;
@@ -117,7 +128,7 @@ public class UserController {
     // }
 
     @PostMapping("/edit-profile")
-    public User editProfile(@Valid @RequestBody CreateUserDTO userDTO, BindingResult bindingResult) {
+    public Users editProfile(@Valid @RequestBody CreateUserDTO userDTO, BindingResult bindingResult) {
         System.out.println("masuk POST editProfile");
         LocalDateTime waktuSkrg = LocalDateTime.now();
         if (bindingResult.hasFieldErrors()) {
@@ -127,11 +138,18 @@ public class UserController {
             System.out.println(user.getUsername());
             System.out.println("10 Desember 2023");
             user.setUpdatedAt(Timestamp.valueOf(waktuSkrg));
-            User updatedUser = userService.updateUser(user);
+            if (userDTO.getRole().equals("seller")) {
+                user.setSeller(true);
+                user.setCustomer(false);
+            } else {
+                user.setCustomer(true);
+                user.setSeller(false);
+            }
+            Users updatedUsers =  userService.updateUser(user);
             System.out.println("ini controller");
-            System.out.println(updatedUser.getEmail());
+            System.out.println(updatedUsers.getEmail());
 
-            return updatedUser;
+            return updatedUsers;
         }
     }
 

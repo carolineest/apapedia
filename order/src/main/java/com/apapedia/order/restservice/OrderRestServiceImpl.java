@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -46,5 +47,19 @@ public class OrderRestServiceImpl implements OrderRestService {
                 orderTemp.getOrder_itemList().add(orderItemTemp);
             }   
         }
+    }
+
+    @Override
+    public List<Order> getOrderByStatus(Integer status){
+        return orderDb.findByStatus(status);
+    }
+
+    @Override
+    public List<Order> getOrderByCustId(UUID id){
+        List<Order> orderList = orderDb.findByCustomer(id);
+        if(orderList == null || orderList.isEmpty()){
+            return null;
+        }
+        return orderList;
     }
 }
