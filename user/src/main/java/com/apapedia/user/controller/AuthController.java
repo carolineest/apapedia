@@ -45,7 +45,7 @@ public class AuthController {
     public Users register(@Valid @RequestBody CreateUserDTO userDTO, BindingResult bindingResult) {
         System.out.println("masuk POST REGISTER");
         LocalDateTime waktuSkrg = LocalDateTime.now();
-        Long balance = 0L;
+        Long balance = 5L;
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         } else {

@@ -66,11 +66,7 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_lints
-<<<<<<< HEAD
-      sha256: a25a15ebbdfc33ab1cd26c63a6ee519df92338a9c10f122adda92938253bef04
-=======
       sha256: b543301ad291598523947dc534aaddc5aaad597b709d2426d3a0e0d44c5cb493
->>>>>>> 68f1315 (finish 0rder7)
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
@@ -83,11 +79,7 @@ packages:
     dependency: transitive
     description:
       name: lints
-<<<<<<< HEAD
-      sha256: "0a217c6c989d21039f1498c3ed9f3ed71b354e69873f13a8dfc3c9fe76f1b452"
-=======
       sha256: a2c3d198cb5ea2e179926622d433331d8b58374ab8f29cdda6e863bd62fd369c
->>>>>>> 68f1315 (finish 0rder7)
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
@@ -96,6 +88,14 @@ packages:
     description:
       name: matcher
       sha256: "1803e76e6653768d64ed8ff2e1e67bea3ad4b923eb5c56a295c3e634bad5960e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.12.16"
+  material_color_utilities:
+    dependency: transitive
+    description:
+      name: material_color_utilities
+      sha256: "9528f2f296073ff54cb9fee677df673ace1218163c3bc7628093e7eed5203d41"
       url: "https://pub.dev"
     source: hosted
     version: "0.12.16"
@@ -193,8 +193,4 @@ packages:
     source: hosted
     version: "0.3.0"
 sdks:
-<<<<<<< HEAD
-  dart: ">=3.2.2 <4.0.0"
-=======
   dart: ">=3.2.0-194.0.dev <4.0.0"
->>>>>>> 68f1315 (finish 0rder7)

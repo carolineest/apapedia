@@ -3,16 +3,14 @@ package com.apapedia.catalogue.restcontroller;
 import com.apapedia.catalogue.DTO.CatalogueMapper;
 import com.apapedia.catalogue.DTO.request.CatalogueUpdateReq;
 import com.apapedia.catalogue.DTO.response.CatalogueUpdateRes;
+import com.apapedia.catalogue.jwt.JwtUtils;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.apapedia.catalogue.model.Catalogue;
@@ -28,6 +26,8 @@ public class CatalogueRestController {
     private CatalogueRestService catalogueRestService;
     @Autowired
     private CatalogueMapper catalogueMapper;
+    @Autowired
+    JwtUtils jwtUtils;
 
     // C3
     @GetMapping("/view-all")
@@ -36,9 +36,21 @@ public class CatalogueRestController {
     }
 
     // C2
-    @GetMapping("/seller/{idSeller}")
-    private List<Catalogue> getCatalogueBySellerId(@PathVariable("idSeller") String idSeller){
-        List<Catalogue> listCatalogue = catalogueRestService.getCatalogueBySellerId(UUID.fromString(idSeller));
+    // @GetMapping("/seller/{idSeller}")
+    // private List<Catalogue> getCatalogueBySellerId(@PathVariable("idSeller") String idSeller){
+    //     List<Catalogue> listCatalogue = catalogueRestService.getCatalogueBySellerId(UUID.fromString(idSeller));
+    //     if (listCatalogue.isEmpty()) {
+    //         throw new ResponseStatusException(
+    //             HttpStatus.NOT_FOUND, "Seller with id " + idSeller + " not found"
+    //         );
+    //     }  
+    //     return listCatalogue;
+    // }
+    @GetMapping("/seller")
+    private List<Catalogue> getCatalogueBySellerId(@RequestHeader("Authorization") String authorizationHeader){
+        String token = authorizationHeader.substring(7);
+        UUID idSeller = jwtUtils.getUserIdFromToken(token);
+        List<Catalogue> listCatalogue = catalogueRestService.getCatalogueBySellerId(idSeller);
         if (listCatalogue.isEmpty()) {
             throw new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "Seller with id " + idSeller + " not found"
@@ -46,7 +58,6 @@ public class CatalogueRestController {
         }  
         return listCatalogue;
     }
-
 
     // C4
     @GetMapping("/id/{idCatalogue}")

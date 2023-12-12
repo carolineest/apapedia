@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.UUID;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,6 +27,9 @@ public class UserServiceImpl implements UserService {
     }
     public Users getUserByName(String name){
         return usersDB.findByUsername(name);
+    }
+    public Users getUserById(UUID id){
+        return usersDB.findById(id).get();
     }
 
 //    @Override
@@ -58,35 +62,35 @@ public class UserServiceImpl implements UserService {
         return token;
     }
 
-    public User updateWithdrawUser(Long amount, String name) {
-        User user = getUserByName(name);
+    public Users updateWithdrawUser(Long amount, String id) {
+        Users user = getUserById(UUID.fromString(id));
 
         if (user != null) {
             Long sisaAmount = user.getBalance() - amount;
             user.setBalance(sisaAmount);
-            userDB.save(user);
+            usersDB.save(user);
         }
         return user;
     }
 
     @Override
-    public User updateTopUpUser(Long amount, String name) {
-        User user = getUserByName(name);
+    public Users updateTopUpUser(Long amount, String id) {
+        Users user = getUserById(UUID.fromString(id));
 
         if (user != null) {
             Long sisaAmount = user.getBalance() + amount;
             user.setBalance(sisaAmount);
-            userDB.save(user);
+            usersDB.save(user);
         }
         return user;
     }
 
     @Override
-    public User deleteUser(String name) {
-        User user = getUserByName(name);
+    public Users deleteUser(String id) {
+        Users user = getUserById(UUID.fromString(id));
         if (user != null) {
             user.setDeleted(true);
-            userDB.save(user);
+            usersDB.save(user);
         }
         return user;
     }

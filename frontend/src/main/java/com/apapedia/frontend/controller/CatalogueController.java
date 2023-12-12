@@ -6,10 +6,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
-import com.apapedia.frontend.DTO.CatalogueDTO;
 
 import java.util.List;
 import com.apapedia.frontend.DTO.*;
@@ -31,10 +28,70 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.UUID;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/catalogue")
 public class CatalogueController {
+    @GetMapping("")
+    public String cataloguePage(HttpServletRequest httpServletRequest, Model model) throws IOException, InterruptedException {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        String jwtToken = null;
+        HttpSession session = httpServletRequest.getSession(false); 
+        if (session == null) {
+            String apiUrl = "http://localhost:8083/api/catalogue/view-all";
+            // Menggunakan ParameterizedTypeReference untuk mendapatkan List<CatalogueDTO>
+            ResponseEntity<List<CatalogueDTO>> responseEntity = restTemplate.exchange(
+                    apiUrl,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<CatalogueDTO>>() {}
+            );
+            if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                List<CatalogueDTO> listProduct = responseEntity.getBody();
+                model.addAttribute("listProduct", listProduct);
+                System.out.println("*****************" + listProduct);
+                return "catalogue-not-logged";
+            } else {
+                return "error-page";
+            }
+        }
+        
+        jwtToken = (String) session.getAttribute("token");
+
+        String apiUrl = "http://localhost:8083/api/catalogue/seller"; // ganti dengan seller
+        // Menggunakan ParameterizedTypeReference untuk mendapatkan List<CatalogueDTO>
+        ResponseEntity<List<CatalogueDTO>> responseEntity = restTemplate.exchange(
+                apiUrl,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<CatalogueDTO>>() {}
+        );
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            List<CatalogueDTO> listProduct = responseEntity.getBody();
+            model.addAttribute("listProduct", listProduct);
+            System.out.println("*****************" + listProduct);
+
+            //get data untuk chart
+            HttpRequest request1 = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8081/order/chart"))
+                    .GET()
+                    .build();
+            HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
+            System.out.println(output1);
+            System.out.println(output1.body());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, Integer> statusCountList = objectMapper.readValue(output1.body(), Map.class);
+
+            model.addAttribute("statusCountList", statusCountList);
+            return "catalogue-logged";
+        } else {
+            return "error-page";
+        }
+    }
 
 //    @GetMapping("/update/{id}")
 //    public String updateCatalogue(@PathVariable("id") UUID id,

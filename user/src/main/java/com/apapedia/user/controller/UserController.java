@@ -39,10 +39,10 @@ public class UserController {
 
     // tinggal handle kalau misalkan usernamenya already exist
     @PostMapping("/register")
-    public User register(@Valid @RequestBody CreateUserDTO userDTO, BindingResult bindingResult) {
+    public Users register(@Valid @RequestBody CreateUserDTO userDTO, BindingResult bindingResult) {
         System.out.println("masuk POST REGISTER");
         LocalDateTime waktuSkrg = LocalDateTime.now();
-        Long balance = 0L;
+        Long balance = 5L;
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         } else {
@@ -68,7 +68,7 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         } else {
             // cek username exist or not
-            User user = userService.getUserByName(loginRequestDTO.getUsername());
+            Users user = userService.getUserByName(loginRequestDTO.getUsername());
             if (user == null) {
                 return null;
             }
@@ -104,14 +104,16 @@ public class UserController {
     @GetMapping("/profile")
     public Users getProfile(@RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.substring(7);
+        System.out.println("MASUK REQUEST PROFILE USER");
 
         //yg bener
         UUID userid = jwtUtils.getUserIdFromToken(token);
+        return userService.getUserById(userid);
 
         //yg salah
-        var validToken = authService.validateToken(token);
-        var user = userService.getUserByName(validToken.getUsername());
-        return user;
+//        var validToken = authService.validateToken(token);
+//        var user = userService.getUserByName(validToken.getUsername());
+//        return user;
     }
     // @PostMapping("/authenticate")
     // public String generateToken(@RequestBody AuthRequest authRequest) throws
@@ -154,15 +156,15 @@ public class UserController {
     }
 
     @PostMapping("/withdraw")
-    public User withdraw(@Valid @RequestBody WithdrawUserDTO withdrawUserDTO, BindingResult bindingResult) {
+    public Users withdraw(@Valid @RequestBody WithdrawUserDTO withdrawUserDTO, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         } else {
             System.out.println(withdrawUserDTO);
             Long withdrawAmount = Long.parseLong(withdrawUserDTO.getBalance());
-            String name = withdrawUserDTO.getUsername();
-            System.out.println(name);
-            User updatedUser = userService.updateWithdrawUser(withdrawAmount, name);
+            String id = withdrawUserDTO.getId();
+            System.out.println(id);
+            Users updatedUser = userService.updateWithdrawUser(withdrawAmount, id);
             System.out.println("AMAN KOMPETITOR");
             System.out.println(updatedUser);
             System.out.println(updatedUser.getBalance());
@@ -171,15 +173,15 @@ public class UserController {
     }
 
     @PostMapping("/topup")
-    public User topup(@Valid @RequestBody WithdrawUserDTO withdrawUserDTO, BindingResult bindingResult) {
+    public Users topup(@Valid @RequestBody WithdrawUserDTO withdrawUserDTO, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         } else {
             System.out.println(withdrawUserDTO);
             Long topupAmount = Long.parseLong(withdrawUserDTO.getBalance());
-            String name = withdrawUserDTO.getUsername();
-            System.out.println(name);
-            User updatedUser = userService.updateTopUpUser(topupAmount, name);
+            String id = withdrawUserDTO.getId();
+            System.out.println(id);
+            Users updatedUser = userService.updateTopUpUser(topupAmount, id);
             System.out.println(updatedUser);
             System.out.println(updatedUser.getBalance());
             return updatedUser;
@@ -187,15 +189,15 @@ public class UserController {
     }
 
     @PostMapping("/delete-account")
-    public User deleteAccount(@Valid @RequestBody WithdrawUserDTO withdrawUserDTO, BindingResult bindingResult) {
+    public Users deleteAccount(@Valid @RequestBody WithdrawUserDTO withdrawUserDTO, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         } else {
             System.out.println(withdrawUserDTO);
             System.out.println("Tanggal 9 Desember");
-            String name = withdrawUserDTO.getUsername();
-            System.out.println(name);
-            User deletedUser = userService.deleteUser(name);
+            String id = withdrawUserDTO.getId();
+            System.out.println(id);
+            Users deletedUser = userService.deleteUser(id);
             System.out.println(deletedUser);
             deletedUser.setDeleted(true);
             System.out.println(deletedUser.getDeleted());
