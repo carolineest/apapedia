@@ -21,9 +21,17 @@ public class CatalogueResponseDTO {
     private Integer price;
     private String productName;
     private String productDescription;
-    private Category categoryId;
+    private CategoryCatalogueDTO categoryId;
     private Integer stock;
     private String image;
-    private boolean isDeleted;
+    private boolean deleted;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CategoryCatalogueDTO {
+        private UUID id;
+        private String name;
+    }
 }
 

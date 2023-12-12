@@ -2,15 +2,15 @@ package com.apapedia.catalogue.restcontroller;
 
 import com.apapedia.catalogue.DTO.CatalogueMapper;
 import com.apapedia.catalogue.DTO.request.CatalogueUpdateReq;
+import com.apapedia.catalogue.DTO.request.CreateCatalogueRequestDTO;
 import com.apapedia.catalogue.DTO.response.CatalogueUpdateRes;
 import com.apapedia.catalogue.jwt.JwtUtils;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.apapedia.catalogue.model.Catalogue;
@@ -24,14 +24,33 @@ import java.util.List;
 public class CatalogueRestController {
     @Autowired
     private CatalogueRestService catalogueRestService;
+
     @Autowired
     private CatalogueMapper catalogueMapper;
     @Autowired
     JwtUtils jwtUtils;
 
+    @PostMapping("/add-product")
+    public void addCatalogue(@Valid @RequestBody CreateCatalogueRequestDTO catalogueDTO, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field"
+            );
+        } else {
+            catalogueRestService.createCatalogue(catalogueDTO);
+        }
+    }
+
     // C3
+    // @GetMapping("/view-all")
+    // public List<Catalogue> retrieveAllCatalogue(){
+    //     System.out.println("*************************** MASUK ***********************");
+    //     return catalogueRestService.getAllCatalogue();
+    // }
+
     @GetMapping("/view-all")
-    public List<Catalogue> retrieveAllCatalogue(){
+    private List<Catalogue> retrieveAllCatalogue(){
+        System.out.println("*************************** MASUK ***********************");
         return catalogueRestService.getAllCatalogue();
     }
 

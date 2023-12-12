@@ -19,6 +19,7 @@ public class CategoryRestServiceImpl implements CategoryRestService {
     
     @Override
     public List<Category> getAllCategory() { return categoryDb.findAll(); }
+    
     @Override
     public Category getCategoryById(UUID id){
         for (Category category : getAllCategory()){

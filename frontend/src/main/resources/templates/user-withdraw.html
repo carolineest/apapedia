@@ -9,6 +9,7 @@
 </head>
 
 <body>
+<nav th:replace="~{fragments/navbar :: navbar('')}"></nav>
     <div class="container mt-5">
         <form th:action="@{/user/withdraw}" id="withdrawForm" method="post" onsubmit="return validateWithdraw()">
             <h2>Withdraw Page</h2>

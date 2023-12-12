@@ -1,5 +1,8 @@
 package com.apapedia.frontend.controller;
 
+import com.apapedia.frontend.DTO.ListCatalogueDTO;
+import com.apapedia.frontend.DTO.LoginReqDTO;
+import com.apapedia.frontend.DTO.RegisterReqDTO;
 import com.apapedia.frontend.DTO.*;
 import com.apapedia.frontend.security.xml.Attributes;
 import com.apapedia.frontend.security.xml.ServiceResponse;
@@ -13,6 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.xml.Jaxb2XmlDecoder;
@@ -37,6 +42,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class PageController {
@@ -45,10 +51,12 @@ public class PageController {
 
     private WebClient webClient = WebClient.builder()
             .codecs(configurer -> configurer.defaultCodecs()
-                    .jaxb2Decoder(new Jaxb2XmlDecoder()))
+            .jaxb2Decoder(new Jaxb2XmlDecoder()))
             .build();
 
     @GetMapping("/")
+    // public String cataloguePage(HttpServletRequest httpServletRequest, Model model) throws IOException, InterruptedException { //request param buat id seller?
+        // RestTemplate restTemplate = new RestTemplate();
     public String cataloguePage(Model model) { //request param buat id seller?
         System.out.println("MASUK GET /");
         RestTemplate restTemplate = new RestTemplate();
@@ -71,6 +79,124 @@ public class PageController {
         } else {
             return "error-page";
         }
+
+    //     HttpSession session = httpServletRequest.getSession(false);
+    //     String jwtToken = null;
+    //     jwtToken = (String) session.getAttribute("token");
+
+    //     HttpRequest request = HttpRequest.newBuilder()
+    //                 .uri(URI.create("http://localhost:8083/api/catalogue/view-all"))
+    //                 .GET()
+    //                 .build();
+    //     HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+    //     System.out.println("Output body: " + response.body());
+    //     ObjectMapper objectMapper = new ObjectMapper();
+    //     ListCatalogueDTO listCatalogue = objectMapper.readValue(response.body(), ListCatalogueDTO.class);
+    //     System.out.println(listCatalogue);
+    //     model.addAttribute("listCatalogue", listCatalogue); // ganti akses di html
+    //     return "catalogue-not-logged";
+    // }
+
+    // @GetMapping("/")
+    // public String cataloguePage(HttpServletRequest httpServletRequest, Model model) throws IOException, InterruptedException {
+    //     System.out.println("**************** MASUK *************");
+    //     HttpSession session = httpServletRequest.getSession(false);
+    //     System.out.println("INI SESSION ******************* " + session);
+    //     if (session == null) {
+    //         // String apiUrl = "http://localhost:8083/api/catalogue/view-all";
+    //         // // Menggunakan ParameterizedTypeReference untuk mendapatkan List<CatalogueDTO>
+    //         // ResponseEntity<List<CatalogueDTO>> responseEntity = restTemplate.exchange(
+    //         //         apiUrl,
+    //         //         HttpMethod.GET,
+    //         //         null,
+    //         //         new ParameterizedTypeReference<List<CatalogueDTO>>() {}
+    //         // );
+    //         // if (responseEntity.getStatusCode().is2xxSuccessful()) {
+    //         //     List<CatalogueDTO> listProduct = responseEntity.getBody();
+    //         //     model.addAttribute("listProduct", listProduct);
+    //         //     System.out.println("*****************" + listProduct);
+    //         //     return "catalogue-not-logged";
+    //         // } else {
+    //         //     return "error-page";
+    //         // }
+    //         String jwtToken = null;
+    //         jwtToken = (String) session.getAttribute("token");
+
+    //         HttpRequest request = HttpRequest.newBuilder()
+    //                 .uri(URI.create("http://localhost:8083/api/catalogue/view-all"))
+    //                 .header("Authorization", "Bearer " + jwtToken)
+    //                 .GET()
+    //                 .build();
+    //         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+    //         ObjectMapper objectMapper = new ObjectMapper();
+    //         ListCatalogueDTO listCatalogue = objectMapper.readValue(response.body(), ListCatalogueDTO.class);
+    //         model.addAttribute("listCatalogue", listCatalogue); // ganti akses di html
+    //         return "catalogue-not-logged";
+    //     }
+
+    //     String jwtToken = null;
+    //     jwtToken = (String) session.getAttribute("token");
+
+    //     HttpRequest request = HttpRequest.newBuilder()
+    //             .uri(URI.create("http://localhost:8083/api/catalogue/seller"))
+    //             .header("Authorization", "Bearer " + jwtToken)
+    //             .GET()
+    //             .build();
+    //     HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+    //     ObjectMapper objectMapper = new ObjectMapper();
+    //     ListCatalogueDTO listCatalogue = objectMapper.readValue(response.body(), ListCatalogueDTO.class);
+    //     model.addAttribute("listCatalogue", listCatalogue);
+
+    //     //get data untuk chart
+    //     HttpRequest request1 = HttpRequest.newBuilder()
+    //             .uri(URI.create("http://localhost:8081/order/chart"))
+    //             .GET()
+    //             .build();
+    //     HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
+    //     System.out.println(output1);
+    //     System.out.println(output1.body());
+
+    //     ObjectMapper objectMapper1 = new ObjectMapper();
+    //     Map<String, Integer> statusCountList = objectMapper1.readValue(output1.body(), Map.class);
+
+    //     model.addAttribute("statusCountList", statusCountList);
+
+
+    //     // // Create an HttpEntity with headers
+    //     // HttpEntity<?> entity = new HttpEntity<>(headers);
+    //     // System.out.println("***********JWT Token: " + jwtToken);
+
+    //     // String apiUrl = "http://localhost:8083/api/catalogue/seller";
+    //     // // Menggunakan ParameterizedTypeReference untuk mendapatkan List<CatalogueDTO>
+    //     // ResponseEntity<List<CatalogueDTO>> responseEntity = restTemplate.exchange(
+    //     //         apiUrl,
+    //     //         HttpMethod.GET,
+    //     //         entity,
+    //     //         new ParameterizedTypeReference<List<CatalogueDTO>>() {}
+    //     // );
+    //     // if (responseEntity.getStatusCode().is2xxSuccessful()) {
+    //     //     List<CatalogueDTO> listProduct = responseEntity.getBody();
+
+    //     //     model.addAttribute("listProduct", listProduct);
+    //     //     System.out.println("*****************" + listProduct);
+
+    //     //     //get data untuk chart
+    //     //     HttpRequest request1 = HttpRequest.newBuilder()
+    //     //             .uri(URI.create("http://localhost:8081/order/chart"))
+    //     //             .GET()
+    //     //             .build();
+    //     //     HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
+    //     //     System.out.println(output1);
+    //     //     System.out.println(output1.body());
+
+    //     //     ObjectMapper objectMapper = new ObjectMapper();
+    //     //     Map<String, Integer> statusCountList = objectMapper.readValue(output1.body(), Map.class);
+
+    //     //     model.addAttribute("statusCountList", statusCountList);
+    //     return "catalogue-logged";
+    //     // } else {
+    //     //     return "error-page";
+    //     // }
     }
 
     @GetMapping("/validate-ticket")
@@ -155,13 +281,7 @@ public class PageController {
         jsonBody1.addProperty("address", address);
         jsonBody1.addProperty("role", "seller");
 
-<<<<<<< HEAD
-        System.out.println("MASUK Register FrontEnd");
-
-        HttpRequest request = HttpRequest.newBuilder()
-=======
         HttpRequest request1 = HttpRequest.newBuilder()
->>>>>>> 1115124 (fitur cover syd)
                 .uri(URI.create("http://localhost:8082/api/auth/register"))
                 .header("content-type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(jsonBody1.toString()))

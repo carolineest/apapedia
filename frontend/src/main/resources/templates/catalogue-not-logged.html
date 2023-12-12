@@ -30,7 +30,11 @@
         <li>
           <a class="nav-item nav-link"
              th:classappend="${page == 'orderHistory' ? 'active' : ''}"
+<<<<<<< HEAD
+             href="/login-sso">
+=======
              href="/user/login">
+>>>>>>> fd0f9bb66b881c0d8df641cf5eae049f8dbf2afc
             Login
           </a>
         </li>
@@ -51,8 +55,8 @@
       <br>
     </div> -->
 
-    <div class="row justify-content-center m-2">
-        <div th:each="product : ${listProduct}" class="col-md-4">
+    <!-- <div class="row justify-content-center m-2">
+        <div th:each="product : ${listCatalogue.listCatalogue}" class="col-md-4">
             <div class="card" style="width: 100%;">
                 <div class="card-body">
                     <h5 th:text="${product.productName}" class="card-title"></h5>
@@ -67,7 +71,25 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
+
+    <div class="row justify-content-center m-2">
+      <div th:each="product : ${listProduct}" class="col-md-4">
+          <div class="card" style="width: 100%;">
+              <div class="card-body">
+                  <h5 th:text="${product.productName}" class="card-title"></h5>
+                  <br>
+                  <h6 th:text="'Price : Rp' + ${product.price}"></h6>
+                  <h6 th:text="'Category : ' + ${product.categoryId.name}"></h6>
+                  <h6 th:text="'Stock : ' + ${product.stock}"></h6>
+                  <p>
+                      <strong th:text="'Description: '"></strong>
+                      <br th:text="${product.productDescription}" />
+                  </p>
+              </div>
+          </div>
+      </div>
+  </div>
 
     
     <!-- <div class="text-center m-3">

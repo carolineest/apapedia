@@ -16,11 +16,13 @@ public class UserDetailServiceImpl {
     public UserDetails loadUserByUsername(String username) throws IOException, InterruptedException {
         JsonObject jsonBody = new JsonObject();
         jsonBody.addProperty("username", username);
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8082/api/auth/loadUserByUsername"))
                 .header("content-type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))
                 .build();
+                
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.body());
 

@@ -16,10 +16,6 @@ public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
     @Value("${apapedia.web.jwtSecret}")
-<<<<<<< HEAD
-    // private SecretKey jwtSecret;
-=======
->>>>>>> 1115124 (fitur cover syd)
     private String jwtSecret;
 
     @Value("${apapedia.web.jwtExpirationMs}")
