@@ -1,12 +1,11 @@
 package com.apapedia.frontend.controller;
 
-import com.apapedia.frontend.DTO.CatalogueDTO;
-import com.apapedia.frontend.DTO.LoginReqDTO;
-import com.apapedia.frontend.DTO.RegisterReqDTO;
+import com.apapedia.frontend.DTO.*;
 import com.apapedia.frontend.security.xml.Attributes;
 import com.apapedia.frontend.security.xml.ServiceResponse;
 import com.apapedia.frontend.services.UserService;
 import com.apapedia.frontend.setting.Setting;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,6 +50,7 @@ public class PageController {
 
     @GetMapping("/")
     public String cataloguePage(Model model) { //request param buat id seller?
+        System.out.println("MASUK GET /");
         RestTemplate restTemplate = new RestTemplate();
 
         String apiUrl = "http://localhost:8083/api/catalogue/view-all";
@@ -146,28 +146,50 @@ public class PageController {
                                            @RequestParam(name = "email") String email,
                                            @RequestParam(name = "address") String address,
                                            Model model) throws IOException, InterruptedException {
-        // Buat objek JSON
-        JsonObject jsonBody = new JsonObject();
-        jsonBody.addProperty("name", name);
-        jsonBody.addProperty("username", username);
-        jsonBody.addProperty("password", password);
-        jsonBody.addProperty("email", email);
-        jsonBody.addProperty("address", address);
-        jsonBody.addProperty("role", "seller");
+        //add user
+        JsonObject jsonBody1 = new JsonObject();
+        jsonBody1.addProperty("name", name);
+        jsonBody1.addProperty("username", username);
+        jsonBody1.addProperty("password", password);
+        jsonBody1.addProperty("email", email);
+        jsonBody1.addProperty("address", address);
+        jsonBody1.addProperty("role", "seller");
 
+<<<<<<< HEAD
         System.out.println("MASUK Register FrontEnd");
 
         HttpRequest request = HttpRequest.newBuilder()
+=======
+        HttpRequest request1 = HttpRequest.newBuilder()
+>>>>>>> 1115124 (fitur cover syd)
                 .uri(URI.create("http://localhost:8082/api/auth/register"))
                 .header("content-type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))
+                .POST(HttpRequest.BodyPublishers.ofString(jsonBody1.toString()))
                 .build();
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
-
-        if (response.body() == null) {
+        HttpResponse<String> response1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response1.body());
+        if (response1.body() == null) {
             return new ModelAndView("redirect:/register");
         }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        UsersDTO usersDTO = objectMapper.readValue(response1.body(), UsersDTO.class);
+
+        //add cart
+        JsonObject jsonBody2 = new JsonObject();
+        jsonBody2.addProperty("userId", String.valueOf(usersDTO.getId()));
+
+        HttpRequest request2 = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8081/api/cart/add"))
+                .header("content-type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(jsonBody2.toString()))
+                .build();
+        HttpResponse<String> response2 = HttpClient.newHttpClient().send(request2, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response2.body());
+        if (response2.body() == null) {
+            return new ModelAndView("redirect:/register");
+        }
+
         return new ModelAndView("redirect:/login-sso");
     }
 

@@ -162,9 +162,11 @@ public class UserController {
         } else {
             System.out.println(withdrawUserDTO);
             Long withdrawAmount = Long.parseLong(withdrawUserDTO.getBalance());
+
             String id = withdrawUserDTO.getId();
             System.out.println(id);
             Users updatedUser = userService.updateWithdrawUser(withdrawAmount, id);
+
             System.out.println("AMAN KOMPETITOR");
             System.out.println(updatedUser);
             System.out.println(updatedUser.getBalance());
@@ -179,9 +181,11 @@ public class UserController {
         } else {
             System.out.println(withdrawUserDTO);
             Long topupAmount = Long.parseLong(withdrawUserDTO.getBalance());
+
             String id = withdrawUserDTO.getId();
             System.out.println(id);
             Users updatedUser = userService.updateTopUpUser(topupAmount, id);
+
             System.out.println(updatedUser);
             System.out.println(updatedUser.getBalance());
             return updatedUser;
@@ -195,9 +199,11 @@ public class UserController {
         } else {
             System.out.println(withdrawUserDTO);
             System.out.println("Tanggal 9 Desember");
+
             String id = withdrawUserDTO.getId();
             System.out.println(id);
             Users deletedUser = userService.deleteUser(id);
+
             System.out.println(deletedUser);
             deletedUser.setDeleted(true);
             System.out.println(deletedUser.getDeleted());
