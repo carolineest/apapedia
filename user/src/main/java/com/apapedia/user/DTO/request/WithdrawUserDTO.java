@@ -12,5 +12,5 @@ import lombok.*;
 public class WithdrawUserDTO {
     @NotNull
     private String balance;
-    private String username;
+    private String id;
 }

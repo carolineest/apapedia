@@ -16,7 +16,8 @@ public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
     @Value("${apapedia.web.jwtSecret}")
-    private SecretKey jwtSecret;
+    // private SecretKey jwtSecret;
+    private String jwtSecret;
 
     @Value("${apapedia.web.jwtExpirationMs}")
     private long jwtExpirationMs;
@@ -40,8 +41,8 @@ public class JwtUtils {
         return (String) Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().get("role");
     }
 
-    public String getUserIdFromToken(String token) {
-        return (String) Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().get("userId");
+    public UUID getUserIdFromToken(String token) {
+        return (UUID) Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().get("userId");
     }
 
     public boolean validateJwtToken(String authToken) {

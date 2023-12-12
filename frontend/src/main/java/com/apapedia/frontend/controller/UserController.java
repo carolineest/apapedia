@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.context.annotation.Bean;
@@ -177,38 +178,56 @@ public class UserController {
     @GetMapping("/profile")
     public String profilePage(HttpServletRequest httpServletRequest, Model model)
             throws IOException, InterruptedException {
+
+        HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
+                                                                    // tidak ada
+
+        if (session == null) {
+            return "Register";
+        }
+
+        String jwtToken = null;
+        jwtToken = (String) session.getAttribute("token");
+
         // RegisterReqDTO registerDTO = new RegisterReqDTO();
         // model.addAttribute("registerDTO", registerDTO);
-        Cookie[] cookies = httpServletRequest.getCookies();
+        System.out.println("MASUK PROFILE USERCONTROLLER");
+        System.out.println(jwtToken);
+        // Cookie[] cookies = httpServletRequest.getCookies();
 
-        System.out.println(cookies);
-        // Search for the "jwtToken" cookie
-        String jwtToken = null;
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                System.out.println(cookie.getName());
-                if ("jwtToken".equals(cookie.getName())) {
-                    jwtToken = cookie.getValue();
-                    HttpRequest request = HttpRequest.newBuilder()
-                            .uri(URI.create("http://localhost:8082/user/profile"))
-                            .header("Authorization", "Bearer " + jwtToken)
-                            .GET()
-                            .build();
-                    HttpResponse<String> output = HttpClient.newHttpClient().send(request,
-                            HttpResponse.BodyHandlers.ofString());
-                    System.out.println(output);
-                    System.out.println(output.body());
+        // System.out.println(cookies);
+        // // Search for the "jwtToken" cookie
+        // String jwtToken = null;
+        // if (cookies != null) {
+        // for (Cookie cookie : cookies) {
+        // System.out.println(cookie.getName());
+        // if ("jwtToken".equals(cookie.getName())) {
+        // jwtToken = cookie.getValue();
+        System.out.println("Sending HTTP request to backend...");
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8082/api/user/profile"))
+                .header("Authorization", "Bearer " + jwtToken)
+                .GET()
+                .build();
 
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    ProfileResDTO user = objectMapper.readValue(output.body(), ProfileResDTO.class);
+        System.out.println("HTTP request created: " + request);
 
-                    model.addAttribute("user", user);
-                    return "user-profile";
+        HttpResponse<String> output = HttpClient.newHttpClient().send(request,
+                HttpResponse.BodyHandlers.ofString());
 
-                }
-            }
-        }
-        return "Login";
+        System.out.println("Received HTTP response from backend: " + output.body());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ProfileResDTO user = objectMapper.readValue(output.body(),
+                ProfileResDTO.class);
+
+        model.addAttribute("user", user);
+        return "user-profile";
+
+        // }
+        // }
+        // }
+        // return "Login";
     }
 
     @GetMapping("/edit-profile")
@@ -255,50 +274,61 @@ public class UserController {
             throws IOException, InterruptedException {
         // RegisterReqDTO registerDTO = new RegisterReqDTO();
         // model.addAttribute("registerDTO", registerDTO);
-        Cookie[] cookies = httpServletRequest.getCookies();
+        System.out.println("MASUK GETMAPPING WITHDRAW");
+        HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
+                                                                    // tidak ada
 
-        System.out.println(cookies);
-        // Search for the "jwtToken" cookie
-        String jwtToken = null;
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                System.out.println(cookie.getName());
-                if ("jwtToken".equals(cookie.getName())) {
-                    jwtToken = cookie.getValue();
-                    HttpRequest request = HttpRequest.newBuilder()
-                            .uri(URI.create("http://localhost:8082/user/profile"))
-                            .header("Authorization", "Bearer " + jwtToken)
-                            .GET()
-                            .build();
-                    HttpResponse<String> output = HttpClient.newHttpClient().send(request,
-                            HttpResponse.BodyHandlers.ofString());
-                    System.out.println(output);
-                    System.out.println(output.body());
-
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    ProfileResDTO user = objectMapper.readValue(output.body(), ProfileResDTO.class);
-                    System.out.println(user);
-                    System.out.println("AMAN123");
-
-                    model.addAttribute("user", user);
-                    return "user-withdraw";
-
-                }
-            }
+        if (session == null) {
+            return "Register";
         }
-        return "Login";
+        String jwtToken = null;
+        jwtToken = (String) session.getAttribute("token");
+
+        // Cookie[] cookies = httpServletRequest.getCookies();
+
+        // System.out.println(cookies);
+        // // Search for the "jwtToken" cookie
+        // String jwtToken = null;
+        // if (cookies != null) {
+        // for (Cookie cookie : cookies) {
+        // System.out.println(cookie.getName());
+        // if ("jwtToken".equals(cookie.getName())) {
+        // jwtToken = cookie.getValue();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8082/api/user/profile"))
+                .header("Authorization", "Bearer " + jwtToken)
+                .GET()
+                .build();
+        HttpResponse<String> output = HttpClient.newHttpClient().send(request,
+                HttpResponse.BodyHandlers.ofString());
+        System.out.println(output);
+        System.out.println(output.body());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ProfileResDTO user = objectMapper.readValue(output.body(),
+                ProfileResDTO.class);
+        System.out.println(user);
+        System.out.println("AMAN123");
+
+        model.addAttribute("user", user);
+        return "user-withdraw";
+
+        // }
+        // }
+        // }
+        // return "Login";
     }
 
     @PostMapping("withdraw")
     public String submitWithdrawPage(@ModelAttribute ProfileResDTO user, Model model)
             throws IOException, InterruptedException {
         System.out.println(user.getBalance() + " INI BALANCENYA MAN");
-        System.out.println(user.getUsername() + " INI UNAMENYA MAN");
+        System.out.println(user.getId() + " INI ID MAN");
         JsonObject jsonBody = new JsonObject();
         jsonBody.addProperty("balance", user.getBalance());
-        jsonBody.addProperty("username", user.getUsername());
+        jsonBody.addProperty("id", user.getId().toString());
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8082/user/withdraw"))
+                .uri(URI.create("http://localhost:8082/api/user/withdraw"))
                 .header("content-type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))
                 .build();

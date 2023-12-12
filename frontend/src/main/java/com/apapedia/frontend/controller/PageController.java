@@ -110,6 +110,7 @@ public class PageController {
 
     @GetMapping("/login-sso")
     public ModelAndView loginSSO() {
+        System.out.println("");
         return new ModelAndView("redirect:" + Setting.SERVER_LOGIN + Setting.CLIENT_LOGIN);
     }
 
@@ -153,6 +154,8 @@ public class PageController {
         jsonBody.addProperty("email", email);
         jsonBody.addProperty("address", address);
         jsonBody.addProperty("role", "seller");
+
+        System.out.println("MASUK Register FrontEnd");
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8082/api/auth/register"))

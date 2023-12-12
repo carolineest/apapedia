@@ -14,10 +14,10 @@
             <h2>Withdraw Page</h2>
             <hr>
             <!-- Current Balance -->
-            <input class="form-control" name="username" type="hidden" th:field="*{user.username}" />
+            <input class="form-control" name="userid" type="hidden" th:field="*{user.id}" />
             <div class="form-group">
-                <label for="username">Current Balance:</label>
-                <input type="text" id="username" class="form-control" th:value="${user.balance}" readonly>
+                <label for="balance">Current Balance:</label>
+                <input type="text" id="balance" class="form-control" th:value="${user.balance}" readonly>
             </div>
 
             <!-- Withdraw Input -->
@@ -45,7 +45,7 @@
             var withdrawAmount = parseFloat(document.getElementById("withdrawAmount").value);
 
             // Get the current balance
-            var currentBalance = parseFloat(document.getElementById("username").value);
+            var currentBalance = parseFloat(document.getElementById("balance").value);
 
             // Check if the input value exceeds the current balance
             if (withdrawAmount > currentBalance) {
