@@ -48,6 +48,10 @@ public class OrderRestServiceImpl implements OrderRestService {
             }   
         }
     }
+    @Override
+    public List<Order> getAllOrder(){
+        return orderDb.findAll();
+    }
 
     @Override
     public List<Order> getOrderByStatus(Integer status){
@@ -61,5 +65,26 @@ public class OrderRestServiceImpl implements OrderRestService {
             return null;
         }
         return orderList;
+    }
+
+    @Override
+    public Order getOrderById(UUID orderId){
+        for(Order order : getAllOrder()){
+            if(order.getId().equals(orderId)){
+                return order;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Order updateStatusOrder(UUID orderId, Integer status){
+        Order order = getOrderById(orderId);
+        if(order != null){
+            order.setStatus(status);
+            orderDb.save(order);
+            return order;
+        }
+        return null;
     }
 }

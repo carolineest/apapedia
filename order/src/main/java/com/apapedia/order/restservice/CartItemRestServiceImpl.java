@@ -36,6 +36,16 @@ public class CartItemRestServiceImpl implements CartItemRestService {
     }
 
     @Override
+    public Cart_Item getCartItemById(UUID id){
+        for (Cart_Item cartItem : cartItemDb.findAll()){
+            if (cartItem.getId().equals(id)){
+                return cartItem;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public void createCartItem(CreateCartItemRequestDTO cartItemDTO){
         Cart_Item cartItemTem = new Cart_Item();
         cartItemTem.setProductId(cartItemDTO.getProductId());
@@ -54,5 +64,16 @@ public class CartItemRestServiceImpl implements CartItemRestService {
 
         Integer totalTemp = getCartById(cartItemDTO.getCartId()).getTotalPrice();
         getCartById(cartItemDTO.getCartId()).setTotalPrice(totalTemp+(cartItemTem.getQuantity()*product.getPrice()));
+    }
+
+    @Override
+    public Cart_Item updateQuantity(UUID id, Integer q){
+        Cart_Item cartItem = getCartItemById(id);
+        if(cartItem!=null){
+            cartItem.setQuantity(q);
+            cartItemDb.save(cartItem);
+            return cartItem;
+        }
+        return null;
     }
 }

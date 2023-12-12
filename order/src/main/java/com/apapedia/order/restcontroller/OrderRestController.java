@@ -1,5 +1,6 @@
 package com.apapedia.order.restcontroller;
 
+import com.apapedia.order.dto.request.UpdateStatusOrderReqDTO;
 import com.apapedia.order.dto.response.ListOrderResDTO;
 import com.apapedia.order.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,17 +41,19 @@ public class OrderRestController {
     public Map<String, Integer> orderStatusCount(){
         System.out.println("MASUK GET CHART");
         Map<String, Integer> orderList = new LinkedHashMap<>();
+        List<Order> status0 = orderRestService.getOrderByStatus(0);
         List<Order> status1 = orderRestService.getOrderByStatus(1);
         List<Order> status2 = orderRestService.getOrderByStatus(2);
         List<Order> status3 = orderRestService.getOrderByStatus(3);
         List<Order> status4 = orderRestService.getOrderByStatus(4);
         List<Order> status5 = orderRestService.getOrderByStatus(5);
 
-        orderList.put("Menunggu konfirmasi penjual", status1.size());
-        orderList.put("Dikonfirmasi penjual", status2.size());
-        orderList.put("Menunggu kurir", status3.size());
-        orderList.put("Dalam perjalanan", status4.size());
-        orderList.put("Barang diterima", status5.size());
+        orderList.put("Menunggu konfirmasi penjual", status0.size());
+        orderList.put("Dikonfirmasi penjual", status1.size());
+        orderList.put("Menunggu kurir", status2.size());
+        orderList.put("Dalam perjalanan", status3.size());
+        orderList.put("Barang diterima", status4.size());
+        orderList.put("Barang selesai", status5.size());
 
         System.out.println(orderList);
 
@@ -66,6 +69,34 @@ public class OrderRestController {
                 return null;
             }
             return new ResponseEntity<>(new ListOrderResDTO(orderList), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/updateStatus/{orderId}")
+    public ResponseEntity<?> updateOrderStatusReq(@PathVariable("orderId") UUID orderId){
+        try{
+            Order order = orderRestService.getOrderById(orderId);
+            if(order==null){
+                return null;
+            }
+            return new ResponseEntity<>(order, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/updateStatus/{orderId}")
+    public ResponseEntity<?> updateOrderStatus(@PathVariable("orderId") UUID orderId,
+                                               @RequestBody UpdateStatusOrderReqDTO updateStatusOrderReqDTO){
+        try{
+            Integer newStatus = updateStatusOrderReqDTO.getStatus();
+            Order updatedOrder = orderRestService.updateStatusOrder(orderId, newStatus);
+            if(updatedOrder == null){
+                return null;
+            }
+            return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
