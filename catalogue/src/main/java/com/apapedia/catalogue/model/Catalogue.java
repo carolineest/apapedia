@@ -40,5 +40,5 @@ public class Catalogue {
     @Column(name = "imageUrl", nullable = false)
     private String image;
     @Column(name = "is_deleted", columnDefinition = "boolean default false", nullable = false)
-    private boolean isDeleted;
+    private boolean isDeleted = false;
 }

@@ -3,6 +3,7 @@ package com.apapedia.catalogue.restservice;
 import com.apapedia.catalogue.repository.CatalogueDb;
 import com.apapedia.catalogue.model.Catalogue;
 import com.apapedia.catalogue.DTO.request.CatalogueUpdateReq;
+import com.apapedia.catalogue.DTO.request.CreateCatalogueRequestDTO;
 import com.apapedia.catalogue.DTO.response.CatalogueUpdateRes;
 import com.apapedia.catalogue.model.Category;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,5 +130,21 @@ public class CatalogueRestServiceImpl implements CatalogueRestService {
     public Catalogue softDelete(Catalogue catalogue) {
         catalogue.setDeleted(true);
         return catalogueDb.save(catalogue);
+    }
+
+    @Override
+    public void createCatalogue(CreateCatalogueRequestDTO catalogueDTO) {
+        Catalogue catalogue = new Catalogue();
+        catalogue.setSeller(catalogueDTO.getSeller()); // ini ke seller
+        catalogue.setPrice(catalogueDTO.getPrice());
+        catalogue.setProductName(catalogueDTO.getProductName());
+        catalogue.setProductDescription(catalogueDTO.getProductDescription());
+
+        Category category = categoryService.getCategoryById(catalogueDTO.getCategoryId());
+        catalogue.setCategoryId(category);
+        
+        catalogue.setStock(catalogueDTO.getStock());
+        catalogue.setImage(catalogueDTO.getImage());
+        catalogueDb.save(catalogue);
     }
 }

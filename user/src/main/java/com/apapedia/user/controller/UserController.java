@@ -56,6 +56,7 @@ public class UserController {
                 user.setCustomer(true);
                 user.setSeller(false);
             }
+            System.out.println("******************" + user);
             userService.createUser(user);
             return user;
         }

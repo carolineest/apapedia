@@ -62,13 +62,9 @@ public class UserServiceImpl implements UserService {
         return token;
     }
 
-<<<<<<< HEAD
+    @Override
     public Users updateWithdrawUser(Long amount, String id) {
         Users user = getUserById(UUID.fromString(id));
-=======
-    public Users updateWithdrawUser(Long amount, String name) {
-        Users user = getUserByName(name);
->>>>>>> 1115124 (fitur cover syd)
 
         if (user != null) {
             Long sisaAmount = user.getBalance() - amount;
@@ -79,13 +75,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-<<<<<<< HEAD
     public Users updateTopUpUser(Long amount, String id) {
         Users user = getUserById(UUID.fromString(id));
-=======
-    public Users updateTopUpUser(Long amount, String name) {
-        Users user = getUserByName(name);
->>>>>>> 1115124 (fitur cover syd)
 
         if (user != null) {
             Long sisaAmount = user.getBalance() + amount;
@@ -96,13 +87,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-<<<<<<< HEAD
     public Users deleteUser(String id) {
         Users user = getUserById(UUID.fromString(id));
-=======
-    public Users deleteUser(String name) {
-        Users user = getUserByName(name);
->>>>>>> 1115124 (fitur cover syd)
         if (user != null) {
             user.setDeleted(true);
             usersDB.save(user);
