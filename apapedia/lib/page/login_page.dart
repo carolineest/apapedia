@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'register_page.dart';
+import 'package:apapedia/utils/color_pallete.dart';
+import 'package:dio/dio.dart';
+import 'package:apapedia/services/shared_preference_service.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -8,15 +11,37 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
-  void _handleLogin() {
-    // Validasi input dan lakukan autentikasi jika valid
-    // if (_formKey.currentState?.validate() ?? false) {
-      // Implementasi autentikasi atau navigasi ke halaman berikutnya
-      print("Login berhasil");
-    // }
+  Future<bool> _handleLogin() async {
+    try {
+      print('run');
+      print(_usernameController.text);
+      print(_passwordController.text);
+      Map<String, dynamic> data = {
+        'username': _usernameController.text,
+        'password': _passwordController.text,
+      };
+
+      Response response = await Dio().post(
+        'http://localhost:8082/api/auth/login',
+        data: data,
+      );
+
+      print(response.data);
+      print(response.data['token']);
+      String token = response.data['token'];
+
+      await SharedPreferenceService.init();
+      await SharedPreferenceService.saveString("token", token);
+
+      print(SharedPreferenceService.getString("token"));
+      return true;
+    } catch (error) {
+      print(error);
+      return false;
+    }
   }
 
   void _navigateToRegistration() {
@@ -144,7 +169,31 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         SizedBox(height: 24.0),
                         ElevatedButton(
-                          onPressed: _handleLogin,
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              var success = await _handleLogin();
+                              if (success) {
+                                // ignore: use_build_context_synchronously
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) =>
+                                //       const RegistrationPage(),
+                                //     ),
+                                //   );
+                                print("LOGIN BERHASIL !");
+                                }
+                              else if (!success){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                      RegistrationPage(),
+                                    ),
+                                  );
+                              }
+                              }
+                          },
                           style: ElevatedButton.styleFrom(
                             primary: Colors.blue,
                             onPrimary: Colors.white,

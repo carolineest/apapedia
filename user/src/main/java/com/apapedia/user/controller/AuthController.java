@@ -65,7 +65,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid @RequestBody LoginRequestDTO loginRequestDTO, BindingResult bindingResult) {
+    public LoginResDTO login(@Valid @RequestBody LoginRequestDTO loginRequestDTO, BindingResult bindingResult) {
         System.out.println("masuk POST LOGIN");
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
@@ -80,10 +80,14 @@ public class AuthController {
                 return null;
             }
             if(users.getCustomer()){
-                return authService.generateToken(users.getUsername(), "customer");
+                String token = authService.generateToken(users.getUsername(), "customer");
+                LoginResDTO loginResDTO = new LoginResDTO(token);
+                return loginResDTO;
             }
             if(users.getSeller()){
-                return authService.generateToken(users.getUsername(), "seller");
+                String token = authService.generateToken(users.getUsername(), "seller");
+                LoginResDTO loginResDTO = new LoginResDTO(token);
+                return loginResDTO;
             }
             return null;
         }

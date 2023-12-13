@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'page/login_page.dart';
 import 'page/catalogue_page.dart';
+import 'package:apapedia/page/put_cart.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: CataloguePage(),
-      home: LoginPage(),
+      home: PutCartPage(),
     );
   }
 }
