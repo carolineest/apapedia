@@ -33,12 +33,20 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         try {
             String jwt = parseJwt(request);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
+                System.out.println("MASUK FILTER INTERNAL 1");
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
+                System.out.println("MASUK FILTER INTERNAL 2");
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                System.out.println("MASUK FILTER INTERNAL 3");
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
+
+                System.out.println("MASUK FILTER INTERNAL 4");
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                System.out.println("MASUK FILTER INTERNAL 5");
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         } catch (Exception e) {

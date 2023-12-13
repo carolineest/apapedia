@@ -6,7 +6,7 @@
   <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
   <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
   <title>View All Product</title>
-  <ink rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
@@ -30,11 +30,7 @@
         <li>
           <a class="nav-item nav-link"
              th:classappend="${page == 'orderHistory' ? 'active' : ''}"
-<<<<<<< HEAD
              href="/login-sso">
-=======
-             href="/user/login">
->>>>>>> fd0f9bb66b881c0d8df641cf5eae049f8dbf2afc
             Login
           </a>
         </li>

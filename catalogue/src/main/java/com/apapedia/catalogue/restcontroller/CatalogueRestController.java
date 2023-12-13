@@ -42,39 +42,36 @@ public class CatalogueRestController {
     }
 
     // C3
-    // @GetMapping("/view-all")
-    // public List<Catalogue> retrieveAllCatalogue(){
-    //     System.out.println("*************************** MASUK ***********************");
-    //     return catalogueRestService.getAllCatalogue();
-    // }
-
-    @GetMapping("/view-all")
-    private List<Catalogue> retrieveAllCatalogue(){
-        System.out.println("*************************** MASUK ***********************");
-        return catalogueRestService.getAllCatalogue();
-    }
+     @GetMapping("/view-all")
+     public List<Catalogue> retrieveAllCatalogue(){
+         System.out.println("*************************** MASUK ***********************");
+         return catalogueRestService.getAllCatalogue();
+     }
 
     // C2
-    // @GetMapping("/seller/{idSeller}")
-    // private List<Catalogue> getCatalogueBySellerId(@PathVariable("idSeller") String idSeller){
-    //     List<Catalogue> listCatalogue = catalogueRestService.getCatalogueBySellerId(UUID.fromString(idSeller));
-    //     if (listCatalogue.isEmpty()) {
-    //         throw new ResponseStatusException(
-    //             HttpStatus.NOT_FOUND, "Seller with id " + idSeller + " not found"
-    //         );
-    //     }  
-    //     return listCatalogue;
-    // }
+//     @GetMapping("/seller/{idSeller}")
+//     private List<Catalogue> getCatalogueBySellerId(@PathVariable("idSeller") String idSeller){
+//         List<Catalogue> listCatalogue = catalogueRestService.getCatalogueBySellerId(UUID.fromString(idSeller));
+//         if (listCatalogue.isEmpty()) {
+//             throw new ResponseStatusException(
+//                 HttpStatus.NOT_FOUND, "Seller with id " + idSeller + " not found"
+//             );
+//         }
+//         return listCatalogue;
+//     }
     @GetMapping("/seller")
     private List<Catalogue> getCatalogueBySellerId(@RequestHeader("Authorization") String authorizationHeader){
+        System.out.println("MASUK SELLER");
         String token = authorizationHeader.substring(7);
         UUID idSeller = jwtUtils.getUserIdFromToken(token);
+        System.out.println(idSeller);
         List<Catalogue> listCatalogue = catalogueRestService.getCatalogueBySellerId(idSeller);
+        System.out.println(listCatalogue);
         if (listCatalogue.isEmpty()) {
             throw new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "Seller with id " + idSeller + " not found"
             );
-        }  
+        }
         return listCatalogue;
     }
 

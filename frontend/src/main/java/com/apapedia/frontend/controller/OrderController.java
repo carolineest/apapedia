@@ -110,7 +110,7 @@ public class OrderController {
         String encodedId = URLEncoder.encode(String.valueOf(orderDTO.getId()), "UTF-8");
 
         HttpRequest request1 = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8083/api/order/updateStatus/"+encodedId))
+                .uri(URI.create("http://localhost:8081/api/order/updateStatus/"+encodedId))
                 .header("content-type", "application/json")
                 .header("Authorization", "Bearer "+jwtToken)
                 .PUT(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))

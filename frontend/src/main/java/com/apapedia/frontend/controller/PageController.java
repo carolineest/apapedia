@@ -51,14 +51,15 @@ public class PageController {
 
     private WebClient webClient = WebClient.builder()
             .codecs(configurer -> configurer.defaultCodecs()
-            .jaxb2Decoder(new Jaxb2XmlDecoder()))
+                    .jaxb2Decoder(new Jaxb2XmlDecoder()))
             .build();
 
     @GetMapping("/")
-    // public String cataloguePage(HttpServletRequest httpServletRequest, Model model) throws IOException, InterruptedException { //request param buat id seller?
-        // RestTemplate restTemplate = new RestTemplate();
-    public String cataloguePage(Model model) { //request param buat id seller?
-        System.out.println("MASUK GET /");
+    // public String cataloguePage(HttpServletRequest httpServletRequest, Model
+    // model) throws IOException, InterruptedException { //request param buat id
+    // seller?
+    public String cataloguePage(Model model) { // request param buat id seller?
+        System.out.println("MASUK GET / 1");
         RestTemplate restTemplate = new RestTemplate();
 
         String apiUrl = "http://localhost:8083/api/catalogue/view-all";
@@ -68,148 +69,160 @@ public class PageController {
                 apiUrl,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<CatalogueDTO>>() {}
-        );
+                new ParameterizedTypeReference<List<CatalogueDTO>>() {
+                });
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            System.out.println("MASUK GET / 2");
             List<CatalogueDTO> listProduct = responseEntity.getBody();
             model.addAttribute("listProduct", listProduct);
             System.out.println("*****************" + listProduct);
-            return "view-catalogue";
+            return "catalogue-not-logged";
         } else {
             return "error-page";
         }
 
-    //     HttpSession session = httpServletRequest.getSession(false);
-    //     String jwtToken = null;
-    //     jwtToken = (String) session.getAttribute("token");
+        // HttpSession session = httpServletRequest.getSession(false);
+        // String jwtToken = null;
+        // jwtToken = (String) session.getAttribute("token");
 
-    //     HttpRequest request = HttpRequest.newBuilder()
-    //                 .uri(URI.create("http://localhost:8083/api/catalogue/view-all"))
-    //                 .GET()
-    //                 .build();
-    //     HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-    //     System.out.println("Output body: " + response.body());
-    //     ObjectMapper objectMapper = new ObjectMapper();
-    //     ListCatalogueDTO listCatalogue = objectMapper.readValue(response.body(), ListCatalogueDTO.class);
-    //     System.out.println(listCatalogue);
-    //     model.addAttribute("listCatalogue", listCatalogue); // ganti akses di html
-    //     return "catalogue-not-logged";
-    // }
+        // HttpRequest request = HttpRequest.newBuilder()
+        // .uri(URI.create("http://localhost:8083/api/catalogue/view-all"))
+        // .GET()
+        // .build();
+        // HttpResponse<String> response = HttpClient.newHttpClient().send(request,
+        // HttpResponse.BodyHandlers.ofString());
+        // System.out.println("Output body: " + response.body());
+        // ObjectMapper objectMapper = new ObjectMapper();
+        // ListCatalogueDTO listCatalogue = objectMapper.readValue(response.body(),
+        // ListCatalogueDTO.class);
+        // System.out.println(listCatalogue);
+        // model.addAttribute("listCatalogue", listCatalogue); // ganti akses di html
+        // return "catalogue-not-logged";
+        // }
 
-    // @GetMapping("/")
-    // public String cataloguePage(HttpServletRequest httpServletRequest, Model model) throws IOException, InterruptedException {
-    //     System.out.println("**************** MASUK *************");
-    //     HttpSession session = httpServletRequest.getSession(false);
-    //     System.out.println("INI SESSION ******************* " + session);
-    //     if (session == null) {
-    //         // String apiUrl = "http://localhost:8083/api/catalogue/view-all";
-    //         // // Menggunakan ParameterizedTypeReference untuk mendapatkan List<CatalogueDTO>
-    //         // ResponseEntity<List<CatalogueDTO>> responseEntity = restTemplate.exchange(
-    //         //         apiUrl,
-    //         //         HttpMethod.GET,
-    //         //         null,
-    //         //         new ParameterizedTypeReference<List<CatalogueDTO>>() {}
-    //         // );
-    //         // if (responseEntity.getStatusCode().is2xxSuccessful()) {
-    //         //     List<CatalogueDTO> listProduct = responseEntity.getBody();
-    //         //     model.addAttribute("listProduct", listProduct);
-    //         //     System.out.println("*****************" + listProduct);
-    //         //     return "catalogue-not-logged";
-    //         // } else {
-    //         //     return "error-page";
-    //         // }
-    //         String jwtToken = null;
-    //         jwtToken = (String) session.getAttribute("token");
+        // @GetMapping("/")
+        // public String cataloguePage(HttpServletRequest httpServletRequest, Model
+        // model) throws IOException, InterruptedException {
+        // System.out.println("**************** MASUK *************");
+        // HttpSession session = httpServletRequest.getSession(false);
+        // System.out.println("INI SESSION ******************* " + session);
+        // if (session == null) {
+        // // String apiUrl = "http://localhost:8083/api/catalogue/view-all";
+        // // // Menggunakan ParameterizedTypeReference untuk mendapatkan
+        // List<CatalogueDTO>
+        // // ResponseEntity<List<CatalogueDTO>> responseEntity = restTemplate.exchange(
+        // // apiUrl,
+        // // HttpMethod.GET,
+        // // null,
+        // // new ParameterizedTypeReference<List<CatalogueDTO>>() {}
+        // // );
+        // // if (responseEntity.getStatusCode().is2xxSuccessful()) {
+        // // List<CatalogueDTO> listProduct = responseEntity.getBody();
+        // // model.addAttribute("listProduct", listProduct);
+        // // System.out.println("*****************" + listProduct);
+        // // return "catalogue-not-logged";
+        // // } else {
+        // // return "error-page";
+        // // }
+        // String jwtToken = null;
+        // jwtToken = (String) session.getAttribute("token");
 
-    //         HttpRequest request = HttpRequest.newBuilder()
-    //                 .uri(URI.create("http://localhost:8083/api/catalogue/view-all"))
-    //                 .header("Authorization", "Bearer " + jwtToken)
-    //                 .GET()
-    //                 .build();
-    //         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-    //         ObjectMapper objectMapper = new ObjectMapper();
-    //         ListCatalogueDTO listCatalogue = objectMapper.readValue(response.body(), ListCatalogueDTO.class);
-    //         model.addAttribute("listCatalogue", listCatalogue); // ganti akses di html
-    //         return "catalogue-not-logged";
-    //     }
+        // HttpRequest request = HttpRequest.newBuilder()
+        // .uri(URI.create("http://localhost:8083/api/catalogue/view-all"))
+        // .header("Authorization", "Bearer " + jwtToken)
+        // .GET()
+        // .build();
+        // HttpResponse<String> response = HttpClient.newHttpClient().send(request,
+        // HttpResponse.BodyHandlers.ofString());
+        // ObjectMapper objectMapper = new ObjectMapper();
+        // ListCatalogueDTO listCatalogue = objectMapper.readValue(response.body(),
+        // ListCatalogueDTO.class);
+        // model.addAttribute("listCatalogue", listCatalogue); // ganti akses di html
+        // return "catalogue-not-logged";
+        // }
 
-    //     String jwtToken = null;
-    //     jwtToken = (String) session.getAttribute("token");
+        // String jwtToken = null;
+        // jwtToken = (String) session.getAttribute("token");
 
-    //     HttpRequest request = HttpRequest.newBuilder()
-    //             .uri(URI.create("http://localhost:8083/api/catalogue/seller"))
-    //             .header("Authorization", "Bearer " + jwtToken)
-    //             .GET()
-    //             .build();
-    //     HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-    //     ObjectMapper objectMapper = new ObjectMapper();
-    //     ListCatalogueDTO listCatalogue = objectMapper.readValue(response.body(), ListCatalogueDTO.class);
-    //     model.addAttribute("listCatalogue", listCatalogue);
+        // HttpRequest request = HttpRequest.newBuilder()
+        // .uri(URI.create("http://localhost:8083/api/catalogue/seller"))
+        // .header("Authorization", "Bearer " + jwtToken)
+        // .GET()
+        // .build();
+        // HttpResponse<String> response = HttpClient.newHttpClient().send(request,
+        // HttpResponse.BodyHandlers.ofString());
+        // ObjectMapper objectMapper = new ObjectMapper();
+        // ListCatalogueDTO listCatalogue = objectMapper.readValue(response.body(),
+        // ListCatalogueDTO.class);
+        // model.addAttribute("listCatalogue", listCatalogue);
 
-    //     //get data untuk chart
-    //     HttpRequest request1 = HttpRequest.newBuilder()
-    //             .uri(URI.create("http://localhost:8081/order/chart"))
-    //             .GET()
-    //             .build();
-    //     HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
-    //     System.out.println(output1);
-    //     System.out.println(output1.body());
+        // //get data untuk chart
+        // HttpRequest request1 = HttpRequest.newBuilder()
+        // .uri(URI.create("http://localhost:8081/order/chart"))
+        // .GET()
+        // .build();
+        // HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1,
+        // HttpResponse.BodyHandlers.ofString());
+        // System.out.println(output1);
+        // System.out.println(output1.body());
 
-    //     ObjectMapper objectMapper1 = new ObjectMapper();
-    //     Map<String, Integer> statusCountList = objectMapper1.readValue(output1.body(), Map.class);
+        // ObjectMapper objectMapper1 = new ObjectMapper();
+        // Map<String, Integer> statusCountList =
+        // objectMapper1.readValue(output1.body(), Map.class);
 
-    //     model.addAttribute("statusCountList", statusCountList);
+        // model.addAttribute("statusCountList", statusCountList);
 
+        // // // Create an HttpEntity with headers
+        // // HttpEntity<?> entity = new HttpEntity<>(headers);
+        // // System.out.println("***********JWT Token: " + jwtToken);
 
-    //     // // Create an HttpEntity with headers
-    //     // HttpEntity<?> entity = new HttpEntity<>(headers);
-    //     // System.out.println("***********JWT Token: " + jwtToken);
+        // // String apiUrl = "http://localhost:8083/api/catalogue/seller";
+        // // // Menggunakan ParameterizedTypeReference untuk mendapatkan
+        // List<CatalogueDTO>
+        // // ResponseEntity<List<CatalogueDTO>> responseEntity = restTemplate.exchange(
+        // // apiUrl,
+        // // HttpMethod.GET,
+        // // entity,
+        // // new ParameterizedTypeReference<List<CatalogueDTO>>() {}
+        // // );
+        // // if (responseEntity.getStatusCode().is2xxSuccessful()) {
+        // // List<CatalogueDTO> listProduct = responseEntity.getBody();
 
-    //     // String apiUrl = "http://localhost:8083/api/catalogue/seller";
-    //     // // Menggunakan ParameterizedTypeReference untuk mendapatkan List<CatalogueDTO>
-    //     // ResponseEntity<List<CatalogueDTO>> responseEntity = restTemplate.exchange(
-    //     //         apiUrl,
-    //     //         HttpMethod.GET,
-    //     //         entity,
-    //     //         new ParameterizedTypeReference<List<CatalogueDTO>>() {}
-    //     // );
-    //     // if (responseEntity.getStatusCode().is2xxSuccessful()) {
-    //     //     List<CatalogueDTO> listProduct = responseEntity.getBody();
+        // // model.addAttribute("listProduct", listProduct);
+        // // System.out.println("*****************" + listProduct);
 
-    //     //     model.addAttribute("listProduct", listProduct);
-    //     //     System.out.println("*****************" + listProduct);
+        // // //get data untuk chart
+        // // HttpRequest request1 = HttpRequest.newBuilder()
+        // // .uri(URI.create("http://localhost:8081/order/chart"))
+        // // .GET()
+        // // .build();
+        // // HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1,
+        // HttpResponse.BodyHandlers.ofString());
+        // // System.out.println(output1);
+        // // System.out.println(output1.body());
 
-    //     //     //get data untuk chart
-    //     //     HttpRequest request1 = HttpRequest.newBuilder()
-    //     //             .uri(URI.create("http://localhost:8081/order/chart"))
-    //     //             .GET()
-    //     //             .build();
-    //     //     HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
-    //     //     System.out.println(output1);
-    //     //     System.out.println(output1.body());
+        // // ObjectMapper objectMapper = new ObjectMapper();
+        // // Map<String, Integer> statusCountList =
+        // objectMapper.readValue(output1.body(), Map.class);
 
-    //     //     ObjectMapper objectMapper = new ObjectMapper();
-    //     //     Map<String, Integer> statusCountList = objectMapper.readValue(output1.body(), Map.class);
-
-    //     //     model.addAttribute("statusCountList", statusCountList);
-    //     return "catalogue-logged";
-    //     // } else {
-    //     //     return "error-page";
-    //     // }
+        // // model.addAttribute("statusCountList", statusCountList);
+        // return "catalogue-logged";
+        // // } else {
+        // // return "error-page";
+        // // }
     }
 
     @GetMapping("/validate-ticket")
     public ModelAndView adminLoginSSO(
             @RequestParam(value = "ticket", required = false) String ticket,
-            HttpServletRequest request){
+            HttpServletRequest request) {
         ServiceResponse serviceResponse = this.webClient.get().uri(
                 String.format(
                         Setting.SERVER_VALIDATE_TICKET,
                         ticket,
-                        Setting.CLIENT_LOGIN
-                )
-        ).retrieve().bodyToMono(ServiceResponse.class).block();
+                        Setting.CLIENT_LOGIN))
+                .retrieve().bodyToMono(ServiceResponse.class).block();
 
         Attributes attributes = serviceResponse.getAuthenticationSuccess().getAttributes();
         String username = serviceResponse.getAuthenticationSuccess().getUser();
@@ -222,7 +235,7 @@ public class PageController {
         var token = userService.getToken(username, name);
         System.out.println(token);
 
-        if(token.equals("None") || token == "None"){
+        if (token.equals("None") || token == "None") {
             return new ModelAndView("redirect:/register");
         }
 
@@ -230,7 +243,7 @@ public class PageController {
         httpSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
         httpSession.setAttribute("token", token);
 
-        //ganti ke catalogue page yg non login!!
+        // ganti ke catalogue page yg non login!!
         return new ModelAndView("redirect:/login-success");
     }
 
@@ -243,7 +256,8 @@ public class PageController {
     @GetMapping("/logout-sso")
     public ModelAndView logoutSSO(HttpServletRequest request) {
         System.out.println("MASUK GET LOGOUT SSO");
-        HttpSession httpSession = request.getSession(false); // Mengambil session yang sudah ada (tanpa membuat yang baru)
+        HttpSession httpSession = request.getSession(false); // Mengambil session yang sudah ada (tanpa membuat yang
+                                                             // baru)
         if (httpSession != null) {
             httpSession.removeAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
             httpSession.removeAttribute("token");
@@ -252,14 +266,28 @@ public class PageController {
         return new ModelAndView("redirect:" + Setting.SERVER_LOGOUT + Setting.CLIENT_LOGOUT);
     }
 
-    //hapus aja kalo udh gabutuh
+    @PostMapping("/logout-sso")
+    public ModelAndView logoutSSOPost(HttpServletRequest request) {
+        System.out.println("MASUK GET LOGOUT SSO");
+        HttpSession httpSession = request.getSession(false); // Mengambil session yang sudah ada (tanpa membuat yang
+                                                             // baru)
+        if (httpSession != null) {
+            httpSession.removeAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
+            httpSession.removeAttribute("token");
+            httpSession.invalidate(); // Menghapus seluruh session
+        }
+        return new ModelAndView("redirect:" + Setting.SERVER_LOGOUT + Setting.CLIENT_LOGOUT);
+    }
+
+    // hapus aja kalo udh gabutuh
     @GetMapping("/login-success")
-    public String loginSuccess(){
+    public String loginSuccess() {
         return "LoginSuccess";
     }
 
     @GetMapping("/register")
     public String registerPage(Model model) {
+        System.out.println("MASUK REGISTER");
         RegisterReqDTO registerDTO = new RegisterReqDTO();
         model.addAttribute("registerDTO", registerDTO);
         return "Register";
@@ -267,12 +295,12 @@ public class PageController {
 
     @PostMapping("/register")
     public ModelAndView submitFormRegister(@RequestParam(name = "name") String name,
-                                           @RequestParam(name = "username") String username,
-                                           @RequestParam(name = "password") String password,
-                                           @RequestParam(name = "email") String email,
-                                           @RequestParam(name = "address") String address,
-                                           Model model) throws IOException, InterruptedException {
-        //add user
+            @RequestParam(name = "username") String username,
+            @RequestParam(name = "password") String password,
+            @RequestParam(name = "email") String email,
+            @RequestParam(name = "address") String address,
+            Model model) throws IOException, InterruptedException {
+        // add user
         JsonObject jsonBody1 = new JsonObject();
         jsonBody1.addProperty("name", name);
         jsonBody1.addProperty("username", username);
@@ -286,7 +314,8 @@ public class PageController {
                 .header("content-type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(jsonBody1.toString()))
                 .build();
-        HttpResponse<String> response1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response1 = HttpClient.newHttpClient().send(request1,
+                HttpResponse.BodyHandlers.ofString());
         System.out.println(response1.body());
         if (response1.body() == null) {
             return new ModelAndView("redirect:/register");
@@ -295,7 +324,7 @@ public class PageController {
         ObjectMapper objectMapper = new ObjectMapper();
         UsersDTO usersDTO = objectMapper.readValue(response1.body(), UsersDTO.class);
 
-        //add cart
+        // add cart
         JsonObject jsonBody2 = new JsonObject();
         jsonBody2.addProperty("userId", String.valueOf(usersDTO.getId()));
 
@@ -304,7 +333,8 @@ public class PageController {
                 .header("content-type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(jsonBody2.toString()))
                 .build();
-        HttpResponse<String> response2 = HttpClient.newHttpClient().send(request2, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response2 = HttpClient.newHttpClient().send(request2,
+                HttpResponse.BodyHandlers.ofString());
         System.out.println(response2.body());
         if (response2.body() == null) {
             return new ModelAndView("redirect:/register");
@@ -314,7 +344,7 @@ public class PageController {
     }
 
     @GetMapping("/login")
-    public String loginPage(Model model){
+    public String loginPage(Model model) {
         var loginDTO = new LoginReqDTO();
         model.addAttribute("loginDTO", loginDTO);
         System.out.println("masuk GET LOGIN");
@@ -323,9 +353,9 @@ public class PageController {
 
     @PostMapping("/login")
     public String submitFormLogin(@RequestParam(name = "username") String username,
-                                  @RequestParam(name = "password") String password,
-                                  HttpServletResponse response,
-                                  Model model) throws IOException, InterruptedException {
+            @RequestParam(name = "password") String password,
+            HttpServletResponse response,
+            Model model) throws IOException, InterruptedException {
         System.out.println("masuk POST LOGIN");
         // Buat objek JSON
         JsonObject jsonBody = new JsonObject();

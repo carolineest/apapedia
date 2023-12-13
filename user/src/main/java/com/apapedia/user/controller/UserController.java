@@ -131,28 +131,24 @@ public class UserController {
     // }
 
     @PostMapping("/edit-profile")
-    public Users editProfile(@Valid @RequestBody CreateUserDTO userDTO, BindingResult bindingResult) {
+    public Users editProfile(@Valid @RequestBody CreateUserDTO userDTO, BindingResult bindingResult, @RequestHeader("Authorization") String authorizationHeader) {
         System.out.println("masuk POST editProfile");
-        LocalDateTime waktuSkrg = LocalDateTime.now();
+//        LocalDateTime waktuSkrg = LocalDateTime.now();
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         } else {
+            String token = authorizationHeader.substring(7); // Menghapus "Bearer " dari header
+            UUID userId = jwtUtils.getUserIdFromToken(token);
+//            Users updatedUsers = userService.updateUser(userId);
             var user = userMapper.userDTOToUser(userDTO);
-            System.out.println(user.getUsername());
-            System.out.println("10 Desember 2023");
-            user.setUpdatedAt(Timestamp.valueOf(waktuSkrg));
-            if (userDTO.getRole().equals("seller")) {
-                user.setSeller(true);
-                user.setCustomer(false);
-            } else {
-                user.setCustomer(true);
-                user.setSeller(false);
-            }
-            Users updatedUsers =  userService.updateUser(user);
-            System.out.println("ini controller");
-            System.out.println(updatedUsers.getEmail());
+//            System.out.println(user.getUsername());
+//            System.out.println("10 Desember 2023");
+//            user.setUpdatedAt(Timestamp.valueOf(waktuSkrg));
+//            Users updatedUsers =  userService.updateUser(user);
+//            System.out.println("ini controller");
+//            System.out.println(updatedUsers.getEmail());
 
-            return updatedUsers;
+            return userService.updateUser(userId, user);
         }
     }
 
@@ -193,7 +189,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/delete-account")
+    @DeleteMapping("/delete-account")
     public Users deleteAccount(@Valid @RequestBody WithdrawUserDTO withdrawUserDTO, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");

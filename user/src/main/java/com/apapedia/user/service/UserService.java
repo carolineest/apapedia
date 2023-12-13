@@ -15,6 +15,6 @@ public interface UserService {
     void createUser(Users users);
     Users getUserByName(String name);
     Users getUserById(UUID id);
-    Users updateUser(Users users);
+    Users updateUser(UUID usersId, Users userFromDTO);
     String loginSsoSeller(LoginSsoReqDTO loginRequestDTO);
 }
