@@ -133,7 +133,7 @@ public class OrderController {
         if (output1.body() == null) {
             return "Login";
         }
-        return "catalogue-update-success";
+        return "redirect:/order/history";
     }
 
     @GetMapping("/history")

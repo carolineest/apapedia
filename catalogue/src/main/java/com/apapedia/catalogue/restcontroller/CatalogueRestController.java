@@ -17,6 +17,7 @@ import com.apapedia.catalogue.model.Catalogue;
 import com.apapedia.catalogue.restservice.CatalogueRestService;
 
 import java.util.UUID;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -58,8 +59,8 @@ public class CatalogueRestController {
         List<Catalogue> listCatalogue = catalogueRestService.getCatalogueBySellerId(idSeller);
         System.out.println(listCatalogue);
         if (listCatalogue.isEmpty()) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Seller with id " + idSeller + " not found");
+            List<Catalogue> listTemp = new ArrayList<>();
+            return listTemp;
         }
         return listCatalogue;
     }

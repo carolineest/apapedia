@@ -11,57 +11,60 @@
 </head>
 
 <body>
+  <nav th:replace="~{fragments/navbar :: navbar('')}"></nav>
 
-<div class="container">
-  <div class="card m-4 p-4">
-    <div class="card-body">
-      <div class="justify-content-center">
-        <h2>Form Create Catalgoue</h2>
-        <br>
-        <!--        <form th:action="@{/catalogue/update/{id}(id=${catalogueDTO.id})}" th:object="${catalogueDTO}" method="POST">-->
-        <form th:action="@{/catalogue.addProduct}" th:object="${newCatalogueDTO}" method="POST">
+  <div class="container">
+    <div class="card m-4 p-4">
+      <div class="card-body">
+        <div class="justify-content-center">
+          <h2>Form Create Catalgoue</h2>
+          <br>
+          <!--        <form th:action="@{/catalogue/update/{id}(id=${catalogueDTO.id})}" th:object="${catalogueDTO}" method="POST">-->
+          <form th:action="@{/catalogue.addProduct}" th:object="${newCatalogueDTO}" method="POST">
 
-          Product Name : <br>
-          <input required class="form-control" type="text" th:field="*{productName}" />
-          <span class="text-danger" th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}"></span>
-          <br><br>
+            Product Name : <br>
+            <input required class="form-control" type="text" th:field="*{productName}" />
+            <span class="text-danger" th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}"></span>
+            <br><br>
 
-          Product Price: <br>
-          <input required class="form-control" type="number" th:field="*{price}" />
-          <span class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
-          <br><br>
+            Product Price: <br>
+            <input required class="form-control" type="number" th:field="*{price}" />
+            <span class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+            <br><br>
 
-          Product Description : <br>
-          <input required class="form-control" type="number" th:field="*{productDescription}" />
-          <span class="text-danger" th:if="${#fields.hasErrors('productDescription')}" th:errors="*{productDescription}"></span>
-          <br><br>
+            Product Description : <br>
+            <input required class="form-control" type="number" th:field="*{productDescription}" />
+            <span class="text-danger" th:if="${#fields.hasErrors('productDescription')}"
+              th:errors="*{productDescription}"></span>
+            <br><br>
 
-          Product Stock: <br>
-          <input required class="form-control" type="number" th:field="*{stock}" />
-          <span class="text-danger" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></span>
-          <br><br>
+            Product Stock: <br>
+            <input required class="form-control" type="number" th:field="*{stock}" />
+            <span class="text-danger" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></span>
+            <br><br>
 
-          Product Image : <br>
-          <p th:text = "*{image}"></p><br>
+            Product Image : <br>
+            <p th:text="*{image}"></p><br>
 
-          Category : <br>
-          <table class="table">
-            <tbody>
-            <tr>
-              <select class="form-control" name="status" id="status" th:field="*{categoryId}">
-                <option th:each="cat: ${categoryList.categoryList}" th:value="${cat.id}" th:text="${cat.name}"></option>
-              </select>
-            </tr>
-            </tbody>
-          </table>
+            Category : <br>
+            <table class="table">
+              <tbody>
+                <tr>
+                  <select class="form-control" name="status" id="status" th:field="*{categoryId}">
+                    <option th:each="cat: ${categoryList.categoryList}" th:value="${cat.id}" th:text="${cat.name}">
+                    </option>
+                  </select>
+                </tr>
+              </tbody>
+            </table>
 
-          <button class="btn btn-primary" type="submit">Submit</button>
-          <!--          <a class="btn btn-primary" href="/">Home</a>-->
-        </form>
+            <button class="btn btn-primary" type="submit">Submit</button>
+            <!--          <a class="btn btn-primary" href="/">Home</a>-->
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 </body>
 
