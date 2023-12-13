@@ -2,6 +2,7 @@ package com.apapedia.order.restcontroller;
 
 import com.apapedia.order.dto.request.UpdateStatusOrderReqDTO;
 import com.apapedia.order.dto.response.ListOrderResDTO;
+import com.apapedia.order.jwt.JwtUtils;
 import com.apapedia.order.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,9 @@ public class OrderRestController {
     @Autowired
     private OrderRestService orderRestService;
 
+    @Autowired
+    JwtUtils jwtUtils;
+
     @PostMapping(value = "/create")
     public void createOrder(@Valid @RequestBody CreateOrderRequestDTO orderDTO, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
@@ -38,15 +42,18 @@ public class OrderRestController {
     }
 
     @GetMapping("/chart")
-    public Map<String, Integer> orderStatusCount(){
+    public Map<String, Integer> orderStatusCount(@RequestHeader("Authorization") String authorizationHeader){
+        String token = authorizationHeader.substring(7);
+        UUID idSeller = jwtUtils.getUserIdFromToken(token);
+
         System.out.println("MASUK GET CHART");
         Map<String, Integer> orderList = new LinkedHashMap<>();
-        List<Order> status0 = orderRestService.getOrderByStatus(0);
-        List<Order> status1 = orderRestService.getOrderByStatus(1);
-        List<Order> status2 = orderRestService.getOrderByStatus(2);
-        List<Order> status3 = orderRestService.getOrderByStatus(3);
-        List<Order> status4 = orderRestService.getOrderByStatus(4);
-        List<Order> status5 = orderRestService.getOrderByStatus(5);
+        List<Order> status0 = orderRestService.getOrderByStatusAndSeller(idSeller, 0);
+        List<Order> status1 = orderRestService.getOrderByStatusAndSeller(idSeller, 1);
+        List<Order> status2 = orderRestService.getOrderByStatusAndSeller(idSeller, 2);
+        List<Order> status3 = orderRestService.getOrderByStatusAndSeller(idSeller, 3);
+        List<Order> status4 = orderRestService.getOrderByStatusAndSeller(idSeller, 4);
+        List<Order> status5 = orderRestService.getOrderByStatusAndSeller(idSeller, 5);
 
         orderList.put("Menunggu konfirmasi penjual", status0.size());
         orderList.put("Dikonfirmasi penjual", status1.size());

@@ -59,6 +59,11 @@ public class OrderRestServiceImpl implements OrderRestService {
     }
 
     @Override
+    public List<Order> getOrderByStatusAndSeller(UUID sellerId, Integer status){
+        return orderDb.findBySellerAndStatus(sellerId, status);
+    }
+
+    @Override
     public List<Order> getOrderByCustId(UUID id){
         List<Order> orderList = orderDb.findByCustomer(id);
         if(orderList == null || orderList.isEmpty()){

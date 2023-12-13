@@ -150,9 +150,15 @@ public class UserController {
     }
 
     @GetMapping("/edit-profile")
-    public String editProfilePage(Model model) {
+    public String editProfilePage(
+            @RequestParam String name,
+            @RequestParam String email,
+            @RequestParam String address, Model model) {
         RegisterReqDTO registerDTO = new RegisterReqDTO();
         model.addAttribute("registerDTO", registerDTO);
+        model.addAttribute("name", name);
+        model.addAttribute("email", email);
+        model.addAttribute("address", address);
         return "user-edit-profile";
     }
 
@@ -162,7 +168,17 @@ public class UserController {
             @RequestParam(name = "password") String password,
             @RequestParam(name = "email") String email,
             @RequestParam(name = "address") String address,
-            Model model) throws IOException, InterruptedException {
+            Model model, HttpServletRequest request) throws IOException, InterruptedException {
+
+        System.out.println("MASUK EDITPROFILE POSTMAP FRONTEND");
+        // Mendapatkan token dari sesi
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            // Tindakan jika tidak ada sesi (misalnya, pengguna tidak login)
+            return "redirect:/login"; // Ganti dengan URL login Anda
+        }
+        String jwtToken = (String) session.getAttribute("token");
+
         // Buat objek JSON
         JsonObject jsonBody = new JsonObject();
         jsonBody.addProperty("name", name);
@@ -171,18 +187,19 @@ public class UserController {
         jsonBody.addProperty("email", email);
         jsonBody.addProperty("address", address);
         jsonBody.addProperty("role", "seller");
-        System.out.println("10 Desember 2023");
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8082/user/edit-profile"))
+        // Membuat permintaan HTTP dengan menyertakan token dalam header
+        HttpRequest request1 = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8082/api/user/edit-profile"))
                 .header("content-type", "application/json")
+                .header("Authorization", "Bearer " + jwtToken) // Menyertakan token dalam header
                 .POST(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))
                 .build();
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.body());
 
         if (response.body() == null) {
-
             return "user-edit-profile";
         }
         return "redirect:/user/profile";
@@ -261,27 +278,47 @@ public class UserController {
     }
 
     @PostMapping("delete-account")
-    public String deleteAccount(@ModelAttribute("user") ProfileResDTO user, Model model)
+    public String deleteAccount(HttpServletRequest httpServletRequest, Model model)
             throws IOException, InterruptedException {
-        System.out.println("TANGGAL 9 DESEMBER");
-        System.out.println(user.getBalance() + " INI BALANCENYA MAN");
-        System.out.println(user.getUsername() + " INI UNAMENYA MAN");
-        System.out.println(user.getName() + " INI NAMENYA MAN");
-        JsonObject jsonBody = new JsonObject();
-        jsonBody.addProperty("balance", Long.parseLong("5"));
-        jsonBody.addProperty("username", user.getUsername());
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8082/user/delete-account"))
-                .header("content-type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))
-                .build();
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
-        System.out.println("Tanggal 9 Desember");
-        if (response.body() == null) {
+        HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
+                                                                    // tidak ada
 
-            return "user-profile";
+        if (session == null) {
+            return "Register";
         }
-        return "redirect:/user/login";
+
+        String jwtToken = null;
+        jwtToken = (String) session.getAttribute("token");
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8082/api/user/delete-account"))
+                .header("Authorization", "Bearer " + jwtToken)
+                .DELETE()
+                .build();
+
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        return "redirect:/logout-sso";
+
+        // System.out.println("TANGGAL 9 DESEMBER");
+        // System.out.println(user.getBalance() + " INI BALANCENYA MAN");
+        // System.out.println(user.getUsername() + " INI UNAMENYA MAN");
+        // System.out.println(user.getName() + " INI NAMENYA MAN");
+        // JsonObject jsonBody = new JsonObject();
+        // jsonBody.addProperty("balance", Long.parseLong("5"));
+        // jsonBody.addProperty("username", user.getUsername());
+        // HttpRequest request = HttpRequest.newBuilder()
+        // .uri(URI.create("http://localhost:8082/user/delete-account"))
+        // .header("content-type", "application/json")
+        // .POST(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))
+        // .build();
+        // HttpResponse<String> response = HttpClient.newHttpClient().send(request,
+        // HttpResponse.BodyHandlers.ofString());
+        // System.out.println(response.body());
+        // System.out.println("Tanggal 9 Desember");
+        // if (response.body() == null) {
+
+        // return "user-profile";
+        // }
+        // return "redirect:/user/login";
     }
 }

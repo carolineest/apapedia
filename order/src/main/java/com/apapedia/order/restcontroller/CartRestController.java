@@ -24,6 +24,7 @@ public class CartRestController {
     @PostMapping(value = "/add")
     public Cart addCart(@RequestBody CreateCartReqDTO createCartReqDTO,
                         BindingResult bindingResult) {
+        System.out.println("MASUK POST ADD CART");
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field"

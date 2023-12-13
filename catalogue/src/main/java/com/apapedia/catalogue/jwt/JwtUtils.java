@@ -41,12 +41,17 @@ public class JwtUtils {
     }
 
     public UUID getUserIdFromToken(String token) {
-        return (UUID) Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().get("userId");
+        String userIdString = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().get("userId", String.class);
+
+        // Convert String to UUID
+        return UUID.fromString(userIdString);
     }
 
     public boolean validateJwtToken(String authToken) {
         try {
+            System.out.println("MASUK VALIDATE 1");
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            System.out.println("MASUK VALIDATE 2");
             return true;
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());

@@ -10,7 +10,7 @@
 </head>
 
 <body>
-<nav th:replace="~{fragments/navbar :: navbar('profile')}"></nav>
+
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-6 offset-md-3">
@@ -35,7 +35,10 @@
                             <label for="address">Address</label>
                             <input type="text" id="address" class="form-control" th:value="${user.address}" readonly>
                         </div>
-                        <a type="button" class="btn btn-md btn-warning" th:href="@{/user/edit-profile}">Edit Profile</a>
+                        <!-- Perbarui bagian ini -->
+                        <a type="button" class="btn btn-md btn-warning"
+                            th:href="@{/user/edit-profile(username=${user.username}, name=${user.name}, password=${user.password}, email=${user.email}, address=${user.address})}">Edit
+                            Profile</a>
                         <hr>
                         <div class="form-group">
                             <label for="balance">Balance</label>
@@ -44,15 +47,16 @@
                         <a th:href="@{/user/withdraw}" class="btn btn-warning">Withdraw</a>
                     </div>
                     <div class="card-footer">
-                        <div class="row">
+                        <div class="row text-center">
+                            <!-- Menggunakan class 'text-center' untuk mengatur teks secara horizontal -->
                             <div class="col-md-6">
-                                <form th:action="@{/user/logout}" method="post">
+                                <form th:action="@{/logout-sso}" method="post">
                                     <button type="submit" class="btn btn-danger btn-block">Sign Out</button>
                                 </form>
                             </div>
                             <div class="col-md-6">
                                 <form th:action="@{/user/delete-account}" th:object="${user}" method="post">
-                                    <input type="hidden" name="username" th:value="${user.username}" />
+                                    <input type="hidden" name="username" th:value="${user.id}" />
                                     <button type="submit" class="btn btn-danger btn-block">Delete Account</button>
                                 </form>
                             </div>
