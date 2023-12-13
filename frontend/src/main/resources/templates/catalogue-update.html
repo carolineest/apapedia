@@ -3,12 +3,18 @@
 
 <head>
   <meta charset="UTF-8" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
+        integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
   <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
-  <!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"-->
-  <!--        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"-->
+  <!--        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
   <title>Form Update Catalogue</title>
 </head>
+
 
 <body>
 <nav th:replace="~{fragments/navbar :: navbar('')}"></nav>
@@ -18,7 +24,16 @@
       <div class="justify-content-center">
         <h2>Update Catalogue </h2>
         <br>
-<!--        <form th:action="@{/catalogue/update/{id}(id=${catalogueDTO.id})}" th:object="${catalogueDTO}" method="POST">-->
+       <form th:action="@{/catalogue/update/{id}(id=${catalogueDTO.id})}" th:object="${catalogueDTO}" method="POST">-->
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar('')}"></nav>
+  <div class="container">
+    <div class="card m-4 p-4">
+      <div class="card-body">
+        <div class="justify-content-center">
+          <h2>Update Catalogue </h2>
+          
+</head>
         <form th:action="@{/catalogue/update}" th:object="${catalogueDTO}" method="POST">
 
           <input class="form-control" name="productId" type="hidden" th:field="*{id}" />

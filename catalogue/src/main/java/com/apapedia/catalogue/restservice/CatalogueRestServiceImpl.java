@@ -59,10 +59,10 @@ public class CatalogueRestServiceImpl implements CatalogueRestService {
     }
 
     @Override
-    public List<Catalogue> getCatalogueByPrice(Integer price){
+    public List<Catalogue> getCatalogueByPrice(Integer minPrice, Integer maxPrice){
         List<Catalogue> listCatalogue = new ArrayList<>();
         for (Catalogue catalogue : getAllCatalogue()) {
-            if (catalogue.getPrice().equals(price)) {
+            if (catalogue.getPrice() <= maxPrice && catalogue.getPrice() >= minPrice) {
                 listCatalogue.add(catalogue);
             }
         }

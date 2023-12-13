@@ -26,18 +26,65 @@
     <br>
     <br>
 
-    <div class="row justify-content-end m-2">
-      <div class="col-auto">
+    <!-- <form th:action="@{/}" method="post" th:object="${searchFilterDTO}"> -->
+      <!-- Search Bar -->
+      <!-- <div class="row justify-content-center m-2">
+        <div class="col-md-4">
+          <input type="text" class="form-control" placeholder="Search" th:field="*{productName}" />
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+      </div> -->
+
+      <!-- Filter Dropdown -->
+      <!-- <div class="row justify-content-center m-2">
+          <div class="col-md-4">
+              <label for="filter">Filter:</label>
+              <select id="filter" class="form-control" th:field="*{attribute}">
+                  <option value="price">Price</option>
+                  <option value="name">Name</option>
+              </select>
+          </div>
+          <div class="col-md-4">
+              <label for="sortOrder">Sort Order:</label>
+              <select id="sortOrder" class="form-control" th:field="*{direction}">
+                  <option value="asc">Ascending</option>
+                  <option value="desc">Descending</option>
+              </select>
+          </div>
+      </div> -->
+    <!-- </form> -->
+
+    <!-- <div class="row justify-content-between m-2">
+      <div class="col-md-4">
         <a href="/catalogue/tambah-produk" class="btn btn-primary">+ Tambah Produk</a>
       </div>
+    </div> -->
+
+    <!-- Menggunakan class "justify-content-between" pada row -->
+<div class="row justify-content-between m-2">
+  <div class="col-auto">
+    <a href="/catalogue/tambah-produk" class="btn btn-primary">+ Tambah Produk</a>
+  </div>
+  <form th:action="@{/}" method="post" th:object="${searchFilterDTO}" class="col-md-4">
+    <!-- Search Bar -->
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Search" th:field="*{productName}" />
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="submit">Search</button>
+      </div>
     </div>
+  </form>
+</div>
+<br>
 
     <div class="row justify-content-center m-2">
         <div th:each="product : ${listCatalogueDTO}" class="col-md-4">
-            <div class="card" style="width: 100%;">
-                <div class="card-body">
-                    <img src="https://kamonji.palukota.go.id/wp-content/uploads/2019/11/wooden_chair.jpg" alt="Product Image" style="max-width: 100%; height: auto;"/>
-                    <h5 th:text="${product.productName}" class="card-title"></h5>
+          <div class="card" style="width: 100%;">
+            <div class="card-body">
+              <img th:src="${product.image}" alt="Product Image" style="max-width: 100%; height: auto;"/>
+              <h5 th:text="${product.productName}" class="card-title"></h5>
                     <br>
                     <h6 th:text="'Price : Rp' + ${product.price}"></h6>
                     <h6 th:text="'Category : ' + ${product.categoryId.name}"></h6>

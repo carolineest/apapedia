@@ -49,16 +49,6 @@ public class CatalogueRestController {
      }
 
     // C2
-//     @GetMapping("/seller/{idSeller}")
-//     private List<Catalogue> getCatalogueBySellerId(@PathVariable("idSeller") String idSeller){
-//         List<Catalogue> listCatalogue = catalogueRestService.getCatalogueBySellerId(UUID.fromString(idSeller));
-//         if (listCatalogue.isEmpty()) {
-//             throw new ResponseStatusException(
-//                 HttpStatus.NOT_FOUND, "Seller with id " + idSeller + " not found"
-//             );
-//         }
-//         return listCatalogue;
-//     }
     @GetMapping("/seller")
     private List<Catalogue> getCatalogueBySellerId(@RequestHeader("Authorization") String authorizationHeader){
         System.out.println("MASUK SELLER");
@@ -100,12 +90,23 @@ public class CatalogueRestController {
     }
 
     // C8
-    @GetMapping("/price/{price}")
-    public List<Catalogue> getCatalogueByPrice(@PathVariable("price") String price){
-        List<Catalogue> listCatalogue = catalogueRestService.getCatalogueByPrice(Integer.parseInt(price));
+    // @GetMapping("/price/{price}")
+    // public List<Catalogue> getCatalogueByPrice(@PathVariable("price") String price){
+    //     List<Catalogue> listCatalogue = catalogueRestService.getCatalogueByPrice(Integer.parseInt(price));
+    //     if (listCatalogue.isEmpty()) {
+    //         throw new ResponseStatusException(
+    //             HttpStatus.NOT_FOUND, "Product with price " + price + " not found"
+    //         );
+    //     }  
+    //     return listCatalogue;
+    // }
+
+    @GetMapping("/price/{minPrice}/{maxPrice}")
+    public List<Catalogue> getCatalogueByPrice(@PathVariable("minPrice") String minPrice, @PathVariable("maxPrice") String maxPrice){
+        List<Catalogue> listCatalogue = catalogueRestService.getCatalogueByPrice(Integer.parseInt(minPrice), Integer.parseInt(maxPrice));
         if (listCatalogue.isEmpty()) {
             throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Product with price " + price + " not found"
+                HttpStatus.NOT_FOUND, "Product with price range not found"
             );
         }  
         return listCatalogue;

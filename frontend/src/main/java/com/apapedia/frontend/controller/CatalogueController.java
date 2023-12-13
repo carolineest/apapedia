@@ -70,30 +70,70 @@ public class CatalogueController {
         System.out.println("masuk liscatalog");
         System.out.println(listCatalogueDTO.get(0));
         System.out.println(listCatalogueDTO.get(0).getProductName());
-
+        model.addAttribute("searchFilterDTO", new SearchFilterDTO());
         model.addAttribute("listCatalogueDTO", listCatalogueDTO);
-
-        // HttpRequest request1 = HttpRequest.newBuilder()
-        // .uri(URI.create("http://localhost:8083/api/catalogue/seller"))
-        // .header("Authorization", "Bearer "+jwtToken)
-        // .GET()
-        // .build();
-        // HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1,
-        // HttpResponse.BodyHandlers.ofString());
-        // System.out.println(output1.body());
-
-        // ObjectMapper objectMapper = new ObjectMapper();
-        // ListCatalogueDTO listCatalogueDTO = objectMapper.readValue(output1.body(),
-        // ListCatalogueDTO.class);
-        // System.out.println(listCatalogueDTO);
-
-        // model.addAttribute("listCatalogueDTO", listCatalogueDTO);
-
-        // System.out.println("MASUK GET VIEWALL 2");
-
         return "catalogue-logged";
     }
 
+    @PostMapping("/viewAll")
+    public String catalogViewAll(HttpServletRequest httpServletRequest,
+            Model model, @ModelAttribute SearchFilterDTO searchFilterDTO) throws IOException, InterruptedException {
+         System.out.println("MASUK GET VIEWALL 1");
+
+        String jwtToken = null;
+        HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
+                                                                    // tidak ada
+        if (session == null) {
+            return "Register";
+        }
+        jwtToken = (String) session.getAttribute("token");
+        System.out.println(jwtToken);
+
+        // Menyiapkan header dengan menyertakan token JWT
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + jwtToken);
+
+        // Menyiapkan HttpEntity dengan header
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        String productName;
+        Integer minPrice;
+        Integer maxPrice;
+        String direction;
+        String attribute;
+        String apiUrl;
+
+        if (searchFilterDTO.getProductName() != null) { // handle seller
+            productName = searchFilterDTO.getProductName();
+            apiUrl = "http://localhost:8083/api/catalogue/name" + productName;
+        } else if (searchFilterDTO.getMinPrice() != null && searchFilterDTO.getMaxPrice() != null) {
+            minPrice = searchFilterDTO.getMinPrice();
+            maxPrice = searchFilterDTO.getMaxPrice();
+            apiUrl = "http://localhost:8083/api/catalogue/price" + minPrice + "/" + maxPrice;
+        } else {
+            direction = searchFilterDTO.getDirection();
+            attribute = searchFilterDTO.getAttribute();
+            apiUrl = "http://localhost:8083/api/catalogue/" + direction + "/" + attribute;
+        } 
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<List<CatalogueDTO>> response = restTemplate.exchange(
+                apiUrl,
+                HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<List<CatalogueDTO>>() {
+                });
+
+        List<CatalogueDTO> listCatalogueDTO = response.getBody();
+        System.out.println(listCatalogueDTO);
+        System.out.println("masuk liscatalog");
+        System.out.println(listCatalogueDTO.get(0));
+        System.out.println(listCatalogueDTO.get(0).getProductName());
+        model.addAttribute("searchFilterDTO", new SearchFilterDTO());
+        model.addAttribute("listCatalogueDTO", listCatalogueDTO);
+        return "catalogue-logged";
+    }
+    
     @GetMapping("/update/{id}")
     public String updateCatalogue(@PathVariable("id") UUID id,
             HttpServletRequest httpServletRequest,
@@ -179,75 +219,6 @@ public class CatalogueController {
         }
         return "catalogue-update-success";
     }
-
-    // @PostMapping("/update")
-    // public String updateCatalogue(@ModelAttribute CatalogueUpdateResDTO
-    // catalogueDTO,
-    // HttpServletRequest httpServletRequest,
-    // Model model) throws IOException, InterruptedException{
-    // System.out.println(catalogueDTO.getCategoryId());
-    // // Retrieve cookies from the request
-    // Cookie[] cookies = httpServletRequest.getCookies();
-    //
-    // System.out.println(cookies);
-    // // Search for the "jwtToken" cookie
-    // String jwtToken = null;
-    // if (cookies == null) {
-    // return "Login";
-    // }
-    // for (Cookie cookie : cookies) {
-    // System.out.println(cookie.getName());
-    // if ("jwtToken".equals(cookie.getName())) {
-    // jwtToken = cookie.getValue();
-    // HttpRequest request = HttpRequest.newBuilder()
-    // .uri(URI.create("http://localhost:8082/user/validate"))
-    // .header("Authorization", "Bearer "+jwtToken)
-    // .GET()
-    // .build();
-    // HttpResponse<String> output = HttpClient.newHttpClient().send(request,
-    // HttpResponse.BodyHandlers.ofString());
-    // System.out.println(output);
-    // System.out.println(output.body());
-    // if(output.body() == null) {
-    // return "Login";
-    // }
-    // else{
-    // break;
-    // }
-    // }
-    // }
-    // JsonObject jsonBody = new JsonObject();
-    // jsonBody.addProperty("productName", catalogueDTO.getProductName());
-    // jsonBody.addProperty("productDescription",
-    // catalogueDTO.getProductDescription());
-    // jsonBody.addProperty("price", catalogueDTO.getPrice());
-    // jsonBody.addProperty("stock", catalogueDTO.getStock());
-    // jsonBody.addProperty("categoryId",
-    // String.valueOf(catalogueDTO.getCategoryId()));
-    //// jsonBody.addProperty("image", catalogueDTO.getImage());
-    //
-    // System.out.println(jsonBody);
-    //
-    // //Untuk update catalogue
-    // String encodedId = URLEncoder.encode(String.valueOf(catalogueDTO.getId()),
-    // "UTF-8");
-    //
-    // HttpRequest request1 = HttpRequest.newBuilder()
-    // .uri(URI.create("http://localhost:8080/api/catalogue/update/"+encodedId))
-    // .header("content-type", "application/json")
-    // .PUT(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))
-    // .build();
-    // HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1,
-    // HttpResponse.BodyHandlers.ofString());
-    // System.out.println(output1);
-    // System.out.println(output1.body());
-    //
-    // //arahin ke mana gitu
-    // if(output1.body() == null){
-    // return "Login";
-    // }
-    // return "catalogue-update-success";
-    // }
 
     @GetMapping("/delete/{id}")
     public String deleteCatalogue(@PathVariable("id") UUID id,
