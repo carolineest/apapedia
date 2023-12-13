@@ -30,7 +30,6 @@ import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
 
 @Controller
 @RequestMapping("/catalogue")
@@ -68,8 +67,6 @@ public class CatalogueController {
         List<CatalogueDTO> listCatalogueDTO = response.getBody();
         System.out.println(listCatalogueDTO);
         System.out.println("masuk liscatalog");
-        System.out.println(listCatalogueDTO.get(0));
-        System.out.println(listCatalogueDTO.get(0).getProductName());
         model.addAttribute("searchFilterDTO", new SearchFilterDTO());
         model.addAttribute("listCatalogueDTO", listCatalogueDTO);
         return "catalogue-logged";
@@ -127,8 +124,6 @@ public class CatalogueController {
         List<CatalogueDTO> listCatalogueDTO = response.getBody();
         System.out.println(listCatalogueDTO);
         System.out.println("masuk liscatalog");
-        System.out.println(listCatalogueDTO.get(0));
-        System.out.println(listCatalogueDTO.get(0).getProductName());
         model.addAttribute("searchFilterDTO", new SearchFilterDTO());
         model.addAttribute("listCatalogueDTO", listCatalogueDTO);
         return "catalogue-logged";
@@ -217,7 +212,7 @@ public class CatalogueController {
         if (output1.body() == null) {
             return "Login";
         }
-        return "catalogue-update-success";
+        return "redirect:/catalogue/viewAll";
     }
 
     @GetMapping("/delete/{id}")

@@ -10,5 +10,5 @@ import com.apapedia.order.model.Order_Item;
 
 @Repository
 public interface OrderItemDb extends JpaRepository<Order_Item, UUID> {
-    List<Order_Item> findByOrderId(UUID sellerId);
+
 }

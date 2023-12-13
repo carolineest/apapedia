@@ -20,7 +20,15 @@
     <div class="text-center pt-5">
       <h2>Chart Order Status Count</h2>
       <div class="row justify-content-center m-2">
-        <canvas id="orderChart" width="20" height="10"></canvas>
+        <div th:if="${#lists.isEmpty(statusCountList)}" class="text-center pt-3">
+          <p>Anda belum memiliki order.</p>
+        </div>
+        <div th:unless="${#lists.isEmpty(statusCountList)}" class="text-center pt-5">
+          <h2>Chart Order Status Count</h2>
+          <div class="row justify-content-center m-2">
+            <canvas id="orderChart" style="width: 50%; height: 50%;"></canvas>
+          </div>
+        </div>
       </div>
     </div>
     <br>
@@ -65,7 +73,7 @@
     <!-- Menggunakan class "justify-content-between" pada row -->
     <div class="row justify-content-between m-2">
       <div class="col-auto">
-        <a href="/catalogue/tambah-produk" class="btn btn-primary">+ Tambah Produk</a>
+        <a href="/catalogue/addProduct" class="btn btn-primary">+ Tambah Produk</a>
       </div>
       <form th:action="@{/}" method="post" th:object="${searchFilterDTO}" class="col-md-4">
         <!-- Search Bar -->
@@ -89,13 +97,15 @@
             <h6 th:text="'Price : Rp' + ${product.price}"></h6>
             <h6 th:text="'Category : ' + ${product.categoryId.name}"></h6>
             <h6 th:text="'Stock : ' + ${product.stock}"></h6>
+            <h6 th:text="'id : ' + ${product.id}"></h6>
             <p>
               <strong th:text="'Description: '"></strong>
               <br th:text="${product.productDescription}" />
             </p>
             <div class="row justify-content-end m-2">
               <div class="col-auto">
-                <a href="/catalogue/edit-produk" class="btn btn-warning">Edit</a>
+                <a th:href="@{'/catalogue/update/' + ${product.id}}" class=" btn btn-warning">Edit</a>
+                <!-- <a th:href="@{'/order/updateStatus/' + ${order.id}}" class="btn btn-primary">Update</a> -->
               </div>
             </div>
           </div>
