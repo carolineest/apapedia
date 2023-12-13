@@ -11,7 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
+import java.util.*;
+
 import com.apapedia.frontend.DTO.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
@@ -30,8 +31,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
-import java.util.UUID;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/catalogue")
@@ -277,5 +276,66 @@ public class CatalogueController {
             return "Login";
         }
         return "catalogue-update-success";
+    }
+
+    @GetMapping("/addProduct")
+    public String formAddProduct(HttpServletRequest httpServletRequest,
+                                 Model model)throws IOException, InterruptedException{
+        AddCatalogueDTO newCatalogueDTO = new AddCatalogueDTO();
+
+        String jwtToken = null;
+        HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika tidak ada
+        if (session == null) {
+            return "Register";
+        }
+        jwtToken = (String) session.getAttribute("token");
+
+        HttpRequest request1 = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8083/api/category/view-all"))
+                .header("Authorization", "Bearer "+jwtToken)
+                .GET()
+                .build();
+        HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
+        System.out.println(output1.body());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        CategoryAllResDTO categoryList = objectMapper.readValue(output1.body(), CategoryAllResDTO.class);
+        System.out.println(categoryList);
+
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("newCatalogueDTO", newCatalogueDTO);
+
+        return "form-create-catalogue";
+    }
+    @PostMapping("/addProduct")
+    public String addProduct(@ModelAttribute AddCatalogueDTO addCatalogueDTO,
+                             HttpServletRequest httpServletRequest,
+                             Model model)throws IOException, InterruptedException{
+        String jwtToken = null;
+        HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
+        // tidak ada
+        if (session == null) {
+            return "Register";
+        }
+        jwtToken = (String) session.getAttribute("token");
+        System.out.println(jwtToken);
+
+        JsonObject jsonBody = new JsonObject();
+        jsonBody.addProperty("price", addCatalogueDTO.getPrice());
+        jsonBody.addProperty("productName", addCatalogueDTO.getProductName());
+        jsonBody.addProperty("productDescription", addCatalogueDTO.getProductDescription());
+        jsonBody.addProperty("categoryId", String.valueOf(addCatalogueDTO.getCategoryId()));
+        jsonBody.addProperty("stock", addCatalogueDTO.getStock());
+        jsonBody.addProperty("image", addCatalogueDTO.getImage());
+
+        HttpRequest request1 = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8083/api/catalogue.add-product"))
+                .header("content-type", "application/json")
+                .header("Authorization", "Bearer "+jwtToken)
+                .POST(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))
+                .build();
+
+        //ganti html hrsnya redirect
+        return "form-update-order-status";
     }
 }

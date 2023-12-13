@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:apapedia/utils/color_pallete.dart';
 
 class RegistrationPage extends StatefulWidget {
   @override
@@ -6,16 +8,41 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
 
-  void _handleRegistration() {
-    // Implementasi logika registrasi
-    // Anda dapat menambahkan validasi dan pemrosesan registrasi sesuai kebutuhan
-    print("Registrasi berhasil");
+  Future<bool> _handleRegistration() async {
+    try {
+      print('run');
+      print(_usernameController.text);
+      print(_passwordController.text);
+      Map<String, dynamic> data = {
+        'name': _nameController.text,
+        'username': _usernameController.text,
+        'password': _passwordController.text,
+        'email': _emailController.text,
+        'role': 'Customer',
+        'address': _addressController.text,
+      };
+
+      Response response = await Dio().post(
+        'http://localhost:8082/api/auth/register',
+        data: data,
+      );
+
+      print(response.data);
+      print(response.data['id']);
+      print(response.data['username']);
+
+      return true;
+    } catch (error) {
+      print(error);
+      return false;
+    }
   }
 
   @override
@@ -143,7 +170,20 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     ),
                     SizedBox(height: 24.0),
                     ElevatedButton(
-                      onPressed: _handleRegistration,
+                      onPressed: () async {
+                        var success = await _handleRegistration();
+                          if (success) {
+                            // ignore: use_build_context_synchronously
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) =>
+                            //       const BukuScreen(),
+                            //   ),
+                            // );
+                            print("BERHASIL REGISTER !");
+                          }
+                      },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.blue,
                         onPrimary: Colors.white,
