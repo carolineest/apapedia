@@ -34,23 +34,23 @@ public class CatalogueRestController {
     public void addCatalogue(@Valid @RequestBody CreateCatalogueRequestDTO catalogueDTO, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field"
-            );
+                    HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         } else {
             catalogueRestService.createCatalogue(catalogueDTO);
         }
     }
 
     // C3
-     @GetMapping("/view-all")
-     public List<Catalogue> retrieveAllCatalogue(){
-         System.out.println("*************************** MASUK ***********************");
-         return catalogueRestService.getAllCatalogue();
-     }
+    @GetMapping("/view-all")
+    public List<Catalogue> retrieveAllCatalogue() {
+        System.out.println("*************************** MASUK ***********************");
+        return catalogueRestService.getAllCatalogue();
+    }
 
     // C2
     @GetMapping("/seller")
-    private List<Catalogue> getCatalogueBySellerId(@RequestHeader("Authorization") String authorizationHeader){
+
+    private List<Catalogue> getCatalogueBySellerId(@RequestHeader("Authorization") String authorizationHeader) {
         System.out.println("MASUK SELLER");
         String token = authorizationHeader.substring(7);
         UUID idSeller = jwtUtils.getUserIdFromToken(token);
@@ -59,84 +59,85 @@ public class CatalogueRestController {
         System.out.println(listCatalogue);
         if (listCatalogue.isEmpty()) {
             throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Seller with id " + idSeller + " not found"
-            );
+                    HttpStatus.NOT_FOUND, "Seller with id " + idSeller + " not found");
         }
         return listCatalogue;
     }
 
     // C4
     @GetMapping("/id/{idCatalogue}")
-    private Catalogue getCatalogueByCatalogueId(@PathVariable("idCatalogue") String idCatalogue){
+    private Catalogue getCatalogueByCatalogueId(@PathVariable("idCatalogue") String idCatalogue) {
         Catalogue catalogue = catalogueRestService.getCatalogueByCatalogueId(UUID.fromString(idCatalogue));
         if (catalogue == null) {
             throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Catalogue with id " + idCatalogue + " not found"
-            );
-        }  
+                    HttpStatus.NOT_FOUND, "Catalogue with id " + idCatalogue + " not found");
+        }
         return catalogue;
     }
 
     // C7
     @GetMapping("/name/{productName}")
-    public List<Catalogue> getCatalogueByCatalogueName(@PathVariable("productName") String productName){
+    public List<Catalogue> getCatalogueByCatalogueName(@PathVariable("productName") String productName) {
         List<Catalogue> listCatalogue = catalogueRestService.getCatalogueByCatalogueName(productName);
         if (listCatalogue.isEmpty()) {
             throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Product with name " + productName + " not found"
-            );
-        }  
+                    HttpStatus.NOT_FOUND, "Product with name " + productName + " not found");
+        }
         return listCatalogue;
     }
 
     // C8
     // @GetMapping("/price/{price}")
-    // public List<Catalogue> getCatalogueByPrice(@PathVariable("price") String price){
-    //     List<Catalogue> listCatalogue = catalogueRestService.getCatalogueByPrice(Integer.parseInt(price));
-    //     if (listCatalogue.isEmpty()) {
-    //         throw new ResponseStatusException(
-    //             HttpStatus.NOT_FOUND, "Product with price " + price + " not found"
-    //         );
-    //     }  
-    //     return listCatalogue;
+    // public List<Catalogue> getCatalogueByPrice(@PathVariable("price") String
+    // price){
+    // List<Catalogue> listCatalogue =
+    // catalogueRestService.getCatalogueByPrice(Integer.parseInt(price));
+    // if (listCatalogue.isEmpty()) {
+    // throw new ResponseStatusException(
+    // HttpStatus.NOT_FOUND, "Product with price " + price + " not found"
+    // );
+    // }
+    // return listCatalogue;
     // }
 
     @GetMapping("/price/{minPrice}/{maxPrice}")
-    public List<Catalogue> getCatalogueByPrice(@PathVariable("minPrice") String minPrice, @PathVariable("maxPrice") String maxPrice){
-        List<Catalogue> listCatalogue = catalogueRestService.getCatalogueByPrice(Integer.parseInt(minPrice), Integer.parseInt(maxPrice));
+    public List<Catalogue> getCatalogueByPrice(@PathVariable("minPrice") String minPrice,
+            @PathVariable("maxPrice") String maxPrice) {
+        List<Catalogue> listCatalogue = catalogueRestService.getCatalogueByPrice(Integer.parseInt(minPrice),
+                Integer.parseInt(maxPrice));
         if (listCatalogue.isEmpty()) {
             throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Product with price range not found"
-            );
-        }  
+                    HttpStatus.NOT_FOUND, "Product with price range not found");
+        }
         return listCatalogue;
     }
 
     // C9
     @GetMapping("/{direction}/{attribute}")
-    private List<Catalogue> getCatalogueByPriceNameOrder(@PathVariable("attribute") String attribute, @PathVariable("direction") String direction) {
+    private List<Catalogue> getCatalogueByPriceNameOrder(@PathVariable("attribute") String attribute,
+            @PathVariable("direction") String direction) {
         if (attribute.equalsIgnoreCase("price") || attribute.equalsIgnoreCase("name") &&
-            direction.equalsIgnoreCase("asc") || direction.equalsIgnoreCase("desc")) {
+                direction.equalsIgnoreCase("asc") || direction.equalsIgnoreCase("desc")) {
             return catalogueRestService.getSortedCatalogueList(attribute, direction);
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid URL");
     }
 
     @GetMapping("/update/{id}")
-    public CatalogueUpdateReq updateCatalogue(@PathVariable("id") UUID id){
+    public CatalogueUpdateReq updateCatalogue(@PathVariable("id") UUID id) {
         Catalogue catalogue = catalogueRestService.getCatalogueById(id);
         return catalogueMapper.updateCatalogueToCatalogueUpdateReq(catalogue);
     }
 
     @PutMapping("/update/{id}")
     public Catalogue updateCatalogue(@PathVariable("id") UUID id,
-                                      @Valid @RequestBody CatalogueUpdateRes catalogueUpdateRes) {
+            @Valid @RequestBody CatalogueUpdateRes catalogueUpdateRes) {
         Catalogue catalogue = catalogueRestService.updateCatalogue(catalogueUpdateRes, id);
         return catalogue;
     }
 
     @GetMapping("/softdelete/{id}")
-    public Catalogue softDeleteCatalogue(@PathVariable("id") UUID id){
+    public Catalogue softDeleteCatalogue(@PathVariable("id") UUID id) {
         Catalogue catalogue = catalogueRestService.getCatalogueById(id);
         return catalogueRestService.softDelete(catalogue);
     }

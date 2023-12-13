@@ -36,6 +36,7 @@ public class WebSecurityConfig {
                         .requestMatchers("api/cartitem/add").permitAll()
                         .requestMatchers("api/order/create").permitAll()
                         .requestMatchers("api/cart/add").permitAll()
+                        .requestMatchers("api/order/history").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

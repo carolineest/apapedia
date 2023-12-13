@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Order History</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand fw-bold text-primary ms-3" href="/">APAPEDIA</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <!-- ... (navbar items) ... -->
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center m-2">
+            <div th:each="order : ${listOrder}" class="col-md-4">
+                <div class="card" style="width: 100%;">
+                    <div class="card-body">
+                        <h5 th:text="'order ' + ${orderStat.index + 1}" class="card-title"></h5>
+                        <br>
+                        <h6>
+                            <!-- Menggunakan ekspresi kondisional untuk menentukan string status -->
+                            <span th:text="${order.status == 1 ? 'Dikonfirmasi Penjual' : 
+                                             order.status == 2 ? 'Menunggu Kurir' :
+                                             order.status == 3 ? 'Dalam Perjalanan' :
+                                             order.status == 4 ? 'Barang Diterima' :
+                                             order.status == 5 ? 'Barang Selesai' : 'Status Tidak Valid'}"></span>
+                        </h6>
+                        <h6 th:text="'Price : Rp' + ${order.totalPrice}"></h6>
+                        <a th:href="@{'/order/updateStatus/' + ${order.id}}" class="btn btn-primary">Update</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

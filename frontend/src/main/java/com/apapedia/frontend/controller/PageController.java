@@ -105,7 +105,7 @@ public class PageController {
             direction = searchFilterDTO.getDirection();
             attribute = searchFilterDTO.getAttribute();
             apiUrl = "http://localhost:8083/api/catalogue/" + direction + "/" + attribute;
-        } 
+        }
 
         // Menggunakan ParameterizedTypeReference untuk mendapatkan List<CatalogueDTO>
         ResponseEntity<List<CatalogueDTO>> responseEntity = restTemplate.exchange(
@@ -114,13 +114,14 @@ public class PageController {
                 null,
                 new ParameterizedTypeReference<List<CatalogueDTO>>() {
                 });
-            
+
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             System.out.println("MASUK GET / 2");
             List<CatalogueDTO> listProduct = responseEntity.getBody();
             model.addAttribute("listProduct", listProduct);
             System.out.println("*****************" + listProduct);
-            model.addAttribute("searchFilterDTO", new SearchFilterDTO());            return "catalogue-not-logged";
+            model.addAttribute("searchFilterDTO", new SearchFilterDTO());
+            return "catalogue-not-logged";
         } else {
             return "error-page";
         }
@@ -221,6 +222,7 @@ public class PageController {
         jsonBody1.addProperty("email", email);
         jsonBody1.addProperty("address", address);
         jsonBody1.addProperty("role", "seller");
+        System.out.println("MASUK REGISTER POSTMAP");
 
         HttpRequest request1 = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8082/api/auth/register"))

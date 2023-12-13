@@ -41,7 +41,8 @@ public class JwtUtils {
     }
 
     public UUID getUserIdFromToken(String token) {
-        String userIdString = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().get("userId", String.class);
+        String userIdString = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().get("userId",
+                String.class);
 
         // Convert String to UUID
         return UUID.fromString(userIdString);

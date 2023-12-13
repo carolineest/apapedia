@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
-          integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
   <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
   <title>View All Product</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
 <body>
@@ -27,8 +27,8 @@
     <br>
 
     <!-- <form th:action="@{/}" method="post" th:object="${searchFilterDTO}"> -->
-      <!-- Search Bar -->
-      <!-- <div class="row justify-content-center m-2">
+    <!-- Search Bar -->
+    <!-- <div class="row justify-content-center m-2">
         <div class="col-md-4">
           <input type="text" class="form-control" placeholder="Search" th:field="*{productName}" />
         </div>
@@ -37,8 +37,8 @@
         </div>
       </div> -->
 
-      <!-- Filter Dropdown -->
-      <!-- <div class="row justify-content-center m-2">
+    <!-- Filter Dropdown -->
+    <!-- <div class="row justify-content-center m-2">
           <div class="col-md-4">
               <label for="filter">Filter:</label>
               <select id="filter" class="form-control" th:field="*{attribute}">
@@ -63,54 +63,56 @@
     </div> -->
 
     <!-- Menggunakan class "justify-content-between" pada row -->
-<div class="row justify-content-between m-2">
-  <div class="col-auto">
-    <a href="/catalogue/tambah-produk" class="btn btn-primary">+ Tambah Produk</a>
-  </div>
-  <form th:action="@{/}" method="post" th:object="${searchFilterDTO}" class="col-md-4">
-    <!-- Search Bar -->
-    <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search" th:field="*{productName}" />
-      <div class="input-group-append">
-        <button class="btn btn-primary" type="submit">Search</button>
+    <div class="row justify-content-between m-2">
+      <div class="col-auto">
+        <a href="/catalogue/tambah-produk" class="btn btn-primary">+ Tambah Produk</a>
       </div>
+      <form th:action="@{/}" method="post" th:object="${searchFilterDTO}" class="col-md-4">
+        <!-- Search Bar -->
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search" th:field="*{productName}" />
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">Search</button>
+          </div>
+        </div>
+      </form>
     </div>
-  </form>
-</div>
-<br>
+    <br>
 
     <div class="row justify-content-center m-2">
-        <div th:each="product : ${listCatalogueDTO}" class="col-md-4">
-          <div class="card" style="width: 100%;">
-            <div class="card-body">
-              <img th:src="${product.image}" alt="Product Image" style="max-width: 100%; height: auto;"/>
-              <h5 th:text="${product.productName}" class="card-title"></h5>
-                    <br>
-                    <h6 th:text="'Price : Rp' + ${product.price}"></h6>
-                    <h6 th:text="'Category : ' + ${product.categoryId.name}"></h6>
-                    <h6 th:text="'Stock : ' + ${product.stock}"></h6>
-                    <p>
-                        <strong th:text="'Description: '"></strong>
-                        <br th:text="${product.productDescription}" />
-                    </p>
-                    <div class="row justify-content-end m-2">
-                      <div class="col-auto">
-                        <a href="/catalogue/edit-produk" class="btn btn-warning">Edit</a>
-                      </div>
-                    </div>
-                </div>
+      <div th:each="product : ${listCatalogueDTO}" class="col-md-4">
+        <div class="card" style="width: 100%;">
+          <div class="card-body">
+            <img th:src="${product.image}" alt="Product Image" style="max-width: 100%; height: auto;" />
+            <h5 th:text="${product.productName}" class="card-title"></h5>
+            <br>
+            <h6 th:text="'Price : Rp' + ${product.price}"></h6>
+            <h6 th:text="'Category : ' + ${product.categoryId.name}"></h6>
+            <h6 th:text="'Stock : ' + ${product.stock}"></h6>
+            <p>
+              <strong th:text="'Description: '"></strong>
+              <br th:text="${product.productDescription}" />
+            </p>
+            <div class="row justify-content-end m-2">
+              <div class="col-auto">
+                <a href="/catalogue/edit-produk" class="btn btn-warning">Edit</a>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+  </div>
   </div>
 
   <script th:inline="javascript">
-    var statusCountList = [[${statusCountList}]];
+    var statusCountList = [[${ statusCountList }]];
     var labels = Object.keys(statusCountList);
-    var chartData = labels.map(function(key) {
+    var chartData = labels.map(function (key) {
       return statusCountList[key];
     });
-  
+
     var colors = [
       'rgba(255, 99, 132, 0.2)',
       'rgba(54, 162, 235, 0.2)',
@@ -128,7 +130,7 @@
       'rgba(255, 159, 64, 1)'
     ];
     const ctx = document.getElementById('orderChart');
-  
+
     new Chart(ctx, {
       type: 'bar',
       data: {

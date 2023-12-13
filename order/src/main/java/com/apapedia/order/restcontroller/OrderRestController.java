@@ -108,4 +108,13 @@ public class OrderRestController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/history")
+    private List<Order> getOrderBySellerId(@RequestHeader("Authorization") String authorizationHeader){
+        String token = authorizationHeader.substring(7);
+        UUID idSeller = jwtUtils.getUserIdFromToken(token);
+        System.out.println("MASUK ORDER HISTORY");
+        System.out.println(orderRestService.getOrderBySellerId(idSeller));
+        return  orderRestService.getOrderBySellerId(idSeller);
+    }
 }

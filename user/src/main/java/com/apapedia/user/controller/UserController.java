@@ -107,14 +107,14 @@ public class UserController {
         String token = authorizationHeader.substring(7);
         System.out.println("MASUK REQUEST PROFILE USER");
 
-        //yg bener
+        // yg bener
         UUID userid = jwtUtils.getUserIdFromToken(token);
         return userService.getUserById(userid);
 
-        //yg salah
-//        var validToken = authService.validateToken(token);
-//        var user = userService.getUserByName(validToken.getUsername());
-//        return user;
+        // yg salah
+        // var validToken = authService.validateToken(token);
+        // var user = userService.getUserByName(validToken.getUsername());
+        // return user;
     }
     // @PostMapping("/authenticate")
     // public String generateToken(@RequestBody AuthRequest authRequest) throws
@@ -131,22 +131,23 @@ public class UserController {
     // }
 
     @PostMapping("/edit-profile")
-    public Users editProfile(@Valid @RequestBody CreateUserDTO userDTO, BindingResult bindingResult, @RequestHeader("Authorization") String authorizationHeader) {
+    public Users editProfile(@Valid @RequestBody CreateUserDTO userDTO, BindingResult bindingResult,
+            @RequestHeader("Authorization") String authorizationHeader) {
         System.out.println("masuk POST editProfile");
-//        LocalDateTime waktuSkrg = LocalDateTime.now();
+        // LocalDateTime waktuSkrg = LocalDateTime.now();
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         } else {
             String token = authorizationHeader.substring(7); // Menghapus "Bearer " dari header
             UUID userId = jwtUtils.getUserIdFromToken(token);
-//            Users updatedUsers = userService.updateUser(userId);
+            // Users updatedUsers = userService.updateUser(userId);
             var user = userMapper.userDTOToUser(userDTO);
-//            System.out.println(user.getUsername());
-//            System.out.println("10 Desember 2023");
-//            user.setUpdatedAt(Timestamp.valueOf(waktuSkrg));
-//            Users updatedUsers =  userService.updateUser(user);
-//            System.out.println("ini controller");
-//            System.out.println(updatedUsers.getEmail());
+            // System.out.println(user.getUsername());
+            // System.out.println("10 Desember 2023");
+            // user.setUpdatedAt(Timestamp.valueOf(waktuSkrg));
+            // Users updatedUsers = userService.updateUser(user);
+            // System.out.println("ini controller");
+            // System.out.println(updatedUsers.getEmail());
 
             return userService.updateUser(userId, user);
         }
@@ -190,22 +191,43 @@ public class UserController {
     }
 
     @DeleteMapping("/delete-account")
-    public Users deleteAccount(@Valid @RequestBody WithdrawUserDTO withdrawUserDTO, BindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
-        } else {
-            System.out.println(withdrawUserDTO);
-            System.out.println("Tanggal 9 Desember");
+    public Users deleteAccount(@RequestHeader("Authorization") String authorizationHeader) {
 
-            String id = withdrawUserDTO.getId();
-            System.out.println(id);
-            Users deletedUser = userService.deleteUser(id);
+        String token = authorizationHeader.substring(7);
+        System.out.println("MASUK REQUEST DELETE USER");
 
-            System.out.println(deletedUser);
-            deletedUser.setDeleted(true);
-            System.out.println(deletedUser.getDeleted());
-            return deletedUser;
-        }
+        // yg bener
+        UUID userid = jwtUtils.getUserIdFromToken(token);
+        return userService.deleteUser(userid);
+        // if (bindingResult.hasFieldErrors()) {
+        // throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has
+        // invalid type or missing field");
+        // } else {
+        // System.out.println(withdrawUserDTO);
+        // System.out.println("Tanggal 9 Desember");
+        //
+        // String id = withdrawUserDTO.getId();
+        // System.out.println(id);
+        // Users deletedUser = userService.deleteUser(id);
+        //
+        // System.out.println(deletedUser);
+        // deletedUser.setDeleted(true);
+        // System.out.println(deletedUser.getDeleted());
+        // return deletedUser;
+    }
+
+    @DeleteMapping("/hard-delete")
+    public String deleteHardAccount(@RequestHeader("Authorization") String authorizationHeader) {
+
+        String token = authorizationHeader.substring(7);
+        System.out.println("MASUK REQUEST DELETE USER");
+
+        // yg bener
+        UUID userid = jwtUtils.getUserIdFromToken(token);
+        System.out.println(userid);
+        userService.hardDelete(userid);
+        System.out.println("Berhasil HardDelete");
+        return "userService.deleteUser(userid)";
     }
 
 }

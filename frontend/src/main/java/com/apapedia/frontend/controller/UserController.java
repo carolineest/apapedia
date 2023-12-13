@@ -321,4 +321,52 @@ public class UserController {
         // }
         // return "redirect:/user/login";
     }
+
+    // @PostMapping("delete-account")
+    // public String deleteAccount(HttpServletRequest httpServletRequest, Model
+    // model)
+    // throws IOException, InterruptedException {
+    // HttpSession session = httpServletRequest.getSession(false); // Mendapatkan
+    // sesi tanpa membuat yang baru jika
+    // // tidak ada
+    //
+    // if (session == null) {
+    // return "Register";
+    // }
+    //
+    // String jwtToken = null;
+    // jwtToken = (String) session.getAttribute("token");
+    //
+    // HttpRequest request = HttpRequest.newBuilder()
+    // .uri(URI.create("http://localhost:8082/api/user/delete-account"))
+    // .header("Authorization", "Bearer " + jwtToken)
+    // .DELETE()
+    // .build();
+    //
+    // HttpResponse<String> response = HttpClient.newHttpClient().send(request,
+    // HttpResponse.BodyHandlers.ofString());
+    // return "redirect:/logout-sso";
+
+    // System.out.println("TANGGAL 9 DESEMBER");
+    // System.out.println(user.getBalance() + " INI BALANCENYA MAN");
+    // System.out.println(user.getUsername() + " INI UNAMENYA MAN");
+    // System.out.println(user.getName() + " INI NAMENYA MAN");
+    // JsonObject jsonBody = new JsonObject();
+    // jsonBody.addProperty("balance", Long.parseLong("5"));
+    // jsonBody.addProperty("username", user.getUsername());
+    // HttpRequest request = HttpRequest.newBuilder()
+    // .uri(URI.create("http://localhost:8082/user/delete-account"))
+    // .header("content-type", "application/json")
+    // .POST(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))
+    // .build();
+    // HttpResponse<String> response = HttpClient.newHttpClient().send(request,
+    // HttpResponse.BodyHandlers.ofString());
+    // System.out.println(response.body());
+    // System.out.println("Tanggal 9 Desember");
+    // if (response.body() == null) {
+
+    // return "user-profile";
+    // }
+    // return "redirect:/user/login";
+    // }
 }

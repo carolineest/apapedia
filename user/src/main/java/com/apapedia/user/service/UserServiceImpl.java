@@ -24,22 +24,27 @@ public class UserServiceImpl implements UserService {
     @Autowired
     JwtUtils jwtUtils;
 
-    public void createUser(Users users){
+    public void createUser(Users users) {
         usersDB.save(users);
     }
-    public Users getUserByName(String name){
+
+    public Users getUserByName(String name) {
         return usersDB.findByUsername(name);
     }
-    public Users getUserById(UUID id){
+
+    public Users getUserById(UUID id) {
         return usersDB.findById(id).get();
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        Users user = repository.findByUserName(username);
-//        return new org.springframework.security.core.userdetails.Users(user.getUserName(), user.getPassword(), new ArrayList<>());
-//    }
-    public Users updateUser(UUID usersId, Users usersFromDTO){
+    // @Override
+    // public UserDetails loadUserByUsername(String username) throws
+    // UsernameNotFoundException {
+    // Users user = repository.findByUserName(username);
+    // return new
+    // org.springframework.security.core.userdetails.Users(user.getUserName(),
+    // user.getPassword(), new ArrayList<>());
+    // }
+    public Users updateUser(UUID usersId, Users usersFromDTO) {
         Users users = getUserById(usersId);
         if (users != null) {
             LocalDateTime waktuSkrg = LocalDateTime.now();
@@ -53,7 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String loginSsoSeller(LoginSsoReqDTO loginSsoReqDTO){
+    public String loginSsoSeller(LoginSsoReqDTO loginSsoReqDTO) {
         String username = loginSsoReqDTO.getUsername();
         String name = loginSsoReqDTO.getName();
         Users users = usersDB.findByUsername(username);
@@ -89,13 +94,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Users deleteUser(String id) {
-        Users user = getUserById(UUID.fromString(id));
+    public Users deleteUser(UUID id) {
+        Users user = getUserById(id);
         if (user != null) {
             user.setDeleted(true);
             usersDB.save(user);
         }
         return user;
+    }
+
+    @Override
+    public void hardDelete(UUID id) {
+        System.out.println("masuk hard delete");
+        Users user = getUserById(id);
+        System.out.println(user.getId());
+        usersDB.delete(user);
     }
 
 }
