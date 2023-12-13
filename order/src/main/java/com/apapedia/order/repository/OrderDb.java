@@ -10,6 +10,10 @@ import java.util.UUID;
 @Repository
 public interface OrderDb extends JpaRepository<Order, UUID> {
     List<Order> findByStatus(Integer status);
+
     List<Order> findByCustomer(UUID id);
+
     List<Order> findBySellerAndStatus(UUID sellerId, Integer status);
+
+    List<Order> findBySeller(UUID sellerId);
 }

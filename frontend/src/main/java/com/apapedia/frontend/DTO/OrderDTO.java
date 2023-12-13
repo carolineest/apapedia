@@ -21,4 +21,16 @@ public class OrderDTO {
     private Integer totalPrice;
     private UUID customer;
     private UUID seller;
+    private OrderItemDTO orderItem;
+
+}
+
+@Getter
+@Setter
+class OrderItemDTO {
+    private UUID id;
+    private UUID productId;
+    private Integer quantity;
+    private Integer productPrice;
+    private String productName;
 }

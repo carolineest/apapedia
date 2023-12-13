@@ -39,7 +39,7 @@ public class CatalogueController {
     @GetMapping("/viewAll")
     public String catalogViewAll(HttpServletRequest httpServletRequest,
             Model model) throws IOException, InterruptedException {
-         System.out.println("MASUK GET VIEWALL 1");
+        System.out.println("MASUK GET VIEWALL 1");
 
         String jwtToken = null;
         HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
@@ -78,7 +78,7 @@ public class CatalogueController {
     @PostMapping("/viewAll")
     public String catalogViewAll(HttpServletRequest httpServletRequest,
             Model model, @ModelAttribute SearchFilterDTO searchFilterDTO) throws IOException, InterruptedException {
-         System.out.println("MASUK GET VIEWALL 1");
+        System.out.println("MASUK GET VIEWALL 1");
 
         String jwtToken = null;
         HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
@@ -114,7 +114,7 @@ public class CatalogueController {
             direction = searchFilterDTO.getDirection();
             attribute = searchFilterDTO.getAttribute();
             apiUrl = "http://localhost:8083/api/catalogue/" + direction + "/" + attribute;
-        } 
+        }
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<List<CatalogueDTO>> response = restTemplate.exchange(
@@ -133,7 +133,7 @@ public class CatalogueController {
         model.addAttribute("listCatalogueDTO", listCatalogueDTO);
         return "catalogue-logged";
     }
-    
+
     @GetMapping("/update/{id}")
     public String updateCatalogue(@PathVariable("id") UUID id,
             HttpServletRequest httpServletRequest,
@@ -251,11 +251,12 @@ public class CatalogueController {
 
     @GetMapping("/addProduct")
     public String formAddProduct(HttpServletRequest httpServletRequest,
-                                 Model model)throws IOException, InterruptedException{
+            Model model) throws IOException, InterruptedException {
         AddCatalogueDTO newCatalogueDTO = new AddCatalogueDTO();
 
         String jwtToken = null;
-        HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika tidak ada
+        HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
+                                                                    // tidak ada
         if (session == null) {
             return "Register";
         }
@@ -263,7 +264,7 @@ public class CatalogueController {
 
         HttpRequest request1 = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8083/api/category/view-all"))
-                .header("Authorization", "Bearer "+jwtToken)
+                .header("Authorization", "Bearer " + jwtToken)
                 .GET()
                 .build();
         HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
@@ -278,10 +279,11 @@ public class CatalogueController {
 
         return "form-create-catalogue";
     }
+
     @PostMapping("/addProduct")
     public String addProduct(@ModelAttribute AddCatalogueDTO addCatalogueDTO,
-                             HttpServletRequest httpServletRequest,
-                             Model model)throws IOException, InterruptedException{
+            HttpServletRequest httpServletRequest,
+            Model model) throws IOException, InterruptedException {
         String jwtToken = null;
         HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
         // tidak ada
@@ -302,11 +304,11 @@ public class CatalogueController {
         HttpRequest request1 = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8083/api/catalogue.add-product"))
                 .header("content-type", "application/json")
-                .header("Authorization", "Bearer "+jwtToken)
+                .header("Authorization", "Bearer " + jwtToken)
                 .POST(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))
                 .build();
 
-        //ganti html hrsnya redirect
+        // ganti html hrsnya redirect
         return "form-update-order-status";
     }
 }

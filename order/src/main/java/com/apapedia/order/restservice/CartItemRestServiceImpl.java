@@ -76,4 +76,10 @@ public class CartItemRestServiceImpl implements CartItemRestService {
         }
         return null;
     }
+
+    @Override
+    public void deleteCartItem(UUID id) {
+        Cart_Item cartItem = getCartItemById(id);
+        cartItemDb.delete(cartItem);
+    }
 }

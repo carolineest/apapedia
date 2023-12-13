@@ -6,8 +6,7 @@
     <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
     <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-          crossorigin="anonymous">
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
         /* Custom Styles */
         body {
@@ -106,12 +105,10 @@
             </div>
         </div> -->
 
-        <!-- Product Cards -->
-        <div class="row justify-content-center">
-            <div th:each="product : ${listProduct}" class="col-md-4 product-card">
+        <<<<<<< HEAD <div class="row justify-content-center m-2">
+            <div th:each="product : ${listProduct}" class="col-md-4">
                 <div class="card" style="width: 100%;">
                     <div class="card-body">
-                        <img th:src="${product.image}" alt="Product Image" style="max-width: 100%; height: auto;" />
                         <h5 th:text="${product.productName}" class="card-title"></h5>
                         <br>
                         <h6 th:text="'Price : Rp' + ${product.price}"></h6>
@@ -121,11 +118,29 @@
                             <strong th:text="'Description: '"></strong>
                             <br th:text="${product.productDescription}" />
                         </p>
+                        =======
+                        <!-- Product Cards -->
+                        <div class="row justify-content-center">
+                            <div th:each="product : ${listProduct}" class="col-md-4 product-card">
+                                <div class="card" style="width: 100%;">
+                                    <div class="card-body">
+                                        <img th:src="${product.image}" alt="Product Image"
+                                            style="max-width: 100%; height: auto;" />
+                                        <h5 th:text="${product.productName}" class="card-title"></h5>
+                                        <br>
+                                        <h6 th:text="'Price : Rp' + ${product.price}"></h6>
+                                        <h6 th:text="'Category : ' + ${product.categoryId.name}"></h6>
+                                        <h6 th:text="'Stock : ' + ${product.stock}"></h6>
+                                        <p>
+                                            <strong th:text="'Description: '"></strong>
+                                            <br th:text="${product.productDescription}" />
+                                        </p>
+                                    </div>
+                                    >>>>>>> c8f8409b0203969223ecf04a87be2453cb8f946a
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 </body>
 

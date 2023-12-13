@@ -73,6 +73,15 @@ public class OrderRestServiceImpl implements OrderRestService {
     }
 
     @Override
+    public List<Order> getOrderBySellerId(UUID id) {
+        List<Order> orderList = orderDb.findBySeller(id);
+        if(orderList == null || orderList.isEmpty()){
+            return null;
+        }
+        return orderList;
+    }
+
+    @Override
     public Order getOrderById(UUID orderId){
         for(Order order : getAllOrder()){
             if(order.getId().equals(orderId)){

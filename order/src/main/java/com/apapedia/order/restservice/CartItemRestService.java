@@ -12,4 +12,6 @@ public interface CartItemRestService {
     Cart_Item getCartItemById(UUID id);
 
     Cart_Item updateQuantity(UUID id, Integer q);
+
+    void deleteCartItem(UUID id);
 }

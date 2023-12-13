@@ -11,10 +11,17 @@ public interface UserService {
 
     Users updateTopUpUser(Long amount, String name);
 
-    Users deleteUser(String name);
     void createUser(Users users);
+
     Users getUserByName(String name);
+
     Users getUserById(UUID id);
+
     Users updateUser(UUID usersId, Users userFromDTO);
+
     String loginSsoSeller(LoginSsoReqDTO loginRequestDTO);
+
+    Users deleteUser(UUID id);
+
+    void hardDelete(UUID id);
 }
