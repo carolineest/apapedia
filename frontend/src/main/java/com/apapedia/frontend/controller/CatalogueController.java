@@ -267,16 +267,16 @@ public class CatalogueController {
         HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
         System.out.println(output1.body());
 
-        // arahin ke mana gitu
         if (output1.body() == null) {
             return "Login";
         }
-        return "catalogue-update-success";
+        return "redirect:/catalogue/viewAll";
     }
 
     @GetMapping("/addProduct")
     public String formAddProduct(HttpServletRequest httpServletRequest,
                                  Model model)throws IOException, InterruptedException{
+        System.out.println("MASUK GET ADD PRODUCT");
         AddCatalogueDTO newCatalogueDTO = new AddCatalogueDTO();
 
         String jwtToken = null;
@@ -307,6 +307,7 @@ public class CatalogueController {
     public String addProduct(@ModelAttribute AddCatalogueDTO addCatalogueDTO,
                              HttpServletRequest httpServletRequest,
                              Model model)throws IOException, InterruptedException{
+        System.out.println("MASUK POST ADD PRODUCT 1");
         String jwtToken = null;
         HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
         // tidak ada
@@ -331,6 +332,6 @@ public class CatalogueController {
                 .POST(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))
                 .build();
 
-        return "form-update-order-status";
+        return "redirect:/catalogue/viewAll";
     }
 }
