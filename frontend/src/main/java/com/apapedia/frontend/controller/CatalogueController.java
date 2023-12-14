@@ -277,7 +277,6 @@ public class CatalogueController {
     @GetMapping("/addProduct")
     public String formAddProduct(HttpServletRequest httpServletRequest,
                                  Model model)throws IOException, InterruptedException{
-        System.out.println("MASUK GET ADD PRODUCT");
         AddCatalogueDTO newCatalogueDTO = new AddCatalogueDTO();
 
         String jwtToken = null;
@@ -308,7 +307,6 @@ public class CatalogueController {
     public String addProduct(@ModelAttribute AddCatalogueDTO addCatalogueDTO,
                              HttpServletRequest httpServletRequest,
                              Model model)throws IOException, InterruptedException{
-        System.out.println("MASUK POST ADD PRODUCT 1");
         String jwtToken = null;
         HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
         // tidak ada
@@ -333,15 +331,6 @@ public class CatalogueController {
                 .POST(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))
                 .build();
 
-//        HttpRequest request1 = HttpRequest.newBuilder()
-//                .uri(URI.create("http://localhost:8082/api/auth/register"))
-//                .header("content-type", "application/json")
-//                .POST(HttpRequest.BodyPublishers.ofString(jsonBody1.toString()))
-//                .build();
-
-        System.out.println("MASUK POST ADD PRODUCT 2");
-        System.out.println(addCatalogueDTO.getCategoryId());
-
-        return "redirect:/catalogue/viewAll";
+        return "form-update-order-status";
     }
 }
