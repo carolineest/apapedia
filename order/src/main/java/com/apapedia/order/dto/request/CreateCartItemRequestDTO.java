@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-import com.apapedia.order.model.Cart;
 
 @AllArgsConstructor
 @NoArgsConstructor

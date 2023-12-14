@@ -13,8 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.xml.Jaxb2XmlDecoder;
@@ -38,9 +36,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.security.Principal;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class PageController {
@@ -53,13 +49,11 @@ public class PageController {
             .build();
 
     @GetMapping("/")
-    public String cataloguePage(Model model) { // request param buat id seller?
-        System.out.println("MASUK GET / 1");
+    public String cataloguePage(Model model) {
         RestTemplate restTemplate = new RestTemplate();
 
         String apiUrl = "http://localhost:8083/api/catalogue/view-all";
 
-        // Menggunakan ParameterizedTypeReference untuk mendapatkan List<CatalogueDTO>
         ResponseEntity<List<CatalogueDTO>> responseEntity = restTemplate.exchange(
                 apiUrl,
                 HttpMethod.GET,
@@ -67,14 +61,12 @@ public class PageController {
                 new ParameterizedTypeReference<List<CatalogueDTO>>() {
                 });
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
-            System.out.println("MASUK GET / 2");
             List<CatalogueDTO> listProduct = responseEntity.getBody();
             model.addAttribute("listProduct", listProduct);
 
             SearchFilterDTO searchFilterDTO = new SearchFilterDTO();
             model.addAttribute("searchFilterDTO", searchFilterDTO);
 
-            System.out.println("*****************" + listProduct);
             return "catalogue-not-logged";
         } else {
             return "error-page";
@@ -83,7 +75,6 @@ public class PageController {
 
     @PostMapping("/")
     public String cataloguePageSearchFilter(Model model, @ModelAttribute SearchFilterDTO searchFilterDTO) {
-        System.out.println("MASUK GET / 1");
         RestTemplate restTemplate = new RestTemplate();
 
         String productName;
@@ -95,7 +86,6 @@ public class PageController {
 
         if (searchFilterDTO.getProductName() != null) {
             productName = searchFilterDTO.getProductName();
-            System.out.println("************produkname**********" + productName);
             apiUrl = "http://localhost:8083/api/catalogue/name/" + productName;
         } else if (searchFilterDTO.getMinPrice() != null && searchFilterDTO.getMaxPrice() != null) {
             minPrice = searchFilterDTO.getMinPrice();
@@ -107,7 +97,6 @@ public class PageController {
             apiUrl = "http://localhost:8083/api/catalogue/" + direction + "/" + attribute;
         }
 
-        // Menggunakan ParameterizedTypeReference untuk mendapatkan List<CatalogueDTO>
         ResponseEntity<List<CatalogueDTO>> responseEntity = restTemplate.exchange(
                 apiUrl,
                 HttpMethod.GET,
@@ -116,10 +105,8 @@ public class PageController {
                 });
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
-            System.out.println("MASUK GET / 2");
             List<CatalogueDTO> listProduct = responseEntity.getBody();
             model.addAttribute("listProduct", listProduct);
-            System.out.println("*****************" + listProduct);
             model.addAttribute("searchFilterDTO", new SearchFilterDTO());
             return "catalogue-not-logged";
         } else {
@@ -147,7 +134,6 @@ public class PageController {
 
         String name = attributes.getNama();
         var token = userService.getToken(username, name);
-        System.out.println(token);
 
         if (token.equals("None") || token == "None") {
             return new ModelAndView("redirect:/register");
@@ -157,43 +143,38 @@ public class PageController {
         httpSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
         httpSession.setAttribute("token", token);
 
-        // ganti ke catalogue page yg non login!!
         return new ModelAndView("redirect:/catalogue/viewAll");
     }
 
     @GetMapping("/login-sso")
     public ModelAndView loginSSO() {
-        System.out.println("");
         return new ModelAndView("redirect:" + Setting.SERVER_LOGIN + Setting.CLIENT_LOGIN);
     }
 
     @GetMapping("/logout-sso")
     public ModelAndView logoutSSO(HttpServletRequest request) {
-        System.out.println("MASUK GET LOGOUT SSO");
-        HttpSession httpSession = request.getSession(false); // Mengambil session yang sudah ada (tanpa membuat yang
-                                                             // baru)
+        HttpSession httpSession = request.getSession(false);
+
         if (httpSession != null) {
             httpSession.removeAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
             httpSession.removeAttribute("token");
-            httpSession.invalidate(); // Menghapus seluruh session
+            httpSession.invalidate();
         }
         return new ModelAndView("redirect:" + Setting.SERVER_LOGOUT + Setting.CLIENT_LOGOUT);
     }
 
     @PostMapping("/logout-sso")
     public ModelAndView logoutSSOPost(HttpServletRequest request) {
-        System.out.println("MASUK GET LOGOUT SSO");
-        HttpSession httpSession = request.getSession(false); // Mengambil session yang sudah ada (tanpa membuat yang
-                                                             // baru)
+        HttpSession httpSession = request.getSession(false);
+
         if (httpSession != null) {
             httpSession.removeAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
             httpSession.removeAttribute("token");
-            httpSession.invalidate(); // Menghapus seluruh session
+            httpSession.invalidate();
         }
         return new ModelAndView("redirect:" + Setting.SERVER_LOGOUT + Setting.CLIENT_LOGOUT);
     }
 
-    // hapus aja kalo udh gabutuh
     @GetMapping("/login-success")
     public String loginSuccess() {
         return "LoginSuccess";
@@ -201,7 +182,6 @@ public class PageController {
 
     @GetMapping("/register")
     public String registerPage(Model model) {
-        System.out.println("MASUK REGISTER");
         RegisterReqDTO registerDTO = new RegisterReqDTO();
         model.addAttribute("registerDTO", registerDTO);
         return "Register";
@@ -214,7 +194,7 @@ public class PageController {
             @RequestParam(name = "email") String email,
             @RequestParam(name = "address") String address,
             Model model) throws IOException, InterruptedException {
-        // add user
+
         JsonObject jsonBody1 = new JsonObject();
         jsonBody1.addProperty("name", name);
         jsonBody1.addProperty("username", username);
@@ -222,7 +202,6 @@ public class PageController {
         jsonBody1.addProperty("email", email);
         jsonBody1.addProperty("address", address);
         jsonBody1.addProperty("role", "seller");
-        System.out.println("MASUK REGISTER POSTMAP");
 
         HttpRequest request1 = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8082/api/auth/register"))
@@ -231,7 +210,7 @@ public class PageController {
                 .build();
         HttpResponse<String> response1 = HttpClient.newHttpClient().send(request1,
                 HttpResponse.BodyHandlers.ofString());
-        System.out.println(response1.body());
+
         if (response1.body() == null) {
             return new ModelAndView("redirect:/register");
         }
@@ -239,7 +218,6 @@ public class PageController {
         ObjectMapper objectMapper = new ObjectMapper();
         UsersDTO usersDTO = objectMapper.readValue(response1.body(), UsersDTO.class);
 
-        // add cart
         JsonObject jsonBody2 = new JsonObject();
         jsonBody2.addProperty("userId", String.valueOf(usersDTO.getId()));
 
@@ -250,7 +228,7 @@ public class PageController {
                 .build();
         HttpResponse<String> response2 = HttpClient.newHttpClient().send(request2,
                 HttpResponse.BodyHandlers.ofString());
-        System.out.println(response2.body());
+
         if (response2.body() == null) {
             return new ModelAndView("redirect:/register");
         }
@@ -262,7 +240,7 @@ public class PageController {
     public String loginPage(Model model) {
         var loginDTO = new LoginReqDTO();
         model.addAttribute("loginDTO", loginDTO);
-        System.out.println("masuk GET LOGIN");
+
         return "Login";
     }
 
@@ -271,8 +249,7 @@ public class PageController {
             @RequestParam(name = "password") String password,
             HttpServletResponse response,
             Model model) throws IOException, InterruptedException {
-        System.out.println("masuk POST LOGIN");
-        // Buat objek JSON
+
         JsonObject jsonBody = new JsonObject();
         jsonBody.addProperty("username", username);
         jsonBody.addProperty("password", password);
@@ -283,11 +260,8 @@ public class PageController {
                 .POST(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))
                 .build();
         HttpResponse<String> output = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(output);
-        System.out.println(output.body());
 
         if (output.body() != null) {
-            // Create a new cookie
             Cookie cookie = new Cookie("jwtToken", output.body());
             cookie.setPath("/");
             cookie.setSecure(true);
@@ -295,10 +269,8 @@ public class PageController {
 
             // Add the cookie to the response
             response.addCookie(cookie);
-            System.out.println("Login Success");
             return "LoginSuccess";
         }
-        System.out.println("Login Failed");
         return "Login";
     }
 }

@@ -2,7 +2,6 @@ package com.apapedia.order.restservice;
 
 import com.apapedia.order.dto.request.CreateOrderRequestDTO;
 import com.apapedia.order.model.Order;
-import com.apapedia.order.model.Order_Item;
 
 import java.util.List;
 import java.util.UUID;

@@ -21,7 +21,6 @@
         <div class="justify-content-center">
           <h2>Update Order Status</h2>
           <br>
-          <!--        <form th:action="@{/catalogue/update/{id}(id=${catalogueDTO.id})}" th:object="${catalogueDTO}" method="POST">-->
           <form th:action="@{/order/updateStatus}" th:object="${orderDTO}" method="POST">
 
             <input class="form-control" name="orderId" type="hidden" th:field="*{id}" />
@@ -45,7 +44,6 @@
             </table>
 
             <button class="btn btn-primary" type="submit">Submit</button>
-            <!--          <a class="btn btn-primary" href="/">Home</a>-->
           </form>
         </div>
       </div>

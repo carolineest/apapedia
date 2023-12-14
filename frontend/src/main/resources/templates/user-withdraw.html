@@ -19,14 +19,14 @@
         <form th:action="@{/user/withdraw}" id="withdrawForm" method="post" onsubmit="return validateWithdraw()">
             <h2>Withdraw Page</h2>
             <hr>
-            <!-- Current Balance -->
+
             <input class="form-control" name="userid" type="hidden" th:field="*{user.id}" />
             <div class="form-group">
                 <label for="balance">Current Balance:</label>
                 <input type="text" id="balance" class="form-control" th:value="${user.balance}" readonly>
             </div>
 
-            <!-- Withdraw Input -->
+
             <div class="form-group">
                 <label for="withdrawAmount">Withdraw Amount:</label>
                 <input type="number" class="form-control" name="withdrawAmount" id="withdrawAmount"
@@ -34,17 +34,17 @@
                 <small class="text-danger" id="withdrawAmountError"></small>
             </div>
 
-            <!-- Withdraw Button -->
+
             <button type="submit" class="btn btn-primary btn-block" onclick="return validateWithdraw()">Submit</button>
         </form>
     </div>
 
-    <!-- Bootstrap JS and Popper.js (for Bootstrap functionality) -->
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Custom JavaScript -->
+
     <script>
         function validateWithdraw() {
             // Get the input value

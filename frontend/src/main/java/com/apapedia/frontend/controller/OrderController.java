@@ -1,12 +1,8 @@
 package com.apapedia.frontend.controller;
 
-import com.apapedia.frontend.DTO.CatalogueDTO;
-import com.apapedia.frontend.DTO.CatalogueUpdateReqDTO;
-import com.apapedia.frontend.DTO.CatalogueUpdateResDTO;
 import com.apapedia.frontend.DTO.OrderDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -34,27 +30,23 @@ public class OrderController {
     @GetMapping("/chart")
     public String chartOrder(HttpServletRequest httpServletRequest, Model model)
             throws IOException, InterruptedException {
-        System.out.println("MASUK CHART 1");
         String jwtToken = null;
-        HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
-                                                                    // tidak ada
+        HttpSession session = httpServletRequest.getSession(false);
+
         if (session == null) {
             return "Register";
         }
         jwtToken = (String) session.getAttribute("token");
 
-        // get data untuk chart
         HttpRequest request1 = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8081/api/order/chart"))
                 .header("Authorization", "Bearer " + jwtToken)
                 .GET()
                 .build();
         HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
-        System.out.println(output1.body());
 
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Integer> statusCountList = objectMapper.readValue(output1.body(), Map.class);
-        System.out.println(statusCountList);
 
         model.addAttribute("statusCountList", statusCountList);
         return "order-chart";
@@ -73,18 +65,15 @@ public class OrderController {
 
         String encodedId = URLEncoder.encode(String.valueOf(orderId), "UTF-8");
 
-        // get data untuk chart
         HttpRequest request1 = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8081/api/order/updateStatus/" + encodedId))
                 .header("Authorization", "Bearer " + jwtToken)
                 .GET()
                 .build();
         HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
-        System.out.println(output1.body());
 
         ObjectMapper objectMapper = new ObjectMapper();
         OrderDTO orderDTO = objectMapper.readValue(output1.body(), OrderDTO.class);
-        System.out.println(orderDTO);
 
         List<Map.Entry<String, Integer>> orderStatus = new ArrayList<>();
         orderStatus.add(Map.entry("Menunggu konfirmasi penjual", 0));
@@ -105,8 +94,8 @@ public class OrderController {
             HttpServletRequest httpServletRequest,
             Model model) throws IOException, InterruptedException {
         String jwtToken = null;
-        HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
-                                                                    // tidak ada
+        HttpSession session = httpServletRequest.getSession(false);
+
         if (session == null) {
             return "Register";
         }
@@ -115,9 +104,7 @@ public class OrderController {
         JsonObject jsonBody = new JsonObject();
         jsonBody.addProperty("status", orderDTO.getStatus());
 
-        System.out.println(jsonBody);
 
-        // Untuk update catalogue
         String encodedId = URLEncoder.encode(String.valueOf(orderDTO.getId()), "UTF-8");
 
         HttpRequest request1 = HttpRequest.newBuilder()
@@ -127,7 +114,6 @@ public class OrderController {
                 .PUT(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))
                 .build();
         HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
-        System.out.println(output1.body());
 
         // arahin ke mana gitu
         if (output1.body() == null) {
@@ -140,18 +126,16 @@ public class OrderController {
     public String orderHistory(HttpServletRequest httpServletRequest,
             Model model) throws IOException, InterruptedException {
         String jwtToken = null;
-        HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
-                                                                    // tidak ada
+        HttpSession session = httpServletRequest.getSession(false);
+
         if (session == null) {
             return "Register";
         }
         jwtToken = (String) session.getAttribute("token");
-        System.out.println(jwtToken);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + jwtToken);
 
-        // Menyiapkan HttpEntity dengan header
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -163,10 +147,6 @@ public class OrderController {
                 });
 
         List<OrderDTO> listOrderDTO = response.getBody();
-        System.out.println(listOrderDTO);
-        System.out.println("masuk liscatalog");
-        System.out.println(listOrderDTO.get(0));
-        System.out.println(listOrderDTO.get(0).getTotalPrice());
 
         model.addAttribute("listOrder", listOrderDTO);
         return "order-history";

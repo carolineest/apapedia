@@ -10,7 +10,6 @@
     <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Edit Profile Page</title>
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -26,8 +25,6 @@
                     </div>
                     <div class="card-body">
                         <form th:action="@{/user/edit-profile}" id="registerForm" method="POST">
-                            <!--                        <input class="form-control" type="hidden" th:field="*{role}" value="seller"/>-->
-                            <!-- <input class="form-control" type="hidden" th:field="*{role}" value="seller" /> -->
                             <input type="hidden" class="form-control" name="password" id="password"
                                 placeholder="Enter your password" th:value="${password}">
                             <input type="hidden" class="form-control" name="username" id="username"

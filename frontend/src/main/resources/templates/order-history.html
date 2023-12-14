@@ -24,7 +24,6 @@
                         <h5 th:text="'order ' + ${orderStat.index + 1}" class="card-title"></h5>
                         <br>
                         <h6>
-                            <!-- Menggunakan ekspresi kondisional untuk menentukan string status -->
                             <span th:text="${order.status == 1 ? 'Dikonfirmasi Penjual' : 
                                              order.status == 2 ? 'Menunggu Kurir' :
                                              order.status == 3 ? 'Dalam Perjalanan' :

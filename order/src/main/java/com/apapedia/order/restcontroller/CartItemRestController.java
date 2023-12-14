@@ -2,8 +2,6 @@ package com.apapedia.order.restcontroller;
 
 import com.apapedia.order.dto.request.UpdateCartItemReqDTO;
 import com.apapedia.order.jwt.JwtUtils;
-import com.apapedia.order.model.Cart;
-import com.apapedia.order.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

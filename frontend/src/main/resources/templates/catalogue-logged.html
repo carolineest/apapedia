@@ -34,43 +34,6 @@
     <br>
     <br>
 
-    <!-- <form th:action="@{/}" method="post" th:object="${searchFilterDTO}"> -->
-    <!-- Search Bar -->
-    <!-- <div class="row justify-content-center m-2">
-        <div class="col-md-4">
-          <input type="text" class="form-control" placeholder="Search" th:field="*{productName}" />
-        </div>
-        <div class="col-auto">
-          <button class="btn btn-primary" type="submit">Search</button>
-        </div>
-      </div> -->
-
-    <!-- Filter Dropdown -->
-    <!-- <div class="row justify-content-center m-2">
-          <div class="col-md-4">
-              <label for="filter">Filter:</label>
-              <select id="filter" class="form-control" th:field="*{attribute}">
-                  <option value="price">Price</option>
-                  <option value="name">Name</option>
-              </select>
-          </div>
-          <div class="col-md-4">
-              <label for="sortOrder">Sort Order:</label>
-              <select id="sortOrder" class="form-control" th:field="*{direction}">
-                  <option value="asc">Ascending</option>
-                  <option value="desc">Descending</option>
-              </select>
-          </div>
-      </div> -->
-    <!-- </form> -->
-
-    <!-- <div class="row justify-content-between m-2">
-      <div class="col-md-4">
-        <a href="/catalogue/tambah-produk" class="btn btn-primary">+ Tambah Produk</a>
-      </div>
-    </div> -->
-
-    <!-- Menggunakan class "justify-content-between" pada row -->
     <div class="row justify-content-between m-2">
       <div class="col-auto">
         <a href="/catalogue/addProduct" class="btn btn-primary">+ Tambah Produk</a>
@@ -105,7 +68,6 @@
             <div class="row justify-content-end m-2">
               <div class="col-auto">
                 <a th:href="@{'/catalogue/update/' + ${product.id}}" class=" btn btn-warning">Edit</a>
-                <!-- <a th:href="@{'/order/updateStatus/' + ${order.id}}" class="btn btn-primary">Update</a> -->
               </div>
             </div>
           </div>

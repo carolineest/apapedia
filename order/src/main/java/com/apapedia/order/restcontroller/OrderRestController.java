@@ -46,7 +46,6 @@ public class OrderRestController {
         String token = authorizationHeader.substring(7);
         UUID idSeller = jwtUtils.getUserIdFromToken(token);
 
-        System.out.println("MASUK GET CHART");
         Map<String, Integer> orderList = new LinkedHashMap<>();
         List<Order> status0 = orderRestService.getOrderByStatusAndSeller(idSeller, 0);
         List<Order> status1 = orderRestService.getOrderByStatusAndSeller(idSeller, 1);
@@ -61,8 +60,6 @@ public class OrderRestController {
         orderList.put("Dalam perjalanan", status3.size());
         orderList.put("Barang diterima", status4.size());
         orderList.put("Barang selesai", status5.size());
-
-        System.out.println(orderList);
 
         return orderList;
     }
@@ -113,8 +110,6 @@ public class OrderRestController {
     private List<Order> getOrderBySellerId(@RequestHeader("Authorization") String authorizationHeader){
         String token = authorizationHeader.substring(7);
         UUID idSeller = jwtUtils.getUserIdFromToken(token);
-        System.out.println("MASUK ORDER HISTORY");
-        System.out.println(orderRestService.getOrderBySellerId(idSeller));
         return  orderRestService.getOrderBySellerId(idSeller);
     }
 }

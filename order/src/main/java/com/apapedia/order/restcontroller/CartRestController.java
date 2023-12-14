@@ -1,11 +1,8 @@
 package com.apapedia.order.restcontroller;
 
-import com.apapedia.order.dto.request.CreateCartItemRequestDTO;
 import com.apapedia.order.dto.request.CreateCartReqDTO;
-import com.apapedia.order.jwt.JwtUtils;
 import com.apapedia.order.model.Cart;
 import com.apapedia.order.restservice.CartRestService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -24,7 +21,6 @@ public class CartRestController {
     @PostMapping(value = "/add")
     public Cart addCart(@RequestBody CreateCartReqDTO createCartReqDTO,
                         BindingResult bindingResult) {
-        System.out.println("MASUK POST ADD CART");
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field"

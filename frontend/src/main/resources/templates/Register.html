@@ -7,13 +7,11 @@
     <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Register Page</title>
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
 <body class="bg-light">
-    <!-- <nav th:replace="~{fragments/navbar :: navbar('')}"></nav> -->
     <nav th:fragment="navbar(page)" class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand fw-bold text-primary ms-3" href="/">APAPEDIA</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
@@ -39,7 +37,6 @@
                     </div>
                     <div class="card-body">
                         <form th:action="@{/register}" id="registerForm" method="POST">
-                            <!--                        <input class="form-control" type="hidden" th:field="*{role}" value="seller"/>-->
 
                             <div class="form-group">
                                 <label for="name">Name</label>
