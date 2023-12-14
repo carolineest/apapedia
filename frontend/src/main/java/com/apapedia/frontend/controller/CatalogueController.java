@@ -69,6 +69,21 @@ public class CatalogueController {
         System.out.println("masuk liscatalog");
         model.addAttribute("searchFilterDTO", new SearchFilterDTO());
         model.addAttribute("listCatalogueDTO", listCatalogueDTO);
+
+        // get data untuk chart
+        HttpRequest request1 = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8081/api/order/chart"))
+                .header("Authorization", "Bearer " + jwtToken)
+                .GET()
+                .build();
+        HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
+        System.out.println(output1.body());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Integer> statusCountList = objectMapper.readValue(output1.body(), Map.class);
+        System.out.println(statusCountList);
+
+        model.addAttribute("statusCountList", statusCountList);
         return "catalogue-logged";
     }
 
@@ -102,11 +117,11 @@ public class CatalogueController {
 
         if (searchFilterDTO.getProductName() != null) { // handle seller
             productName = searchFilterDTO.getProductName();
-            apiUrl = "http://localhost:8083/api/catalogue/name" + productName;
+            apiUrl = "http://localhost:8083/api/catalogue/login/name/" + productName;
         } else if (searchFilterDTO.getMinPrice() != null && searchFilterDTO.getMaxPrice() != null) {
             minPrice = searchFilterDTO.getMinPrice();
             maxPrice = searchFilterDTO.getMaxPrice();
-            apiUrl = "http://localhost:8083/api/catalogue/price" + minPrice + "/" + maxPrice;
+            apiUrl = "http://localhost:8083/api/catalogue/price/" + minPrice + "/" + maxPrice;
         } else {
             direction = searchFilterDTO.getDirection();
             attribute = searchFilterDTO.getAttribute();
@@ -124,6 +139,21 @@ public class CatalogueController {
         List<CatalogueDTO> listCatalogueDTO = response.getBody();
         System.out.println(listCatalogueDTO);
         System.out.println("masuk liscatalog");
+
+        // get data untuk chart
+        HttpRequest request1 = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8081/api/order/chart"))
+                .header("Authorization", "Bearer " + jwtToken)
+                .GET()
+                .build();
+        HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
+        System.out.println(output1.body());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Integer> statusCountList = objectMapper.readValue(output1.body(), Map.class);
+        System.out.println(statusCountList);
+
+        model.addAttribute("statusCountList", statusCountList);
         model.addAttribute("searchFilterDTO", new SearchFilterDTO());
         model.addAttribute("listCatalogueDTO", listCatalogueDTO);
         return "catalogue-logged";
@@ -246,12 +276,12 @@ public class CatalogueController {
 
     @GetMapping("/addProduct")
     public String formAddProduct(HttpServletRequest httpServletRequest,
-            Model model) throws IOException, InterruptedException {
+                                 Model model)throws IOException, InterruptedException{
+        System.out.println("MASUK GET ADD PRODUCT");
         AddCatalogueDTO newCatalogueDTO = new AddCatalogueDTO();
 
         String jwtToken = null;
-        HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
-                                                                    // tidak ada
+        HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika tidak ada
         if (session == null) {
             return "Register";
         }
@@ -259,7 +289,7 @@ public class CatalogueController {
 
         HttpRequest request1 = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8083/api/category/view-all"))
-                .header("Authorization", "Bearer " + jwtToken)
+                .header("Authorization", "Bearer "+jwtToken)
                 .GET()
                 .build();
         HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
@@ -274,11 +304,11 @@ public class CatalogueController {
 
         return "form-create-catalogue";
     }
-
     @PostMapping("/addProduct")
     public String addProduct(@ModelAttribute AddCatalogueDTO addCatalogueDTO,
-            HttpServletRequest httpServletRequest,
-            Model model) throws IOException, InterruptedException {
+                             HttpServletRequest httpServletRequest,
+                             Model model)throws IOException, InterruptedException{
+        System.out.println("MASUK POST ADD PRODUCT 1");
         String jwtToken = null;
         HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
         // tidak ada
@@ -286,7 +316,7 @@ public class CatalogueController {
             return "Register";
         }
         jwtToken = (String) session.getAttribute("token");
-        System.out.println(jwtToken);
+        System.out.println(addCatalogueDTO.getProductName());
 
         JsonObject jsonBody = new JsonObject();
         jsonBody.addProperty("price", addCatalogueDTO.getPrice());
@@ -297,13 +327,21 @@ public class CatalogueController {
         jsonBody.addProperty("image", addCatalogueDTO.getImage());
 
         HttpRequest request1 = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8083/api/catalogue.add-product"))
+                .uri(URI.create("http://localhost:8083/api/catalogue/add-product"))
                 .header("content-type", "application/json")
-                .header("Authorization", "Bearer " + jwtToken)
+                .header("Authorization", "Bearer "+jwtToken)
                 .POST(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))
                 .build();
 
-        // ganti html hrsnya redirect
-        return "form-update-order-status";
+//        HttpRequest request1 = HttpRequest.newBuilder()
+//                .uri(URI.create("http://localhost:8082/api/auth/register"))
+//                .header("content-type", "application/json")
+//                .POST(HttpRequest.BodyPublishers.ofString(jsonBody1.toString()))
+//                .build();
+
+        System.out.println("MASUK POST ADD PRODUCT 2");
+        System.out.println(addCatalogueDTO.getCategoryId());
+
+        return "redirect:/catalogue/viewAll";
     }
 }

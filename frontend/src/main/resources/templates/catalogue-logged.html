@@ -75,7 +75,7 @@
       <div class="col-auto">
         <a href="/catalogue/addProduct" class="btn btn-primary">+ Tambah Produk</a>
       </div>
-      <form th:action="@{/}" method="post" th:object="${searchFilterDTO}" class="col-md-4">
+      <form th:action="@{/catalogue/viewAll}" method="post" th:object="${searchFilterDTO}" class="col-md-4">
         <!-- Search Bar -->
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Search" th:field="*{productName}" />

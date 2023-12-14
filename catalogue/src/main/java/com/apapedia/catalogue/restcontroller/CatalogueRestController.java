@@ -32,12 +32,21 @@ public class CatalogueRestController {
     JwtUtils jwtUtils;
 
     @PostMapping("/add-product")
-    public void addCatalogue(@Valid @RequestBody CreateCatalogueRequestDTO catalogueDTO, BindingResult bindingResult) {
+    public void addCatalogue(@RequestBody CreateCatalogueRequestDTO catalogueDTO,
+                             @RequestHeader("Authorization") String authorizationHeader,
+                             BindingResult bindingResult) {
+        System.out.println("MASUK POST ADD PRODUCT BE 1");
+        String token = authorizationHeader.substring(7);
+        UUID idSeller = jwtUtils.getUserIdFromToken(token);
+        System.out.println(idSeller);
+
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         } else {
-            catalogueRestService.createCatalogue(catalogueDTO);
+            System.out.println("MASUK POST ADD PRODUCT BE 2");
+            catalogueRestService.createCatalogue(catalogueDTO, idSeller);
+            System.out.println("MASUK POST ADD PRODUCT BE 3");
         }
     }
 
@@ -50,7 +59,6 @@ public class CatalogueRestController {
 
     // C2
     @GetMapping("/seller")
-
     private List<Catalogue> getCatalogueBySellerId(@RequestHeader("Authorization") String authorizationHeader) {
         System.out.println("MASUK SELLER");
         String token = authorizationHeader.substring(7);
@@ -80,6 +88,21 @@ public class CatalogueRestController {
     @GetMapping("/name/{productName}")
     public List<Catalogue> getCatalogueByCatalogueName(@PathVariable("productName") String productName) {
         List<Catalogue> listCatalogue = catalogueRestService.getCatalogueByCatalogueName(productName);
+        if (listCatalogue.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Product with name " + productName + " not found");
+        }
+        return listCatalogue;
+    }
+
+    @GetMapping("/login/name/{productName}")
+    public List<Catalogue> getCatalogueByCatalogueNameLogin(@RequestHeader("Authorization") String authorizationHeader,
+                                                            @PathVariable("productName") String productName) {
+        String token = authorizationHeader.substring(7);
+        UUID idSeller = jwtUtils.getUserIdFromToken(token);
+        System.out.println(idSeller);
+
+        List<Catalogue> listCatalogue = catalogueRestService.getCatalogueByCatalogueNameLogin(productName, idSeller);
         if (listCatalogue.isEmpty()) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Product with name " + productName + " not found");

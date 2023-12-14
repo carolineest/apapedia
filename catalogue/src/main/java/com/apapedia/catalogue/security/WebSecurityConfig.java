@@ -33,12 +33,12 @@ public class WebSecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                        .requestMatchers("/api/catalogue/name/{productName}").permitAll()
                         .requestMatchers("/api/catalogue/view-all").permitAll()
                         .requestMatchers("/api/catalogue/price/{minPrice}/{maxPrice}").permitAll()
-                        .requestMatchers("/api/catalogue/name/{productName}").permitAll()
                         .requestMatchers("/api/catalogue/seller").permitAll()
+                        .requestMatchers("/api/catalogue/price/{minPrice}/{maxPrice}").permitAll()
                         .requestMatchers("/api/catalogue/id/{idCatalogue}").permitAll()
-                        .requestMatchers("/api/catalogue/add-product").permitAll()
                         .requestMatchers("/api/catalogue/{direction}/{attribute}").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(

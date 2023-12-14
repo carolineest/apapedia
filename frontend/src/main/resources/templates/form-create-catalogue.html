@@ -13,6 +13,7 @@
 <body>
   <nav th:replace="~{fragments/navbar :: navbar('')}"></nav>
 
+<<<<<<< HEAD
   <div class="container">
     <div class="card m-4 p-4">
       <div class="card-body">
@@ -21,6 +22,16 @@
           <br>
           <!--        <form th:action="@{/catalogue/update/{id}(id=${catalogueDTO.id})}" th:object="${catalogueDTO}" method="POST">-->
           <form th:action="@{/catalogue.addProduct}" th:object="${newCatalogueDTO}" method="POST">
+=======
+<div class="container">
+  <div class="card m-4 p-4">
+    <div class="card-body">
+      <div class="justify-content-center">
+        <h2>Form Create Catalgoue</h2>
+        <br>
+        <!--        <form th:action="@{/catalogue/update/{id}(id=${catalogueDTO.id})}" th:object="${catalogueDTO}" method="POST">-->
+        <form th:action="@{/catalogue/addProduct}" th:object="${newCatalogueDTO}" method="POST">
+>>>>>>> 1ea8454 (mau pull staging)
 
             Product Name : <br>
             <input required class="form-control" type="text" th:field="*{productName}" />
@@ -32,19 +43,28 @@
             <span class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
             <br><br>
 
+<<<<<<< HEAD
             Product Description : <br>
             <input required class="form-control" type="number" th:field="*{productDescription}" />
             <span class="text-danger" th:if="${#fields.hasErrors('productDescription')}"
               th:errors="*{productDescription}"></span>
             <br><br>
+=======
+          Product Description : <br>
+          <input required class="form-control" type="text" th:field="*{productDescription}" />
+          <span class="text-danger" th:if="${#fields.hasErrors('productDescription')}" th:errors="*{productDescription}"></span>
+          <br><br>
+>>>>>>> 1ea8454 (mau pull staging)
 
             Product Stock: <br>
             <input required class="form-control" type="number" th:field="*{stock}" />
             <span class="text-danger" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></span>
             <br><br>
 
-            Product Image : <br>
-            <p th:text="*{image}"></p><br>
+          Product Image : <br>
+          <input required class="form-control" type="text" th:field="*{image}" />
+          <span class="text-danger" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></span>
+          <br><br>
 
             Category : <br>
             <table class="table">

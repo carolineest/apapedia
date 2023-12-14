@@ -53,9 +53,6 @@ public class PageController {
             .build();
 
     @GetMapping("/")
-    // public String cataloguePage(HttpServletRequest httpServletRequest, Model
-    // model) throws IOException, InterruptedException { //request param buat id
-    // seller?
     public String cataloguePage(Model model) { // request param buat id seller?
         System.out.println("MASUK GET / 1");
         RestTemplate restTemplate = new RestTemplate();
@@ -73,8 +70,10 @@ public class PageController {
             System.out.println("MASUK GET / 2");
             List<CatalogueDTO> listProduct = responseEntity.getBody();
             model.addAttribute("listProduct", listProduct);
+
             SearchFilterDTO searchFilterDTO = new SearchFilterDTO();
             model.addAttribute("searchFilterDTO", searchFilterDTO);
+
             System.out.println("*****************" + listProduct);
             return "catalogue-not-logged";
         } else {
@@ -96,11 +95,12 @@ public class PageController {
 
         if (searchFilterDTO.getProductName() != null) {
             productName = searchFilterDTO.getProductName();
-            apiUrl = "http://localhost:8083/api/catalogue/name" + productName;
+            System.out.println("************produkname**********" + productName);
+            apiUrl = "http://localhost:8083/api/catalogue/name/" + productName;
         } else if (searchFilterDTO.getMinPrice() != null && searchFilterDTO.getMaxPrice() != null) {
             minPrice = searchFilterDTO.getMinPrice();
             maxPrice = searchFilterDTO.getMaxPrice();
-            apiUrl = "http://localhost:8083/api/catalogue/price" + minPrice + "/" + maxPrice;
+            apiUrl = "http://localhost:8083/api/catalogue/price/" + minPrice + "/" + maxPrice;
         } else {
             direction = searchFilterDTO.getDirection();
             attribute = searchFilterDTO.getAttribute();

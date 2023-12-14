@@ -1,5 +1,6 @@
 package com.apapedia.catalogue.restservice;
 
+import com.apapedia.catalogue.DTO.response.CatalogueFilterDTO;
 import com.apapedia.catalogue.repository.CatalogueDb;
 import com.apapedia.catalogue.model.Catalogue;
 import com.apapedia.catalogue.DTO.request.CatalogueUpdateReq;
@@ -49,13 +50,12 @@ public class CatalogueRestServiceImpl implements CatalogueRestService {
 
     @Override
     public List<Catalogue> getCatalogueByCatalogueName(String productName){
-            List<Catalogue> listCatalogue = new ArrayList<>();
-        for (Catalogue catalogue : getAllCatalogue()) {
-            if (catalogue.getProductName().equalsIgnoreCase(productName)) {
-                listCatalogue.add(catalogue);
-            }
-        }
-        return listCatalogue;
+        return catalogueDb.findByProductNameContainingIgnoreCaseOrderByProductNameAsc(productName);
+    }
+
+    @Override
+    public List<Catalogue> getCatalogueByCatalogueNameLogin(String productName, UUID sellerId){
+        return catalogueDb.findByProductNameContainingIgnoreCaseAndSeller(productName, sellerId);
     }
 
     @Override
@@ -133,14 +133,15 @@ public class CatalogueRestServiceImpl implements CatalogueRestService {
     }
 
     @Override
-    public void createCatalogue(CreateCatalogueRequestDTO catalogueDTO) {
+    public void createCatalogue(CreateCatalogueRequestDTO catalogueDTO, UUID sellerId) {
         Catalogue catalogue = new Catalogue();
-        catalogue.setSeller(catalogueDTO.getSeller()); // ini ke seller
+        catalogue.setSeller(sellerId);
         catalogue.setPrice(catalogueDTO.getPrice());
         catalogue.setProductName(catalogueDTO.getProductName());
         catalogue.setProductDescription(catalogueDTO.getProductDescription());
 
-        Category category = categoryService.getCategoryById(catalogueDTO.getCategoryId());
+        String catId = catalogueDTO.getCategoryId();
+        Category category = categoryService.getCategoryById(UUID.fromString(catId));
         catalogue.setCategoryId(category);
         
         catalogue.setStock(catalogueDTO.getStock());
