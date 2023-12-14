@@ -13,11 +13,12 @@ public interface CatalogueRestService {
     List<Catalogue> getCatalogueBySellerId(UUID idSeller);
     Catalogue getCatalogueByCatalogueId(UUID idCatalogue);
     List<Catalogue> getCatalogueByCatalogueName(String productName);
+    List<Catalogue> getCatalogueByCatalogueNameLogin(String productName, UUID sellerId);
     List<Catalogue> getCatalogueByPrice(Integer minPrice, Integer maxPrice);
     List<Catalogue> getSortedCatalogueList(String attribute, String direction);
     List<Catalogue> getAllCatalogues();
     Catalogue getCatalogueById(UUID id);
     Catalogue updateCatalogue(CatalogueUpdateRes catalogueUpdateRes, UUID id);
     Catalogue softDelete(Catalogue catalogue);
-    void createCatalogue(CreateCatalogueRequestDTO catalogueDTO);
+    void createCatalogue(CreateCatalogueRequestDTO catalogueDTO, UUID selllerId);
 }

@@ -10,11 +10,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 public class CreateCatalogueRequestDTO {
-    private UUID seller; // ini janlup
     private Integer price;
     private String productName;
     private String productDescription;
-    private UUID categoryId;
+    private String categoryId;
     private Integer stock;
     private String image;
 }
