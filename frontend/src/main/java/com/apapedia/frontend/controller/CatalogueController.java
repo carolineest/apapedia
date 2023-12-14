@@ -36,10 +36,6 @@ public class CatalogueController {
 
         String jwtToken = null;
         HttpSession session = httpServletRequest.getSession(false);
-
-        if (session == null) {
-            return "Register";
-        }
         jwtToken = (String) session.getAttribute("token");
 
         HttpHeaders headers = new HttpHeaders();
@@ -142,10 +138,6 @@ public class CatalogueController {
             Model model) throws IOException, InterruptedException {
         String jwtToken = null;
         HttpSession session = httpServletRequest.getSession(false);
-
-        if (session == null) {
-            return "Register";
-        }
         jwtToken = (String) session.getAttribute("token");
 
         String encodedId = URLEncoder.encode(String.valueOf(id), "UTF-8");
@@ -182,10 +174,6 @@ public class CatalogueController {
             Model model) throws IOException, InterruptedException {
         String jwtToken = null;
         HttpSession session = httpServletRequest.getSession(false);
-
-        if (session == null) {
-            return "Register";
-        }
         jwtToken = (String) session.getAttribute("token");
 
         JsonObject jsonBody = new JsonObject();
@@ -207,9 +195,6 @@ public class CatalogueController {
                 .build();
         HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
 
-        if (output1.body() == null) {
-            return "Login";
-        }
         return "redirect:/catalogue/viewAll";
     }
 
@@ -219,10 +204,6 @@ public class CatalogueController {
             Model model) throws IOException, InterruptedException {
         String jwtToken = null;
         HttpSession session = httpServletRequest.getSession(false);
-
-        if (session == null) {
-            return "Register";
-        }
         jwtToken = (String) session.getAttribute("token");
 
         String encodedId = URLEncoder.encode(String.valueOf(id), "UTF-8");
@@ -234,9 +215,6 @@ public class CatalogueController {
                 .build();
         HttpResponse<String> output1 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
 
-        if (output1.body() == null) {
-            return "Login";
-        }
         return "redirect:/catalogue/viewAll";
     }
 
@@ -247,9 +225,6 @@ public class CatalogueController {
 
         String jwtToken = null;
         HttpSession session = httpServletRequest.getSession(false);
-        if (session == null) {
-            return "Register";
-        }
         jwtToken = (String) session.getAttribute("token");
 
         HttpRequest request1 = HttpRequest.newBuilder()
@@ -273,10 +248,6 @@ public class CatalogueController {
                              Model model)throws IOException, InterruptedException{
         String jwtToken = null;
         HttpSession session = httpServletRequest.getSession(false); // Mendapatkan sesi tanpa membuat yang baru jika
-        // tidak ada
-        if (session == null) {
-            return "Register";
-        }
         jwtToken = (String) session.getAttribute("token");
 
         JsonObject jsonBody = new JsonObject();
@@ -293,6 +264,7 @@ public class CatalogueController {
                 .header("Authorization", "Bearer "+jwtToken)
                 .POST(HttpRequest.BodyPublishers.ofString(jsonBody.toString()))
                 .build();
+        HttpResponse<String> output2 = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
 
         return "redirect:/catalogue/viewAll";
     }

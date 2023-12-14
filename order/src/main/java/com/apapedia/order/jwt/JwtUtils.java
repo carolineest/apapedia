@@ -22,7 +22,6 @@ public class JwtUtils {
 
 
     public String generateJwtToken(String username, String role, UUID userId) {
-        System.out.println(jwtSecret);
         Jwts.parser().setSigningKey(jwtSecret);
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("role", role);
@@ -50,9 +49,7 @@ public class JwtUtils {
 
     public boolean validateJwtToken(String authToken) {
         try {
-            System.out.println("MASUK VALIDATE TOKEN 1");
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
-            System.out.println("MASUK VALIDATE TOKEN 2");
             return true;
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());

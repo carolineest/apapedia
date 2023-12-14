@@ -73,11 +73,6 @@ public class UserController {
             throws IOException, InterruptedException {
 
         HttpSession session = httpServletRequest.getSession(false);
-
-        if (session == null) {
-            return "Register";
-        }
-
         String jwtToken = null;
         jwtToken = (String) session.getAttribute("token");
 
@@ -143,7 +138,7 @@ public class UserController {
         HttpResponse<String> response = HttpClient.newHttpClient().send(request1, HttpResponse.BodyHandlers.ofString());
 
         if (response.body() == null) {
-            return "user-edit-profile";
+            return "redirect:/user/edit-profile";
         }
         return "redirect:/user/profile";
     }
@@ -152,11 +147,6 @@ public class UserController {
     public String withdrawPage(HttpServletRequest httpServletRequest, Model model)
             throws IOException, InterruptedException {
         HttpSession session = httpServletRequest.getSession(false);
-
-
-        if (session == null) {
-            return "Register";
-        }
         String jwtToken = null;
         jwtToken = (String) session.getAttribute("token");
 
@@ -189,8 +179,7 @@ public class UserController {
                 .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         if (response.body() == null) {
-
-            return "user-withdraw";
+            return "redirect:/user/withdraw";
         }
         return "redirect:/user/profile";
     }
@@ -199,11 +188,6 @@ public class UserController {
     public String deleteAccount(HttpServletRequest httpServletRequest, Model model)
             throws IOException, InterruptedException {
         HttpSession session = httpServletRequest.getSession(false);
-
-
-        if (session == null) {
-            return "Register";
-        }
 
         String jwtToken = null;
         jwtToken = (String) session.getAttribute("token");

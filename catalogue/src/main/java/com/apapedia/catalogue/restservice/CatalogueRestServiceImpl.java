@@ -133,7 +133,7 @@ public class CatalogueRestServiceImpl implements CatalogueRestService {
     }
 
     @Override
-    public void createCatalogue(CreateCatalogueRequestDTO catalogueDTO, UUID sellerId) {
+    public Catalogue createCatalogue(CreateCatalogueRequestDTO catalogueDTO, UUID sellerId) {
         Catalogue catalogue = new Catalogue();
         catalogue.setSeller(sellerId);
         catalogue.setPrice(catalogueDTO.getPrice());
@@ -146,6 +146,6 @@ public class CatalogueRestServiceImpl implements CatalogueRestService {
         
         catalogue.setStock(catalogueDTO.getStock());
         catalogue.setImage(catalogueDTO.getImage());
-        catalogueDb.save(catalogue);
+        return catalogueDb.save(catalogue);
     }
 }

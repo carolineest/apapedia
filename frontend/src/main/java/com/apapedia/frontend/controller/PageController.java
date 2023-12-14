@@ -49,7 +49,17 @@ public class PageController {
             .build();
 
     @GetMapping("/")
-    public String cataloguePage(Model model) {
+    public String cataloguePage(HttpServletRequest httpServletRequest, Model model) {
+        String jwtToken = null;
+        HttpSession session = httpServletRequest.getSession(false);
+
+        if (session != null) {
+            if(session.getAttribute("token") != null){
+                return "redirect:/catalogue/viewAll";
+            }
+        }
+        jwtToken = (String) session.getAttribute("token");
+
         RestTemplate restTemplate = new RestTemplate();
 
         String apiUrl = "http://localhost:8083/api/catalogue/view-all";
@@ -74,7 +84,15 @@ public class PageController {
     }
 
     @PostMapping("/")
-    public String cataloguePageSearchFilter(Model model, @ModelAttribute SearchFilterDTO searchFilterDTO) {
+    public String cataloguePageSearchFilter(HttpServletRequest httpServletRequest, Model model, @ModelAttribute SearchFilterDTO searchFilterDTO) {
+        HttpSession session = httpServletRequest.getSession(false);
+
+        if (session != null) {
+            if(session.getAttribute("token") != null){
+                return "redirect:/catalogue/viewAll";
+            }
+        }
+
         RestTemplate restTemplate = new RestTemplate();
 
         String productName;
@@ -147,7 +165,14 @@ public class PageController {
     }
 
     @GetMapping("/login-sso")
-    public ModelAndView loginSSO() {
+    public ModelAndView loginSSO(HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession(false);
+
+        if (session != null) {
+            if(session.getAttribute("token") != null){
+                return new ModelAndView("redirect:/catalogue/viewAll");
+            }
+        }
         return new ModelAndView("redirect:" + Setting.SERVER_LOGIN + Setting.CLIENT_LOGIN);
     }
 
@@ -181,7 +206,15 @@ public class PageController {
     }
 
     @GetMapping("/register")
-    public String registerPage(Model model) {
+    public String registerPage(HttpServletRequest httpServletRequest,Model model) {
+        HttpSession session = httpServletRequest.getSession(false);
+
+        if (session != null) {
+            if(session.getAttribute("token") != null){
+                return "redirect:/catalogue/viewAll";
+            }
+        }
+
         RegisterReqDTO registerDTO = new RegisterReqDTO();
         model.addAttribute("registerDTO", registerDTO);
         return "Register";
@@ -237,7 +270,15 @@ public class PageController {
     }
 
     @GetMapping("/login")
-    public String loginPage(Model model) {
+    public String loginPage(HttpServletRequest httpServletRequest, Model model) {
+        HttpSession session = httpServletRequest.getSession(false);
+
+        if (session != null) {
+            if(session.getAttribute("token") != null){
+                return "redirect:/catalogue/viewAll";
+            }
+        }
+
         var loginDTO = new LoginReqDTO();
         model.addAttribute("loginDTO", loginDTO);
 

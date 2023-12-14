@@ -32,21 +32,17 @@ public class CatalogueRestController {
     JwtUtils jwtUtils;
 
     @PostMapping("/add-product")
-    public void addCatalogue(@RequestBody CreateCatalogueRequestDTO catalogueDTO,
+    public Catalogue addCatalogue(@RequestBody CreateCatalogueRequestDTO catalogueDTO,
                              @RequestHeader("Authorization") String authorizationHeader,
                              BindingResult bindingResult) {
-        System.out.println("MASUK POST ADD PRODUCT BE 1");
         String token = authorizationHeader.substring(7);
         UUID idSeller = jwtUtils.getUserIdFromToken(token);
-        System.out.println(idSeller);
 
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         } else {
-            System.out.println("MASUK POST ADD PRODUCT BE 2");
-            catalogueRestService.createCatalogue(catalogueDTO, idSeller);
-            System.out.println("MASUK POST ADD PRODUCT BE 3");
+            return catalogueRestService.createCatalogue(catalogueDTO, idSeller);
         }
     }
 

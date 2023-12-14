@@ -20,5 +20,5 @@ public interface CatalogueRestService {
     Catalogue getCatalogueById(UUID id);
     Catalogue updateCatalogue(CatalogueUpdateRes catalogueUpdateRes, UUID id);
     Catalogue softDelete(Catalogue catalogue);
-    void createCatalogue(CreateCatalogueRequestDTO catalogueDTO, UUID selllerId);
+    Catalogue createCatalogue(CreateCatalogueRequestDTO catalogueDTO, UUID selllerId);
 }

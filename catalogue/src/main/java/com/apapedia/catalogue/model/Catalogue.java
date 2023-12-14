@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Getter
 @Setter
@@ -16,6 +18,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "catalogue")
+@SQLDelete(sql = "UPDATE catalogue SET isDeleted = true WHERE id=?")
+@Where(clause = "is_deleted=false")
 public class Catalogue {
     @Id
     private UUID id = UUID.randomUUID();
